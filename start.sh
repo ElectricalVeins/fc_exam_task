@@ -11,7 +11,7 @@ docker-compose  up -d
 echo ""
 docker-compose  ps
 
-web=$(docker-compose ps | grep squadhelp_server-prod_1 | awk '{print $1}')
+web=$(docker-compose ps | grep squadhelp-master_server-prod_1 | awk '{print $1}')
 
 # Run Sequalize's migrations.
 echo "-----> Running application migrations"

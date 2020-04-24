@@ -1,5 +1,5 @@
 const env = process.env.NODE_ENV || 'development';
-const serverIP='192.168.0.142';
+const serverIP='localhost';
 
 export default {
     CUSTOMER: 'customer',
