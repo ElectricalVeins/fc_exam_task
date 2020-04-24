@@ -1,0 +1,182 @@
+$accent-color: #28D2D1
+$link-touch-color: #f18762
+
+@mixin flex($justify, $align)
+  display: flex
+  justify-content: $justify
+  align-items: $align
+
+html
+  scroll-behavior: smooth
+
+body
+
+  color: #333
+  h1, h2, h3, h4, h5, h6
+    color: #515b5f
+
+.wrapper
+  max-width: 1200px
+  margin: 0 auto
+  font-family: 'Raleway', sans-serif
+  font-size: 18px
+
+.howSection
+  @include flex(center,normal)
+  margin-top: 60px
+  @media screen and (max-width: 768px)
+    margin-top: 15px
+    flex-direction: column
+    @include flex(center,center)
+
+.main
+  max-width: 600px
+  h2
+    margin-top: 0
+    font-size: 36px
+    @media screen and (max-width: 768px)
+      margin: 10px
+      text-align: center
+  p
+    font-size: 16px
+    line-height: 25px
+
+.video
+  margin: 0 30px
+
+.stepsHeader
+  @include flex(center,normal)
+  margin-top: 60px
+  font-size: 36px
+
+.stepContainer
+  @include flex(center,normal)
+  flex-wrap: wrap
+  margin-top: 60px
+
+.step
+  max-width: 165px
+  margin: 0 10px
+  text-align: center
+  div
+    @include flex(center,center)
+    margin: 0 auto
+    font-size: 30px
+    font-weight: 700
+    background-color: #ebebeb
+    border-radius: 50%
+    height: 90px
+    width: 90px
+    &:hover
+      background-color: $accent-color
+      cursor: pointer
+      color: white
+  h4
+    font-size: 16px
+  p
+    font-size: 14px
+    font-weight: 300
+
+.contestLinkContainer
+  @include flex(center,normal)
+  background-color: $accent-color
+  margin-top: 30px
+  padding: 30px 0
+  a
+    padding: 18px 0
+    border: 2px solid white
+    border-radius: 5px
+    width: 240px
+    font-weight: 700
+    text-transform: uppercase
+    text-align: center
+    text-decoration: none
+    color: white
+    font-size: 20px
+    &:hover
+      background-color: white
+      color: $accent-color
+
+.faqContainer
+  margin: 60px 0
+
+
+.faqTitle
+  display: flex
+  align-items: center
+  border-bottom: 1px solid #e1e1e1
+  padding-bottom: 30px
+  div
+    @include flex(center,center)
+    margin: 0 10px
+    height: 50px
+    width: 50px
+    border-radius: 50%
+    border: 2px solid $accent-color
+    color: $accent-color
+    font-size: 36px
+  h4
+    font-size: 30px
+    margin: 0
+
+.getInTouch
+  color: white
+  width: 100%
+  background-color: #455A89
+  min-height: 200px
+  @include flex(center,center)
+  @media screen and (max-width: 768px)
+    flex-direction: column
+
+.envelopeIcon
+  background-color: white
+  border-radius: 50%
+  height: 100px
+  width: 100px
+  margin-right: 40px
+  color: #455a89
+  font-size: 40px
+  @include flex(center,center)
+  @media screen and (max-width: 768px)
+    display: none
+
+.touchInfo
+  max-width: 650px
+  h1
+    color: white
+  p
+    text-decoration: none
+    font-size: 20px
+    font-weight: 300
+    color: white
+    a
+     color: $link-touch-color
+     text-decoration: none
+
+.touchButton
+  margin-left: 40px
+  height: 60px
+  a
+    border-radius: 5px
+    border: 2px solid white
+    padding: 20px 30px
+    text-decoration: none
+    color: white
+    text-transform: uppercase
+    font-weight: 700
+    &:hover
+      background-color: white
+      color: $accent-color
+  @media screen and (max-width: 768px)
+    margin-top: 20px
+
+.scrollUp
+  color: white
+  cursor: pointer
+  position: fixed
+  right: 10px
+  bottom: 100px
+  background-color: #f18762
+  border-radius: 50%
+  height: 50px
+  width: 50px
