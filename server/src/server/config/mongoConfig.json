@@ -1,0 +1,10 @@
+{
+  "development": {
+    "database": "chat",
+    "host": "mongo-dev"
+  },
+  "production": {
+    "database": "chat",
+    "host": "mongo-prod"
+  }
+}
