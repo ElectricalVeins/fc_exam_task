@@ -7,17 +7,18 @@ import Payment from './pages/Payment/Payment';
 import StartContestPage from './pages/StartContestPage/StartContestPage';
 import Dashboard from './pages/Dashboard/Dashboard'
 import PrivateHoc from './components/PrivateHoc/PrivateHoc';
-import NotFound from './components/NotFound/NotFound';
-import Home from './pages/Home/Home';
+import NotFound                 from './components/NotFound/NotFound';
+import Home                     from './pages/Home/Home';
 import OnlyNotAuthorizedUserHoc from './components/OnlyNotAuthorizedUserHoc/OnlyNotAuthorizedUserHoc';
-import ContestPage from './pages/ContestPage/ContestPage';
-import UserProfile from './pages/UserProfile/UserProfile';
+import ContestPage              from './pages/ContestPage/ContestPage';
+import UserProfile              from './pages/UserProfile/UserProfile';
 import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer} from 'react-toastify';
-import ContestCreationPage from './pages/ContestCreation/ContestCreationPage';
-import CONSTANTS from './constants';
-import browserHistory from './browserHistory';
-import ChatContainer from './components/Chat/ChatComponents/ChatContainer/ChatContainer';
+import {ToastContainer}         from 'react-toastify';
+import ContestCreationPage      from './pages/ContestCreation/ContestCreationPage';
+import CONSTANTS                from './constants';
+import browserHistory           from './browserHistory';
+import ChatContainer            from './components/Chat/ChatComponents/ChatContainer/ChatContainer';
+import HowItWorks               from "./pages/HowItWorksPage";
 
 
 
@@ -38,6 +39,7 @@ class App extends Component {
                 />
                 <Switch>
                     <Route exact path='/' component={Home}/>
+                  <Route exact path='/howItWorks' component={HowItWorks} />
                     <Route exact path='/login' component={OnlyNotAuthorizedUserHoc(LoginPage)}/>
                     <Route exact path='/registration' component={OnlyNotAuthorizedUserHoc(RegistrationPage)}/>
                     <Route exact path='/payment' component={PrivateHoc(Payment)}/>
