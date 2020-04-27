@@ -26,7 +26,7 @@ body
   @include flex(center,normal)
   margin-top: 60px
   @media screen and (max-width: 768px)
-    margin-top: 15px
+    margin: 30px
     flex-direction: column
     @include flex(center,center)
 
@@ -44,6 +44,12 @@ body
 
 .video
   margin: 0 30px
+  iframe
+    width: 555px
+    height: 312px
+    @media screen and (max-width: 576px)
+      width: 320px
+      height: 180px
 
 .stepsHeader
   @include flex(center,normal)
@@ -106,6 +112,7 @@ body
       color: $accent-color
     ul
       margin-top: 15px
+      list-style-type: '- '
     p
       font-size: 16px
 
@@ -151,6 +158,9 @@ body
 
 .touchInfo
   max-width: 650px
+  @media screen and (max-width: 768px)
+    margin: 0 15px
+    text-align: center
   h1
     color: white
   p
@@ -177,7 +187,7 @@ body
       background-color: white
       color: $accent-color
   @media screen and (max-width: 768px)
-    margin-top: 20px
+    margin: 20px 0
 
 .scrollUp
   color: white

@@ -41,9 +41,7 @@ const HowItWorks = props => {
                     allowFullScreen
                     frameBorder="0"
                     scrolling="no"
-                    src="https://fast.wistia.net/embed/iframe/vfxvect60o"
-                    width="555"
-                    height="312"/>
+                    src="https://fast.wistia.net/embed/iframe/vfxvect60o"/>
           </div>
           <div className={styles.main}>
             <h2>How Does Squadhelp Work?</h2>
@@ -179,9 +177,9 @@ const HowItWorks = props => {
                 our platform. Here are some examples of Names, Taglines, and Logos that were
                 submitted in recent contests.
                 <ul>
-                  <li><a href="#">- Name Examples</a></li>
-                  <li><a href="#">- Tagline Examples</a></li>
-                  <li><a href="#">- Logo Examples</a></li>
+                  <li><a href="#">Name Examples</a></li>
+                  <li><a href="#">Tagline Examples</a></li>
+                  <li><a href="#">Logo Examples</a></li>
                 </ul>
               </p>
             </li>
@@ -233,6 +231,7 @@ const HowItWorks = props => {
                 will be able to read your project brief and participate in the contest. The contest
                 details will be kept private from other users, as well as search engines.</p>
             </li>
+
             <li>
               <h4>Can you serve customers outside the US?</h4>
               <p>Absolutely. Squadhelp services organizations across the globe. Our customer come
@@ -241,14 +240,11 @@ const HowItWorks = props => {
             </li>
           </ul>
         </section>
-
       </div>
       <div className={styles.getInTouch}>
-
         <div className={styles.envelopeIcon}>
           <i className="fa fa-envelope" aria-hidden="true"/>
         </div>
-
         <div className={styles.touchInfo}>
           <h1>
             Questions?
@@ -258,11 +254,9 @@ const HowItWorks = props => {
             schedule a <a href="#header">Branding Consultation</a>
           </p>
         </div>
-
         <div className={styles.touchButton}>
           <a target='_blank' href='#header'>Get in Touch</a>
         </div>
-
       </div>
       {
         renderScrollUp()
