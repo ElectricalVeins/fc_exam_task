@@ -178,5 +178,21 @@ body
   bottom: 100px
   background-color: #f18762
   border-radius: 50%
-  height: 50px
-  width: 50px
+  height: 33px
+  width: 33px
+  opacity: 0
+  transition: all ease-in-out 0.33s
+  @include flex(center,center)
+  i
+    font-size: 12px
+    height: 16px
+    width: 16px
+    background-color: white
+    border-radius: 50%
+    color: $orange-color
+    @include flex(center,center)
+  &:hover
+    opacity: 1
+
+.visible
+  opacity: 0.4

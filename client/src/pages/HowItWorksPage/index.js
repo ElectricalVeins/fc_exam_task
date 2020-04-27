@@ -1,16 +1,39 @@
-import React    from 'react';
-import { Link } from 'react-router-dom'
-import Header   from "../../components/Header/Header";
-import styles   from './HowItWorksPage.module.sass'
-import faq      from './faq.json'
-import Footer   from "../../components/Footer/Footer";
+import React, { useEffect, useState } from 'react';
+import { Link }                       from 'react-router-dom'
+import Header                         from "../../components/Header/Header";
+import styles                         from './HowItWorksPage.module.sass'
+import faq                            from './faq.json'
+import Footer                         from "../../components/Footer/Footer";
+import classNames                     from 'classnames'
 
 const HowItWorks = props => {
+  const [ scrollY, setScrollY ] = useState( 0 )
 
-  const renderFaq = () => ( faq.map( ( item, index ) => ( <li key={index}>
-    <h4>{item.question}</h4>
-    <p>{item.answer}</p>
-  </li> ) ) )
+  useEffect( () => {
+    window.addEventListener( 'scroll', setHeight )
+    return () => window.removeEventListener( 'scroll', setHeight )
+  }, [] )
+
+  const setHeight = () => setScrollY( window.scrollY )
+
+  const renderFaq = () => ( faq.map( ( item, index ) => (
+      <li key={index}>
+        <h4>{item.question}</h4>
+        <p>{item.answer}</p>
+      </li>
+    )
+  ) )
+
+  const renderScrollUp = () => {
+    const computedStyles = classNames( styles.scrollUp,
+      { [ styles.visible ]: scrollY > 160 } )
+
+    return (
+      <a href='#header' className={computedStyles}>
+        <i className="fas fa-arrow-up"/>
+      </a>
+    )
+  }
 
   return (
     <>
@@ -119,7 +142,9 @@ const HowItWorks = props => {
         </div>
 
       </div>
-      <a href='#header' className={styles.scrollUp}><i className='fa'></i></a>
+      {
+        renderScrollUp()
+      }
       <Footer/>
     </>
   );
