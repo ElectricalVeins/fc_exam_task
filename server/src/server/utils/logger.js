@@ -33,3 +33,22 @@ async function appendToFile( data, start, fPath ) {
   await streamLog.write( data, 'utf-8' );
   streamLog.end();
 }
+
+
+async function getFileSize( fPath ) {
+  const stats = await stat( fPath );
+  return stats.size
+}
+async function logToFile( data ) {
+  try {
+    //await checkFileExistence( LOG_FILE_PATH )
+    const start = await getFileSize( LOG_FILE_PATH ) - 1
+    console.log( 'Start Is ==>', start )
+    const appendData = await createLogObject( data, start, LOG_PROPS )
+    await appendToFile( appendData, start, LOG_FILE_PATH )
+  } catch ( err ) {
+    throw err
+  }
+}
+
+module.exports = logToFile;
