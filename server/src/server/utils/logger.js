@@ -6,9 +6,23 @@ const { LOG_PROPS, LOG_FILE_PATH } = require( '../../constants' )
 const stat = promisify( fs.stat );
 const open = promisify( fs.open );
 
+async function checkFileExistence( fPath ) {
+  try {
+    const result = await open( fPath, 'wx' )
+    console.log( 'RESULT=>', result )
+    if( result && result.code === 'EEXIST' ) {
+      return;
+    }
+  } catch ( e ) {
+    console.log( 'CATCHED ERROR---', e )
+    await appendToFile( '[]', 0, LOG_FILE_PATH ) //сделать func createFile
+  }
+}
 
-
-
+async function getFileSize( fPath ) {
+  const stats = await stat( fPath );
+  return stats.size
+}
 async function createLogObject( object, start, props ) {
   const time = { time: Date.parse( new Date() ) };
   const properties = _.pick( object, props )
@@ -20,7 +34,6 @@ async function createLogObject( object, start, props ) {
   }
   return jsonStr + ']'
 }
-
 
 async function appendToFile( data, start, fPath ) {
   /*  if( start < 0 ) {
@@ -34,11 +47,6 @@ async function appendToFile( data, start, fPath ) {
   streamLog.end();
 }
 
-
-async function getFileSize( fPath ) {
-  const stats = await stat( fPath );
-  return stats.size
-}
 async function logToFile( data ) {
   try {
     //await checkFileExistence( LOG_FILE_PATH )
