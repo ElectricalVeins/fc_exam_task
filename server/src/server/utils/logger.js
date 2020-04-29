@@ -20,3 +20,16 @@ async function createLogObject( object, start, props ) {
   }
   return jsonStr + ']'
 }
+
+
+async function appendToFile( data, start, fPath ) {
+  /*  if( start < 0 ) {
+   return;
+   }*/
+  const streamLog = await fs.createWriteStream( fPath, {
+    flags: 'r+',
+    start
+  } )
+  await streamLog.write( data, 'utf-8' );
+  streamLog.end();
+}
