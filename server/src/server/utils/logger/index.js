@@ -2,7 +2,7 @@ const fs = require( 'fs' );
 const path = require( 'path' );
 const _ = require( 'lodash' );
 const { promisify } = require( 'util' );
-const { LOG_PROPS, LOG_FILE_PATH, LAST_CHARS_TO_DELETE } = require( '../../constants' )
+const { LOG_PROPS, LOG_FILE_PATH, LAST_CHARS_TO_DELETE } = require( '../../../constants' )
 const stat = promisify( fs.stat );
 const open = promisify( fs.open );
 
@@ -56,7 +56,7 @@ async function logToFile( data ) {
     const isFileExist = await checkFileExistence( LOG_FILE_PATH )
 
     if( !isFileExist ) {
-      await appendToFile( LOG_FILE_PATH, '[]', 0, 'w' );
+      await appendToFile( LOG_FILE_PATH, '[]', 0, 'w' ); //или создавать файл синхронно?
     }
 
     let start = await getFileSize( LOG_FILE_PATH ) - LAST_CHARS_TO_DELETE
