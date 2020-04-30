@@ -30,5 +30,6 @@ module.exports={
     CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS',
 
     LOG_PROPS:  [ 'code', 'message', 'stack' ],
-    LOG_FILE_PATH: `${__dirname}/../nodeLog.json`,
+    LOG_FILE_PATH: '/nodeLogs_test_15.json',
+    LAST_CHARS_TO_DELETE: 1,
 };
