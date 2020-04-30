@@ -3,6 +3,7 @@ const path = require( 'path' );
 const _ = require( 'lodash' );
 const { promisify } = require( 'util' );
 const { LOG_PROPS, LOG_FILE_PATH, LAST_CHARS_TO_DELETE } = require( '../../../constants' )
+const appendToFile = require( './appendToFile.js' )
 const stat = promisify( fs.stat );
 const open = promisify( fs.open );
 
@@ -38,18 +39,6 @@ function createLogObject( object, start, props ) {
   return ',' + jsonStr + ']' //изменено
 }
 
-module.exports.appendToFile = async ( fPath, data, start, flags ) => {
-  try {
-    const streamLog = await fs.createWriteStream( fPath, {
-      flags,
-      start
-    } )
-    await streamLog.write( data, 'utf-8' );
-    streamLog.end();
-  } catch ( e ) {
-    throw e
-  }
-}
 
 module.exports.logToFile = async ( data ) => {
   try {

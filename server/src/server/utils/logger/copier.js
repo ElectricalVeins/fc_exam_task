@@ -3,7 +3,7 @@ const path = require( 'path' );
 const _ = require( 'lodash' );
 const { promisify } = require( 'util' );
 const { LOG_FILE_PATH, LAST_CHARS_TO_DELETE } = require( '../../../constants' )
-const { appendToFile } = require( './index.js' )
+const appendToFile = require( './appendToFile.js' )
 const stat = promisify( fs.stat );
 const open = promisify( fs.open );
 
@@ -23,3 +23,5 @@ async function createLogHistory( oldFilePath, newFilePath ) {  //or fs.copyFile
     throw e
   }
 }
+
+module.exports = createLogHistory;
