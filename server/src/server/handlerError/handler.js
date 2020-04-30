@@ -1,4 +1,4 @@
-const logToFile = require('../utils/logger')
+const { logToFile } = require('../utils/logger')
 
 module.exports = (err, req, res, next) => {
     console.log(err);

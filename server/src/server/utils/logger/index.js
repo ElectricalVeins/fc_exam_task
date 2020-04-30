@@ -38,7 +38,7 @@ function createLogObject( object, start, props ) {
   return ',' + jsonStr + ']' //изменено
 }
 
-async function appendToFile( fPath, data, start, flags ) {
+module.exports.appendToFile = async ( fPath, data, start, flags ) => {
   try {
     const streamLog = await fs.createWriteStream( fPath, {
       flags,
@@ -51,7 +51,7 @@ async function appendToFile( fPath, data, start, flags ) {
   }
 }
 
-async function logToFile( data ) {
+module.exports.logToFile = async ( data ) => {
   try {
     const isFileExist = await checkFileExistence( LOG_FILE_PATH )
 
@@ -74,5 +74,3 @@ async function logToFile( data ) {
     throw err
   }
 }
-
-module.exports = logToFile;
