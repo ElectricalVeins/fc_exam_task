@@ -29,7 +29,8 @@ module.exports={
     NEW_MESSAGE: 'newMessage',
     CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS',
 
+    DUMPS_PATH:'/server_logs/',
     LOG_PROPS:  [ 'code', 'message', 'stack' ],
-    LOG_FILE_PATH: '/nodeLogs_test_15.json',
+    LOG_FILE_PATH: '/server_logs/liveNodeLog.json',
     LAST_CHARS_TO_DELETE: 1,
 };
