@@ -8,8 +8,8 @@ async function appendToFile( fPath, data, start, flags ) {
     } )
     await streamLog.write( data, 'utf-8' );
     streamLog.end();
-  } catch ( e ) {
-    throw e
+  } catch ( err ) {
+    throw err
   }
 }
 

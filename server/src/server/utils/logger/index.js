@@ -1,9 +1,9 @@
 const fs = require( 'fs' );
-const path = require( 'path' );
 const _ = require( 'lodash' );
 const { promisify } = require( 'util' );
-const { LOG_PROPS, LOG_FILE_PATH, LAST_CHARS_TO_DELETE } = require( '../../../constants' )
+const { LOG_PROPS, LOG_FILE_PATH, LAST_CHARS_TO_DELETE, DUMPS_PATH } = require( '../../../constants' )
 const appendToFile = require( './appendToFile.js' )
+const ensureExists = require( './ensurePathExist' )
 const stat = promisify( fs.stat );
 const open = promisify( fs.open );
 
@@ -39,9 +39,9 @@ function createLogObject( object, start, props ) {
   return ',' + jsonStr + ']' //изменено
 }
 
-
 module.exports.logToFile = async ( data ) => {
   try {
+    await ensureExists( DUMPS_PATH )
     const isFileExist = await checkFileExistence( LOG_FILE_PATH )
 
     if( !isFileExist ) {
