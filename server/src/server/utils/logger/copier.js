@@ -24,4 +24,8 @@ async function createLogHistory( oldFilePath, newFilePath ) {  //or fs.copyFile
   }
 }
 
+async function clearOldFile( oldPath ) {
+  await appendToFile( oldPath, '[]', 0, 'w' ) // empty old file. (check flag)
+}
+
 module.exports = createLogHistory;

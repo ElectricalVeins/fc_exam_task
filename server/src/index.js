@@ -22,3 +22,10 @@ server.listen(3000);
 controller.createConnection(server);
 
 
+const { LOG_FILE_PATH, DUMPS_PATH } = require( "./constants" );
+const createLogHistory = require( './server/utils/logger/copier' )
+setTimeout( () => {
+    createLogHistory( LOG_FILE_PATH,
+      `${DUMPS_PATH}${Date.parse( new Date() )}.json` )
+  },
+  1000 )
