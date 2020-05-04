@@ -5,6 +5,7 @@ const cors=require('cors');
 const controller = require('./socketInit');
 const handlerError=require('./server/handlerError/handler');
 const CONSTANTS =require('./constants');
+const createLogHistory = require( './server/utils/logger/copier' )
 const PORT = process.env.PORT || 9632;
 const app = express();
 const http = require('http');
@@ -21,11 +22,8 @@ const server=http.createServer(app);
 server.listen(3000);
 controller.createConnection(server);
 
-
-const { LOG_FILE_PATH, DUMPS_PATH } = require( "./constants" );
-const createLogHistory = require( './server/utils/logger/copier' )
-setTimeout( () => {
-    createLogHistory( LOG_FILE_PATH,
-      `${DUMPS_PATH}${Date.parse( new Date() )}.json` )
+setInterval( () => {
+    createLogHistory( CONSTANTS.LOG_FILE_PATH,
+      `${CONSTANTS.DUMPS_PATH}${Date.parse( new Date() )}.json` )
   },
-  1000 )
+  86400000 ) // to start logging every day
