@@ -1,26 +1,49 @@
 const fs = require( 'fs' );
-const path = require( 'path' );
-const _ = require( 'lodash' );
+const stream = require( 'stream' )
 const { promisify } = require( 'util' );
-const { LOG_FILE_PATH, LAST_CHARS_TO_DELETE } = require( '../../../constants' )
-const appendToFile = require( './appendToFile.js' )
-const stat = promisify( fs.stat );
-const open = promisify( fs.open );
-
-//Вызов через setInterval(LOG_FILE_PATH), 86400000ms
+const { DUMPS_PATH } = require( '../../../constants' )
+const appendToFile = require( './appendToFile' )
+const ensureExists = require( './ensurePathExist' )
+const pipeline = promisify( stream.pipeline );
 
 async function createLogHistory( oldFilePath, newFilePath ) {  //or fs.copyFile
-  const source = await fs.createReadStream( oldFilePath )
-  const target = await fs.createWriteStream( newFilePath ) //TODO: transform writing object
   try {
-    await source.pipe( target );
+    await ensureExists( DUMPS_PATH );
+    await createDump( oldFilePath, newFilePath )
+    await clearOldFile( oldFilePath );
+  } catch ( err ) {
+    throw err
+  }
+}
 
-    await appendToFile( LOG_FILE_PATH, '[]', 0, 'w' ) //check flag
+async function createDump( oldFilePath, newFilePath ) {
+  try {
+    // const source = await fs.createReadStream( oldFilePath )
+    // const target = await fs.createWriteStream( newFilePath )
+    const xStream = new stream.Transform( {
+      objectMode: true,
+    } );
+    xStream._transform = function ( chunk, encoding, done ) {
+      const jsonObj = JSON.parse( chunk )
 
-  } catch ( e ) {
-    source.destroy();
-    target.end();
-    throw e
+      for ( const element of jsonObj ) {
+        delete element.stack
+      }
+
+      this.push( JSON.stringify( jsonObj ) );
+      done();
+    };
+
+    await pipeline(
+      fs.createReadStream( oldFilePath ),
+      xStream,
+      fs.createWriteStream( newFilePath )
+    )
+    //source.end()
+    //target.end()
+    //xStream.end()
+  } catch ( err ) {
+    throw err
   }
 }
 
