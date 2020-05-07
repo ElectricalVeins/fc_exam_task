@@ -1,5 +1,11 @@
 $accent-color: #455A89
 
+@mixin flex($direction, $justify, $align)
+  display: flex
+  flex-direction: $direction
+  justify-content: $justify
+  align-items: $align
+
 .pageContainer
   max-width: 1200px
   margin: 50px auto
@@ -15,9 +21,7 @@ $accent-color: #455A89
   box-sizing: border-box
   width: 480px
   padding: 10px
-  display: flex
-  flex-direction: column
-  align-items: center
+  @include flex(column, unset, center)
   box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
   @media screen and (max-width: 900px)
     margin: 0 auto
@@ -52,16 +56,12 @@ $accent-color: #455A89
     text-align: center
 
 .createTimerContainer
-  display: flex
-  flex-direction: column
-  //justify-content: center
-  align-items: center
+  @include flex(column, unset, center)
   width: 100%
 
   form
-    display: flex
+    @include flex(column, unset, unset)
     box-sizing: border-box
-    flex-direction: column
     flex-wrap: wrap
     box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
     padding: 10px
