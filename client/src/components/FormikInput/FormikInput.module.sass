@@ -1,0 +1,24 @@
+.errorTip
+  position: absolute
+  z-index: 10
+  background-color: #FFDCE0
+  border: 1px solid #cea0a5
+  color: #86181d
+  box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
+  padding: 10px 20px
+  top: calc(100% + 2px)
+  left: 50%
+  @media screen and (max-width: 900px)
+    left: 0
+
+.container
+  min-width: 400px
+  max-width: 600px
+  position: relative
+  display: flex
+  justify-content: space-between
+  align-items: center
+  @media screen and (max-width: 900px)
+    min-width: 320px
+    flex-wrap: wrap
+    flex-direction: column
