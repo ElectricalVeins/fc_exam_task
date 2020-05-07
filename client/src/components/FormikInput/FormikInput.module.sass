@@ -1,3 +1,5 @@
+@import '../../pages/Events/Events.module'
+
 .errorTip
   position: absolute
   z-index: 10
@@ -12,12 +14,10 @@
     transform: translateX(-50%)
 
 .container
+  @include flex(row, space-between, center)
   min-width: 400px
   max-width: 600px
   position: relative
-  display: flex
-  justify-content: space-between
-  align-items: center
   @media screen and (max-width: 900px)
     min-width: 320px
     padding: 0 20px
