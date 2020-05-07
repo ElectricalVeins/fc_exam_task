@@ -8,8 +8,8 @@
   padding: 10px 20px
   top: calc(100% + 2px)
   left: 50%
-  @media screen and (max-width: 900px)
-    left: 0
+  @media screen and (max-width: 576px)
+    transform: translateX(-50%)
 
 .container
   min-width: 400px
@@ -20,5 +20,7 @@
   align-items: center
   @media screen and (max-width: 900px)
     min-width: 320px
-    flex-wrap: wrap
+    padding: 0 20px
+
+  @media screen and (max-width: 576px)
     flex-direction: column
