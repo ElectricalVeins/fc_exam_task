@@ -13,9 +13,9 @@ const Events = props => {
       <div className={styles.pageContainer}>
         <div className={styles.pageInfo}>
           <Link to='/dashboard' className={styles.infoElem}>Dashboard</Link>
+          <p>Live Upcoming Checks</p>
           <TimerList events={props.events}
-                     itemClass={styles.timerItem}
-                     progressBarStyle={styles.progressBar}/>
+                     itemClass={styles.timerItem}/>
         </div>
         <div className={styles.createTimerContainer}>
 
@@ -31,31 +31,31 @@ Events.defaultProps = {
     name: 'TimerList name1',
     date: '2020-06-30 9:00',
     createdAt: '2019-03-30 9:00',
-    warningTime: '1h'
+    warningTime: '2019-03-30 8:00'
   }, {
     id: '2',
     name: 'TimerList name2',
     date: '2020-06-01 9:00',
     createdAt: '2020-04-30 9:00',
-    warningTime: '1h'
+    warningTime: '2020-04-30 8:00'
   }, {
     id: '3',
     name: 'TimerList name3',
     date: '2020-06-28 9:00',
     createdAt: '2020-04-30 9:00',
-    warningTime: '1h'
+    warningTime: '2020-04-30 8:00'
   }, {
     id: '4',
     name: 'TimerList name4',
     date: '2020-06-28 9:00',
     createdAt: '2020-04-27 9:00',
-    warningTime: '1h'
+    warningTime: '2020-04-27 8:00'
   },{
     id: '5',
     name: 'Close Timer',
     date: '2020-05-7 19:46',
     createdAt: '2020-05-07 9:00',
-    warningTime: '1h'
+    warningTime: '2020-05-07 8:00'
   } ]
 }
 

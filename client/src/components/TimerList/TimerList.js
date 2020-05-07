@@ -13,15 +13,13 @@ const TimerList = ( { events, ...props } ) => {
   }, [ events ] )
 
   const sortArrayByDate = ( arr ) => {
-    return arr.sort(
-      ( a, b ) => {
-        const momentDate1 = moment( new Date( a.date ).toISOString() );
-        const momentDate2 = moment( new Date( b.date ).toISOString() );
+    return arr.sort( ( a, b ) => {
+      const momentDate1 = moment( new Date( a.date ).toISOString() );
+      const momentDate2 = moment( new Date( b.date ).toISOString() );
 
-        return moment( momentDate1 ).isBefore( momentDate2 ) ? -1
-                                                             : 1
-      }
-    )
+      return moment( momentDate1 ).isBefore( momentDate2 ) ? -1
+                                                           : 1
+    } )
   }
 
   return (

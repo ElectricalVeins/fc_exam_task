@@ -8,7 +8,6 @@ import styles                         from './Timer.module.sass'
 
 const Timer = props => {
   const {
-    id,
     name,
     date,
     createdAt,
@@ -27,20 +26,22 @@ const Timer = props => {
   } )
 
   const definePercent = () => {
-    const total = Date.parse( date ) - Date.parse( createdAt )
-    const current = Date.parse( new Date() ) - Date.parse( createdAt )
-    const result = 100 / ( total / current )
-
+    const createdTime = Date.parse( createdAt );
+    const total = Date.parse( date ) - createdTime;
+    const current = Date.parse( new Date() ) - createdTime;
+    const result = 100 / ( total / current );
 
     return result > 100 ? 100 : result
-  }
+  };
 
-  const listStyles = classNames(styles.listItem, itemClass)
+  const listStyles = classNames( styles.listItem, itemClass )
 
   return (
-    <li className={listStyles}>
-      <span>{name}</span>
-      <span>Time left: {moment().to( date, true )}</span>
+    <li className={listStyles} title={date}>
+      <div className={styles.info}>
+        <span className={styles.name}>{name}</span>
+        <span className={styles.time}>{moment().to( date, true )}</span>
+      </div>
       <LinearProgress value={+progress}
                       variant='determinate'
                       classes={{
