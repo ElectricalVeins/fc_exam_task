@@ -4,6 +4,7 @@ import { Link }             from 'react-router-dom'
 import styles               from './Events.module.sass'
 import Header               from "../../components/Header/Header";
 import TimerList            from "../../components/TimerList/TimerList";
+import TimerForm            from "../../components/TimerForm/TimerForm";
 
 const Events = props => {
 
@@ -18,7 +19,7 @@ const Events = props => {
                      itemClass={styles.timerItem}/>
         </div>
         <div className={styles.createTimerContainer}>
-
+          <TimerForm/>
         </div>
       </div>
     </>
