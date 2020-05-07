@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom'
 import {getContestsForCustomer, clearContestList, setNewCustomerFilter} from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
 import ContestsContainer from '../../components/ContestsContainer/ContestsContainer';
@@ -85,6 +86,7 @@ class CustomerDashboard extends React.Component {
                              [styles.filter]: CONSTANTS.CONTEST_STATUS_PENDING !== customerFilter
                          })}>Inactive contests
                     </div>
+                    <Link to='/events' className={styles.filter}>Events</Link>
                 </div>
                 <div className={styles.contestsContainer}>
                     {
