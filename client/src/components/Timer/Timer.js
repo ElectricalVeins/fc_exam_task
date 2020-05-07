@@ -31,7 +31,8 @@ const Timer = props => {
     const current = Date.parse( new Date() ) - createdTime;
     const result = 100 / ( total / current );
 
-    return result > 100 ? 100 : result
+    return result > 100 ? 100 //delete timer when >110
+                        : result
   };
 
   const listStyles = classNames( styles.listItem, itemClass )

@@ -1,18 +1,29 @@
-import React                    from 'react';
-import PropTypes                from 'prop-types';
-import moment                   from 'moment';
-import { Formik, Form, Field, } from 'formik';
-import * as yup                 from 'yup';
-import FormikInput              from "../FormikInput/FormikInput";
-import FormikDateInput          from "../FormikDateInput/FormikDateInput";
+import React                   from 'react';
+import PropTypes               from 'prop-types';
+import moment                  from 'moment';
+import { Formik, Form, Field } from 'formik';
+import * as yup                from 'yup';
+import DatePicker              from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
+import classNames              from 'classnames'
+import FormikInput             from "../FormikInput/FormikInput";
+import styles                  from './TimerForm.module.scss'
 
-const nameSchema = yup.string().min( 4 ).max( 16 ).required();
-const dateSchema = yup.date().min( new Date() );
+
+const nameSchema = yup.string()
+                      .min( 4, 'Minimum 4 symbols required' )
+                      .max( 16, 'Maximum 16 symbols allowed' )
+                      .required( 'This area is required' );
+const dateSchema = yup.date( 'Please Enter a proper Date' )
+                      .min( new Date() )
+                      .required( 'This area is required' );
 
 const TimerForm = props => {
+  const { submitHandler } = props
 
-  const handleSubmit = ( object ) => {
-    console.log( object )
+  const handleSubmit = ( event, { resetForm } ) => {
+    submitHandler( event )
+    resetForm()
   };
 
   const nameValidate = async ( value ) => {
@@ -56,55 +67,87 @@ const TimerForm = props => {
             }}
             onSubmit={handleSubmit}>
       {
-        props => (
-          <Form onSubmit={props.handleSubmit}>
-            <Field validate={nameValidate}
-                   type="text"
-                   name="name"
-                   onChange={( e ) => console.log( e.target.value )}>
-              {
-                ( fieldProps ) => <FormikInput {...fieldProps} placeholder={'Enter Timer Name'}/>
-              }
-            </Field>
-            <Field name="date" validate={dateValidate}>
-              {
-                ( fieldProps ) => <FormikDateInput placeholderText="Click to select a date"
-                                                   isClearable
-                                                   showMonthDropdown
-                                                   showYearDropdown
-                                                   showTimeInput
-                                                   minDate={new Date()}
-                                                   popperModifiers={{
-                                                     preventOverflow: {
-                                                       enabled: true,
-                                                       escapeWithReference: false,
-                                                       boundariesElement: "viewport"
-                                                     }
-                                                   }}
-                                                   {...fieldProps}/>
-              }
-            </Field>
+        props => ( <Form>
+          <Field validate={nameValidate} name="name">
+            {
+              fieldProps => {
+                const { field, form, meta, ...rest } = fieldProps;
 
-            <Field validate={warningTimeValidate} name="warningTime">{
-              ( fieldProps ) => <FormikDateInput placeholderText="Click to select a warning date"
-                                                 isClearable
-                                                 showMonthDropdown
-                                                 showYearDropdown
-                                                 showTimeInput
-                                                 minDate={new Date()}
-                                                 popperModifiers={{
-                                                   preventOverflow: {
-                                                     enabled: true,
-                                                     escapeWithReference: false,
-                                                     boundariesElement: "viewport"
-                                                   }
-                                                 }}
-                                                 {...fieldProps}/>
+                const inputClassNames = classNames( styles.defaultClass, {
+                  [ styles.invalidClass ]: meta.touched && meta.error,
+                  [ styles.validClass ]: meta.touched && !meta.error,
+                } );
+                return (
+                  <FormikInput {...fieldProps}>
+                    <span>Enter A Timer Name</span>
+                    <input className={inputClassNames} {...field} {...rest}
+                           placeholder='Enter a Timer name'/>
+                  </FormikInput>
+                )
+              }
             }
-            </Field>
-            <button type="submit">Submit</button>
-          </Form>
-        )
+          </Field>
+
+          <Field name="date" validate={dateValidate}>
+            {
+              fieldProps => {
+                const { field: { value, name }, form, meta, ...rest } = fieldProps
+                return (
+                  <FormikInput {...fieldProps}>
+                    <span>Select the date</span>
+                    <DatePicker selected={( value && new Date( value ) ) || null}
+                                onChange={value => form.setFieldValue( name, value )}
+                                placeholderText="Click to select a date"
+                                isClearable
+                                showMonthDropdown
+                                showYearDropdown
+                                showTimeInput
+                                minDate={new Date()}
+                                popperModifiers={{
+                                  preventOverflow: {
+                                    enabled: true,
+                                    escapeWithReference: false,
+                                    boundariesElement: "viewport"
+                                  }
+                                }}
+                                {...rest}/>
+                  </FormikInput>
+                )
+              }
+            }
+          </Field>
+
+          <Field name="warningTime" validate={warningTimeValidate}>
+            {
+              fieldProps => {
+                const { field: { value, name }, form, meta, ...rest } = fieldProps
+                return (
+                  <FormikInput {...fieldProps}>
+                    <span>Select The Warning Time</span>
+                    <DatePicker selected={( value && new Date( value ) ) || null}
+                                onChange={value => form.setFieldValue( name, value )}
+                                placeholderText="Click to select a warning date"
+                                isClearable
+                                showMonthDropdown
+                                showYearDropdown
+                                showTimeInput
+                                minDate={new Date()}
+                                popperModifiers={{
+                                  preventOverflow: {
+                                    enabled: true,
+                                    escapeWithReference: false,
+                                    boundariesElement: "viewport"
+                                  }
+                                }}
+                                {...rest}/>
+                  </FormikInput>
+                )
+              }
+            }
+          </Field>
+
+          <button type="submit">Submit</button>
+        </Form> )
       }
     </Formik>
   );
