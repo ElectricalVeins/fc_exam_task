@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes                      from 'prop-types';
 import { Link }                       from 'react-router-dom'
 import styles                         from './Events.module.sass'
 import Header                         from "../../components/Header/Header";
@@ -8,12 +7,13 @@ import TimerForm                      from "../../components/TimerForm/TimerForm
 import Footer                         from "../../components/Footer/Footer";
 
 const Events = props => {
-  const [ events, setEvents ] = useState( [ {
+  const [ events, setEvents ] = useState( [
+      {
     id: '1',
     name: 'TimerList name1',
     date: '2020-06-30 9:00',
     createdAt: '2019-03-30 9:00',
-    warningTime: '2019-03-30 8:00'
+    warningTime: '2019-03-30 10:00'
   }, {
     id: '2',
     name: 'TimerList name2',
@@ -35,9 +35,9 @@ const Events = props => {
   }, {
     id: '5',
     name: 'Close Timer',
-    date: '2020-05-08 19:46',
+    date: '2020-05-11 19:46',
     createdAt: '2020-05-07 9:00',
-    warningTime: '2020-05-07 8:00'
+    warningTime: '2020-05-10 8:00'
   }
   ] )
 

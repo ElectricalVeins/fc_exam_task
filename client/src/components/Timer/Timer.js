@@ -7,21 +7,22 @@ import styles                         from './Timer.module.sass'
 
 
 const Timer = props => {
-  const {
-    name,
-    date,
-    createdAt,
-    warningTime,
-    itemClass,
-    progressBarStyle
-  } = props;
+  const { name, date, createdAt, warningTime, itemClass, } = props;
+
+  const checkWarn = () => moment( warningTime ).isBefore( new Date() )
+  const checkProgress = () => setProgress( definePercent() )
 
   const [ progress, setProgress ] = useState( 0 )
+  const [ isWarning, setWarning ] = useState( checkWarn() )
+
+  const intervalHandler = () => {
+    checkProgress()
+    checkWarn() && setWarning( true )  //можно вызвать toast для доп. уведомления
+  }
 
   useEffect( () => {
-    setProgress( definePercent() ) // initial definition of the progress bar percentage
-
-    const interval = setInterval( () => setProgress( definePercent() ), 5000 )
+    checkProgress() // initial definition of the progress bar percentage
+    const interval = setInterval( intervalHandler, 5000 )
     return () => {clearInterval( interval )}
   } )
 
@@ -37,9 +38,15 @@ const Timer = props => {
 
   const listStyles = classNames( styles.listItem, itemClass )
 
+  const renderWarning = () => <>{isWarning &&
+  <span className={styles.warn} title={'Warning!'}> </span>}</>
+
   return (
     <li className={listStyles} title={date}>
       <div className={styles.info}>
+        {
+          renderWarning()
+        }
         <span className={styles.name}>{name}</span>
         <span className={styles.time}>{moment().to( date, true )}</span>
       </div>
