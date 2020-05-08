@@ -139,6 +139,8 @@ select[multiple] {
 
 //END OF RESET
 
+@import './src/pages/Events/Events.module';
+
 .errorTip {
   position: absolute;
   z-index: 10;
@@ -159,5 +161,7 @@ select[multiple] {
 }
 
 .defaultClass {
-  padding: 10px 5px;
+  box-sizing: border-box;
+  //border: 1px solid $accent-color;
+  padding: 20px 10px;
 }
