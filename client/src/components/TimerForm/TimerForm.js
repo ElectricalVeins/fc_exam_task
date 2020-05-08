@@ -42,14 +42,6 @@ const TimerForm = props => {
     }
   }
 
-  const warningTimeValidate = async ( value ) => {
-    try {
-      await dateSchema.validate( value )
-    } catch ( e ) {
-      return e.message;
-    }
-  }
-
   const validateForm = async ( { date, warningTime } ) => {
     const errors = {};
     if( moment( warningTime ).isAfter( date ) ) {
@@ -117,7 +109,7 @@ const TimerForm = props => {
             }
           </Field>
 
-          <Field name="warningTime" validate={warningTimeValidate}>
+          <Field name="warningTime" validate={dateValidate}>
             {
               fieldProps => {
                 const { field: { value, name }, form, meta, ...rest } = fieldProps
