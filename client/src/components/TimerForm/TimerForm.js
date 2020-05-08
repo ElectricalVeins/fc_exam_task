@@ -1,5 +1,4 @@
 import React                   from 'react';
-import PropTypes               from 'prop-types';
 import moment                  from 'moment';
 import { Formik, Form, Field } from 'formik';
 import * as yup                from 'yup';
@@ -8,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css"
 import classNames              from 'classnames'
 import FormikInput             from "../FormikInput/FormikInput";
 import styles                  from './TimerForm.module.scss'
-
 
 const nameSchema = yup.string()
                       .min( 4, 'Minimum 4 symbols required' )

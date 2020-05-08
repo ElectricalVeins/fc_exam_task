@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes                      from 'prop-types';
 import moment                         from 'moment'
 import classNames                     from 'classnames'
 import { LinearProgress }             from '@material-ui/core';
@@ -32,7 +31,7 @@ const Timer = props => {
     const current = Date.parse( new Date() ) - createdTime;
     const result = 100 / ( total / current );
 
-    return result > 100 ? 100 //delete timer when >110
+    return result > 100 ? 100 //delete timer when >110 ?
                         : result
   };
 
@@ -60,7 +59,5 @@ const Timer = props => {
     </li>
   );
 };
-
-Timer.propTypes = {};
 
 export default Timer;

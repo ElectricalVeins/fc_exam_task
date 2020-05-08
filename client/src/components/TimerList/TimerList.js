@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import moment                         from 'moment'
-import PropTypes                      from 'prop-types';
 import Timer                          from "../Timer/Timer";
 import styles                         from './TimerList.module.sass'
 
@@ -30,7 +29,5 @@ const TimerList = ( { events, ...props } ) => {
     </ul>
   );
 };
-
-TimerList.propTypes = {};
 
 export default TimerList;
