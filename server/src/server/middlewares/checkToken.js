@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const CONSTANTS = require('../../constants');
 const TokenError = require('../errors/TokenError');
 import userQueries from '../controllers/queries/userQueries';
+const {promisify}= require('util')
+const verifyJWT = promisify(jwt.verify)
 
 
 module.exports.checkAuth = async (req, res, next) => {
@@ -40,3 +42,13 @@ module.exports.checkToken = async (req, res, next) => {
         next(new TokenError());
     }
 };
+
+module.exports.restorePasswordTokenVerification = async (req,res,next) =>{
+    try{
+        req.userData = await verifyJWT(req.query.token,CONSTANTS.JWT_SECRET)
+        console.log('USER DATA=>>',req.userData)
+        next()
+    }catch (err) {
+        next(new TokenError());
+    }
+}
