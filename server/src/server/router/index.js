@@ -32,6 +32,12 @@ router.post(
     userController.restorePassword
 )
 
+router.get(
+    '/passwordRestoreLink',
+    checkToken.restorePasswordTokenVerification,
+    // (req,res,next)=>res.send(req.userData)
+)
+
 router.post(
     '/dataForContest',
     checkToken.checkToken,
