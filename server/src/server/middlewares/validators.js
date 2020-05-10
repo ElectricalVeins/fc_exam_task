@@ -20,6 +20,13 @@ module.exports.validateLogin = async (req, res, next) => {
     }
 };
 
+module.exports.validatePasswordRestore = async (req, res, next) => {
+    const result = await schems.restorePassword.isValid(req.body);
+
+    result
+        ? next()
+        : next(new BadRequestError('Invalid data for password restore'))
+}
 
 module.exports.validateContestCreation = (req, res, next) => {
     const promiseArray = [];
