@@ -43,12 +43,12 @@ module.exports.checkToken = async (req, res, next) => {
     }
 };
 
-module.exports.restorePasswordTokenVerification = async (req,res,next) =>{
-    try{
-        req.userData = await verifyJWT(req.query.token,CONSTANTS.JWT_SECRET)
-        console.log('USER DATA=>>',req.userData)
+module.exports.verifyRestorePasswordToken = async (req, res, next) => {
+    try {
+        const {body: {token}} = req;
+        req.userData = await verifyJWT(token, CONSTANTS.JWT_SECRET)
         next()
-    }catch (err) {
+    } catch (err) {
         next(new TokenError());
     }
 }
