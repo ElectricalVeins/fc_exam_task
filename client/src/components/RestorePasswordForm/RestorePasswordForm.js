@@ -17,7 +17,12 @@ const RestorePasswordForm = props => {
 
     console.log(props)
 
-    const sendRequest = (data) => {
+    const sendRequest = (values) => {
+        console.log(values)
+        const data = {
+            email: values.email,
+            password: values.password,
+        }
         console.log(data)
         restoreRequest(data)
         reset() // сделать action по успешной обработке
