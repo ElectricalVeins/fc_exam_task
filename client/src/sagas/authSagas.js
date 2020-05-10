@@ -37,3 +37,11 @@ export function* restorePassword(action) {
         yield put({type:ACTION.RESTORE_PASSWORD_ERROR, error})
     }
 }
+
+export function* updateLostPassword(action) {
+    try{
+        yield restController.updateLostPassword(action)
+    }catch (err) {
+        yield put({})
+    }
+}

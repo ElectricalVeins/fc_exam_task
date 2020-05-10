@@ -441,3 +441,8 @@ export const createRestorePasswordAction = (data) => ({
     type: ACTION.RESTORE_PASSWORD_ACTION,
     data
 })
+
+export const createUpdatePasswordAction = (token) => ({
+    type: ACTION.UPDATE_LOST_PASSWORD,
+    token
+})
