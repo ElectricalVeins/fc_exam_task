@@ -29,6 +29,6 @@ module.exports={
     NEW_MESSAGE: 'newMessage',
     CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS',
 
-    BASE_URL: `http://localhost:3000/`,
-    PASSWORD_RESTORE_ROUTE: 'passwordRestoreLink'
+    BASE_URL: `http://localhost:5000/`,
+    PASSWORD_RESTORE_ROUTE: 'restorePassword'
 };
