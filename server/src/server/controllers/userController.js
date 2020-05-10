@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
 const CONSTANTS = require('../../constants');
 const bd = require('../models/index');
 const NotFound = require('../errors/UserNotFoundError');
 const ServerError = require('../errors/ServerError');
 const UtilFunctions = require('../utils/functions');
+const { sendRestorePasswordEmail } = require('../utils/sendEmail')
 const NotEnoughMoney = require('../errors/NotEnoughMoney');
 const bcrypt = require('bcrypt');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
@@ -61,6 +63,16 @@ module.exports.registration = async (req, res, next) => {
     }
 };
 
+module.exports.restorePassword = async (req, res, next) => {
+    try{
+        const {restorePassToken} = req
+        const restoreLink = `${CONSTANTS.BASE_URL}${CONSTANTS.PASSWORD_RESTORE_ROUTE}?token=${restorePassToken}`
+        await sendRestorePasswordEmail(restoreLink)
+    }catch (err) {
+        throw err
+        //next(new ServerError('restore pass error'))
+    }
+}
 
 function getQuery(offerId, userId, mark, isFirst, transaction) {
     const getCreateQuery = () => ratingQueries.createRating({
