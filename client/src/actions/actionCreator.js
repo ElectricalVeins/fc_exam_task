@@ -436,3 +436,8 @@ export const changeModalShow=(data)=>{
         data: data
     }
 };
+
+export const createRestorePasswordAction = (data) => ({
+    type: ACTION.RESTORE_PASSWORD_ACTION,
+    data
+})

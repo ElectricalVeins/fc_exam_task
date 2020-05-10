@@ -29,3 +29,11 @@ export  function* registerSaga(action){
         yield put({type: ACTION.AUTH_ACTION_ERROR, error: e.response});
     }
 }
+
+export function* restorePassword(action) {
+    try{
+        yield restController.restorePasswordRequest(action)
+    }catch (error) {
+        yield put({type:ACTION.RESTORE_PASSWORD_ERROR, error})
+    }
+}

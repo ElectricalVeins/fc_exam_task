@@ -43,7 +43,10 @@ export const getContestById = (data) => {
     });
 };
 
-
+export const restorePasswordRequest = ({data}) => {
+    console.log('restController',data)
+    return http.post('restorePassword',)
+}
 
 
 
