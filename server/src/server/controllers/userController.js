@@ -160,6 +160,20 @@ module.exports.payment = async (req, res, next) => {
     }
 };
 
+module.exports.updateLostPassword = async (req, res, next) => {
+    try {
+        const {userData,userData:{hashPass}} = req
+        const updatedUser = await bd.Users.update({password:hashPass}, {
+            where: {email: userData.email},
+            returning: true
+        })
+        if (updatedUser) {
+            res.send('Your password have been successfully  changed').status(200)
+        }
+    } catch (err) {
+        throw err
+    }
+}
 
 module.exports.updateUser = async (req, res, next) => {
     try {

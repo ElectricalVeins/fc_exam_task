@@ -35,7 +35,7 @@ router.post(
 router.post(
     '/updateLostPassword',
     checkToken.verifyRestorePasswordToken,
-    userController.updateUserPassword
+    userController.updateLostPassword
 )
 
 router.post(
