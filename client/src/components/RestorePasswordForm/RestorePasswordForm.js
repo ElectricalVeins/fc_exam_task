@@ -75,7 +75,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    //restorePass Request
     restoreRequest: (data) => dispatch(createRestorePasswordAction(data))
 });
 
