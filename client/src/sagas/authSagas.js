@@ -32,16 +32,18 @@ export  function* registerSaga(action){
 
 export function* restorePassword(action) {
     try{
-        yield restController.restorePasswordRequest(action)
+        const { data } = yield restController.restorePasswordRequest(action)
+        yield put({type:ACTION.RESTORE_PASSWORD_SUCCESS, data})
     }catch (error) {
-        yield put({type:ACTION.RESTORE_PASSWORD_ERROR, error})
+        yield put({type:ACTION.UPDATE_PASSWORD_ERROR, error: error.response||{response: {data: 'Can not connect to server',status:400}}})
     }
 }
 
 export function* updateLostPassword(action) {
     try{
-        yield restController.updateLostPassword(action)
-    }catch (err) {
-        yield put({})
+        const { data } = yield restController.updateLostPassword(action)
+        yield put({type: ACTION.UPDATE_PASSWORD_SUCCESS, data});
+    }catch (error) {
+        yield put({type:ACTION.UPDATE_PASSWORD_ERROR, error: error.response})
     }
 }
