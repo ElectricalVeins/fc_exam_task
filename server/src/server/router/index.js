@@ -27,6 +27,7 @@ router.post(
 router.post(
     '/restorePassword',
     validators.validatePasswordRestore,
+    basicMiddlewares.checkUser,
     hashPass,
     createRestorePassToken,
     userController.restorePassword
