@@ -57,4 +57,28 @@ const mapDispatchToProps = (dispatch) => ({
     updatePassword: (token) => dispatch(createUpdatePasswordAction(token))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RestorePassword);
+export default connect(mapStateToProps,mapDispatchToProps)(RestorePassword);
+
+
+const RestorePageInfo = props => {
+    const { history, token, updatePassword, isFetching, error, data } = props;
+
+    useEffect( () => {
+        if( !isFetching && !error && !data ) {
+            updatePassword( { token } )
+        }
+        if( data ) {
+            toast(data)
+            setTimeout( () => history.replace( '/login' ), 3000 )
+        }
+    }, [ data ] )
+
+    return <div className={styles.passwordSuccessChange}>
+        {
+            isFetching && <SpinnerLoader color={'white'}/>
+        }
+        {
+            data && <span>Your password will be reset. Wait until redirect.</span>
+        }
+    </div>
+}
