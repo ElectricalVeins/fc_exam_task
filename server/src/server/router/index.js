@@ -30,7 +30,7 @@ router.post(
     basicMiddlewares.checkUser,
     hashPass,
     createRestorePassToken,
-    userController.restorePassword
+    userController.sendRestoreEmail
 )
 
 router.post(

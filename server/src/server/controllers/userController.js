@@ -63,14 +63,14 @@ module.exports.registration = async (req, res, next) => {
     }
 };
 
-module.exports.restorePassword = async (req, res, next) => {
+module.exports.sendRestoreEmail = async (req, res, next) => {
     try{
         const {restorePassToken} = req
         const restoreLink = `${CONSTANTS.BASE_URL}${CONSTANTS.PASSWORD_RESTORE_ROUTE}?token=${restorePassToken}`
-        await sendRestorePasswordEmail(restoreLink)
+        await sendRestorePasswordEmail(restoreLink, req.body.email)
+        res.send('Check your email!').status(202)
     }catch (err) {
-        throw err
-        //next(new ServerError('restore pass error'))
+        next(new ServerError('restore pass error'))
     }
 }
 
