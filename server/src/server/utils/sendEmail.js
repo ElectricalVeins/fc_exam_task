@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-async function sendRestorePasswordEmail(restoreLink) {
+async function sendRestorePasswordEmail(restoreLink,receiver) {
     try {
 
         const {user,pass} = await nodemailer.createTestAccount();
@@ -16,18 +16,15 @@ async function sendRestorePasswordEmail(restoreLink) {
         });
 
         const info = await transporter.sendMail({
-            from: '"SquadHelp" <foobar@example.com>', // sender address
-            to: "bar@example.com, baz@example.com", // list of receivers
+            from: '"SquadHelp" <SquadHelp@example.com>', // sender address
+            to: receiver, // list of receivers
             subject: "Password restore", // Subject line
-            text: "To restore password - click the link", // plain text body
-            html: `<a>${restoreLink}</a>` // html body
+            text: `To restore password -> ${restoreLink}`, // plain text body
+            html: `<a href=${restoreLink}>RESTORE PASSWORD LINK</a>` // html body
         });
-
-        console.log("Message sent: ", info);
 
         // Preview only available when sending through an Ethereal account
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-        // Preview URL:
     } catch (err) {
         throw err
     }
