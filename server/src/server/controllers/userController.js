@@ -69,7 +69,7 @@ module.exports.sendRestoreEmail = async (req, res, next) => {
         const {restorePassToken} = req
         const restoreLink = `${CONSTANTS.BASE_URL}${CONSTANTS.PASSWORD_RESTORE_ROUTE}?token=${restorePassToken}`
         await sendRestorePasswordEmail(restoreLink, req.body.email)
-        res.send('Check your email!').status(202)
+        res.status(202).send('Check your email!')
     }catch (err) {
         next(new ServerError('restore pass error'))
     }
@@ -172,7 +172,7 @@ module.exports.updateLostPassword = async (req, res, next) => {
         })
 
         if( updatedCount === 1 ) {
-            return res.send( 'Your password have been successfully  changed' ).status( 202 )
+            return res.status( 202 ).send( 'Your password have been successfully  changed' )
         }
         next(new BadRequestError('Can not update user'))
     } catch (err) {
