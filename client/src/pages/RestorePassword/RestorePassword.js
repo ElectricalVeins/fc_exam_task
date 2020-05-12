@@ -1,27 +1,25 @@
-import React from 'react';
-import {Link} from "react-router-dom";
-import {connect} from 'react-redux';
-import styles from './RestorePassword.module.sass'
-import CONSTANTS from "../../constants";
-import RestorePasswordForm from "../../components/RestorePasswordForm/RestorePasswordForm";
-import queryString from 'query-string';
-import {createUpdatePasswordAction} from "../../actions/actionCreator";
+import React, {useEffect}           from 'react';
+import {Link}                       from "react-router-dom";
+import {connect}                    from 'react-redux';
+import { toast }                    from 'react-toastify';
+import styles                       from './RestorePassword.module.sass'
+import CONSTANTS                    from "../../constants";
+import RestorePasswordForm          from "../../components/RestorePasswordForm/RestorePasswordForm";
+import queryString                  from 'query-string';
+import {
+    createClearPasswordReecoverStateAction,
+    createUpdatePasswordAction
+} from "../../actions/actionCreator";
+import SpinnerLoader                from "../../components/Spinner/Spinner";
+import Error                        from "../../components/Error/Error";
 
 const RestorePassword = props => {
-    const {updatePassword, history} = props;
+    const { history,clearState, passwordRecover: { isFetching, error, data,formResult } } = props;
     const {token} = queryString.parse(window.location.search);
 
-    const updatePasswordQuery = () => {
-        //TODO:отображать спиннер до результата(ответа) этого запроса.
-        // после выводить сообщение и перекидывать на логин
-        updatePassword({token})
-        setTimeout(() => history.replace('/login'), 5000)
-
-        return (
-            <span style={{color: 'white', alignItems: 'center', justifyContent: 'center'}}>
-            Your password will be reset. Wait until redirect.
-        </span>
-        )
+    const clearError = ()=>{
+        clearState()
+        history.replace('/restorePassword')
     }
 
     return (
@@ -36,11 +34,22 @@ const RestorePassword = props => {
             </div>
             <div className={styles.restoreFormContainer}>
                 {
+                    error && <Error status={error.status}
+                                    data={error.data}
+                                    clearError={clearError}/>
+                }
+                {
                     token
-                        ? updatePasswordQuery()
+                    ? <RestorePageInfo token={token}
+                                       clearError={clearError}
+                                       history={history}
+                                       updatePassword={props.updatePassword}
+                                       isFetching={isFetching}
+                                       error={error}
+                                       data={data}/>
                         : <>
                             <h1>Password Restore Form</h1>
-                            <RestorePasswordForm/>
+                            <RestorePasswordForm formResult={formResult}/>
                         </>
                 }
             </div>
@@ -49,12 +58,13 @@ const RestorePassword = props => {
 };
 
 const mapStateToProps = (state) => {
-    const {auth} = state;
-    return {auth};
+    const {passwordRecover} = state;
+    return {passwordRecover};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-    updatePassword: (token) => dispatch(createUpdatePasswordAction(token))
+    updatePassword: (token) => dispatch(createUpdatePasswordAction(token)),
+    clearState: ()=> dispatch(createClearPasswordReecoverStateAction())
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(RestorePassword);
