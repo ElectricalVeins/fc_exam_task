@@ -5,14 +5,16 @@ import styles from './Spinner.module.sass';
 
 const override = css`border-color: #46568a;`;
 
-const SpinnerLoader = () => {
+const SpinnerLoader = props => {
+  const { color } = props;
+
     return (
         <div className={styles.loaderContainer}>
             <ClipLoader
                 sizeUnit={'px'}
                 css={override}
                 size={50}
-                color={'#46568a'}
+                color={color || '#46568a'}
                 loading={true}
             />
         </div>
