@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
+import { toast }                    from 'react-toastify';
 import FormInput from '../FormInput/FormInput';
 import customValidator from "../../validators/validator";
 import Schems from "../../validators/validationSchems";
@@ -9,23 +10,19 @@ import loginPageStyles from "../LoginForm/LoginForm.module.sass";
 import {createRestorePasswordAction} from "../../actions/actionCreator";
 
 const RestorePasswordForm = props => {
-    const {handleSubmit, submitting, reset, restoreRequest} = props;
+    const {handleSubmit, submitting, reset, restoreRequest, formResult} = props;
 
-    // useEffect(() => {
-    //     return () => reset()
-    // })
-
-    console.log(props)
+     useEffect(()=>{
+        formResult && toast( formResult )
+     },[formResult])
 
     const sendRequest = (values) => {
-        console.log(values)
         const data = {
             email: values.email,
             password: values.password,
         }
-        console.log(data)
         restoreRequest(data)
-        reset() // сделать action по успешной обработке
+        reset()
     }
 
     return (
