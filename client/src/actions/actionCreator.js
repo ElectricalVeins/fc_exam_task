@@ -446,3 +446,7 @@ export const createUpdatePasswordAction = (token) => ({
     type: ACTION.UPDATE_LOST_PASSWORD,
     token
 })
+
+export const createClearPasswordReecoverStateAction = () => ({
+    type:ACTION.CLEAR_PASSWORD_RECOVER_STATE
+})
