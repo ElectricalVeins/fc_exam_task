@@ -11,6 +11,7 @@ import getContestByIdReducer from './getContestByIdReducer';
 import updateContestReducer from './updateContestReducer';
 import chatReducer from './chatReducer';
 import userProfileReducer from './userProfileReducer';
+import passwordRecoverReducer from "./passwordRecoverReducer";
 
 
 
@@ -18,6 +19,7 @@ const appReducer=combineReducers({
    form: formReducer,
    userStore: getUserReducer,
    auth: authReducer,
+   passwordRecover: passwordRecoverReducer,
    dataForContest: dataForContestReducer,
    payment: payReducer,
    contestByIdStore: getContestByIdReducer,
