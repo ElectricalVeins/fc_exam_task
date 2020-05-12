@@ -4,6 +4,7 @@ const CONSTANTS = require('../../constants');
 const bd = require('../models/index');
 const NotFound = require('../errors/UserNotFoundError');
 const ServerError = require('../errors/ServerError');
+const BadRequestError = require('../errors/BadRequestError');
 const UtilFunctions = require('../utils/functions');
 const { sendRestorePasswordEmail } = require('../utils/sendEmail')
 const NotEnoughMoney = require('../errors/NotEnoughMoney');
@@ -162,16 +163,20 @@ module.exports.payment = async (req, res, next) => {
 
 module.exports.updateLostPassword = async (req, res, next) => {
     try {
-        const {userData,userData:{hashPass}} = req
-        const updatedUser = await bd.Users.update({password:hashPass}, {
-            where: {email: userData.email},
+        const {userData:{hashPass, email}} = req
+        const [updatedCount,[updatedUser]] = await bd.Users.update({
+            password:hashPass
+        }, {
+            where: { email },
             returning: true
         })
-        if (updatedUser) {
-            res.send('Your password have been successfully  changed').status(200)
+
+        if( updatedCount === 1 ) {
+            return res.send( 'Your password have been successfully  changed' ).status( 202 )
         }
+        next(new BadRequestError('Can not update user'))
     } catch (err) {
-        throw err
+        next( new ServerError( 'Can not update user' ) )
     }
 }
 

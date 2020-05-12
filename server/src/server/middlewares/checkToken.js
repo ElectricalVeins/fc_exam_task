@@ -49,6 +49,6 @@ module.exports.verifyRestorePasswordToken = async (req, res, next) => {
         req.userData = await verifyJWT(token, CONSTANTS.JWT_SECRET)
         next()
     } catch (err) {
-        next(new TokenError());
+        next(new TokenError('Invalid token. Unable to Verify.', 400));
     }
 }
