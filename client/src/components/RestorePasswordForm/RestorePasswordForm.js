@@ -58,7 +58,7 @@ const RestorePasswordForm = props => {
                    }}
                    component={FormInput}/>
             <button type='submit' disabled={submitting} className={loginPageStyles.submitContainer}>
-                <span>Confirm</span>
+                <span>{submitting ? 'Submitting...' : 'Confirm'}</span>
             </button>
         </form>
     );
@@ -66,16 +66,11 @@ const RestorePasswordForm = props => {
 
 RestorePasswordForm.propTypes = {};
 
-const mapStateToProps = (state) => {
-    const {auth} = state;
-    return {auth};
-};
-
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     restoreRequest: (data) => dispatch(createRestorePasswordAction(data))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
+export default connect(null, mapDispatchToProps)(reduxForm({
     form: 'passwordRestore',
     validate: customValidator(Schems.PasswordRestore)
 })(RestorePasswordForm));
