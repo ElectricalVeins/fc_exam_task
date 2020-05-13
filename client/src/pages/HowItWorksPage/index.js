@@ -239,7 +239,7 @@ const HowItWorks = props => {
       </div>
       <div className={styles.getInTouch}>
         <div className={styles.envelopeIcon}>
-          <i className="fa fa-envelope" aria-hidden="true"/>
+          <i className="fa fa-envelope-o" aria-hidden="true"/>
         </div>
         <div className={styles.touchInfo}>
           <h1>
