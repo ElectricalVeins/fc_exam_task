@@ -32,10 +32,6 @@ const HowItWorks = props => {
       <Header id='header'/>
       <div className={styles.wrapper}>
         <main className={styles.howSection}>
-          {/* <video className={styles.video}
-           src="https://fast.wistia.net/embed/iframe/vfxvect60o">Your
-           browser doesn't support this media
-           </video>*/}
           <div className={styles.video}>
             <iframe title="Wistia video player"
                     allowFullScreen
@@ -54,47 +50,47 @@ const HowItWorks = props => {
           </div>
         </main>
         <h2 className={styles.stepsHeader}>5 Simple Steps</h2>
-        <section className={styles.stepContainer}>
+        <ul className={styles.stepContainer}>
 
-          <div className={styles.step}>
+          <li className={styles.step}>
             <div>1</div>
             <h4>Start Your Contest</h4>
             <p>Complete our fast, easy project brief template, and we’ll share it with our community
               of more than 70,000 Creatives.</p>
-          </div>
+          </li>
 
-          <div className={styles.step}>
+          <li className={styles.step}>
             <div>2</div>
             <h4>Ideas Start Pouring In</h4>
             <p>You will start receiving name ideas - created specifically for you - within minutes.
               Dozens of contestants work for you at the same time! A typical naming contest receives
               several hundred name ideas. All ideas are automatically checked for URL
               availability.</p>
-          </div>
+          </li>
 
-          <div className={styles.step}>
+          <li className={styles.step}>
             <div>3</div>
             <h4>Collaborate and Communicate</h4>
             <p>See all your submissions from your contest dashboard. Rate entries, leave private
               comments, and send public messages, leading the process towards the perfect name.</p>
-          </div>
+          </li>
 
-          <div className={styles.step}>
+          <li className={styles.step}>
             <div>4</div>
             <h4>Validate</h4>
             <p>Choose your name with confidence. Our unique validation process includes domain
               checks, trademark risk assessment, linguistics analysis, and professional audience
               testing.</p>
-          </div>
+          </li>
 
-          <div className={styles.step}>
+          <li className={styles.step}>
             <div>5</div>
             <h4>Pick your winner!</h4>
             <p>Once your contest ends, announce the winner - and register the name. Come back to
               Squadhelp to launch a Logo Design or Tagline project for your name.</p>
-          </div>
+          </li>
 
-        </section>
+        </ul>
         <section className={styles.contestLinkContainer}>
           <Link to='/startContest'>Start a contest</Link>
         </section>
@@ -103,7 +99,7 @@ const HowItWorks = props => {
             <div>?</div>
             <h4>Frequently Asked Questions</h4>
           </div>
-          <ul>
+          <ul className={styles.faqList}>
             <li>
               <h4>Why should I use Squadhelp?</h4>
               <p>You always have an option of hiring a consultant or coming up with the name
@@ -176,12 +172,12 @@ const HowItWorks = props => {
               <p>Our creatives have submitted more than 5 Million names and thousands of logos on
                 our platform. Here are some examples of Names, Taglines, and Logos that were
                 submitted in recent contests.
-                <ul>
-                  <li><a href="#">Name Examples</a></li>
-                  <li><a href="#">Tagline Examples</a></li>
-                  <li><a href="#">Logo Examples</a></li>
-                </ul>
               </p>
+              <ul>
+                <li><a href="#">Name Examples</a></li>
+                <li><a href="#">Tagline Examples</a></li>
+                <li><a href="#">Logo Examples</a></li>
+              </ul>
             </li>
 
             <li>

@@ -1,6 +1,6 @@
 $accent-color: #28D2D1
 $orange-color: #f18762
-$link-touch-color: #f18762
+$main-color: #455A89
 
 @mixin flex($justify, $align)
   display: flex
@@ -13,6 +13,7 @@ html
 body
 
   color: #333
+
   h1, h2, h3, h4, h5, h6
     color: #515b5f
 
@@ -23,27 +24,34 @@ body
   font-size: 18px
 
 .howSection
-  @include flex(center,normal)
+  @include flex(center, normal)
+  flex-wrap: wrap
   margin-top: 60px
   @media screen and (max-width: 768px)
     margin: 30px
     flex-direction: column
-    @include flex(center,center)
+    @include flex(center, center)
 
 .main
   max-width: 600px
+  min-width: 400px
+  flex: 1
+
   h2
     margin-top: 0
     font-size: 36px
     @media screen and (max-width: 768px)
+      min-width: 320px
       margin: 10px
       text-align: center
+
   p
     font-size: 16px
     line-height: 25px
 
 .video
-  margin: 0 30px
+  margin: 0 20px
+
   iframe
     width: 555px
     height: 312px
@@ -52,21 +60,32 @@ body
       height: 180px
 
 .stepsHeader
-  @include flex(center,normal)
+  @include flex(center, normal)
   margin-top: 60px
   font-size: 36px
 
+.stepHover
+  background-color: $accent-color
+  cursor: pointer
+  color: white
+
 .stepContainer
-  @include flex(center,normal)
+  @include flex(center, normal)
+  list-style-type: none
+  padding: 0
   flex-wrap: wrap
   margin-top: 60px
+
+  li:first-child > div
+    @extend .stepHover
 
 .step
   max-width: 165px
   margin: 0 10px
   text-align: center
+
   div
-    @include flex(center,center)
+    @include flex(center, center)
     margin: 0 auto
     font-size: 30px
     font-weight: 700
@@ -74,21 +93,24 @@ body
     border-radius: 50%
     height: 90px
     width: 90px
+
     &:hover
-      background-color: $accent-color
-      cursor: pointer
-      color: white
+      @extend .stepHover
+
   h4
     font-size: 16px
+
   p
     font-size: 14px
     font-weight: 300
 
+
 .contestLinkContainer
-  @include flex(center,normal)
+  @include flex(center, normal)
   background-color: $accent-color
   margin-top: 30px
   padding: 30px 0
+
   a
     padding: 18px 0
     border: 2px solid white
@@ -100,21 +122,45 @@ body
     text-decoration: none
     color: white
     font-size: 20px
+
     &:hover
       background-color: white
       color: $accent-color
 
 .faqContainer
   margin: 60px 0
-  ul
+
+  .faqList
     list-style-type: none
+    padding: 0
+    font-size: 16px
+
+    > li:nth-child(even)
+      background-color: #FAFAFA
+
+    > li
+      margin: 0
+      padding: 1em
+
     a
       color: $accent-color
+
+      &:hover
+        text-decoration: none
+
     ul
       margin-top: 15px
       list-style-type: '- '
+      font-size: 14px
+      padding: 0 25px
+
     p
-      font-size: 16px
+      margin: 0
+      padding: 1em 0
+
+    h4
+      margin: 0
+      padding: 1em 0
 
 
 .faqTitle
@@ -122,8 +168,9 @@ body
   align-items: center
   border-bottom: 1px solid #e1e1e1
   padding-bottom: 30px
+
   div
-    @include flex(center,center)
+    @include flex(center, center)
     margin: 0 10px
     height: 50px
     width: 50px
@@ -131,6 +178,7 @@ body
     border: 2px solid $accent-color
     color: $accent-color
     font-size: 36px
+
   h4
     font-size: 30px
     margin: 0
@@ -138,21 +186,21 @@ body
 .getInTouch
   color: white
   width: 100%
-  background-color: #455A89
+  background-color: $main-color
   min-height: 200px
-  @include flex(center,center)
+  @include flex(center, center)
   @media screen and (max-width: 768px)
     flex-direction: column
 
 .envelopeIcon
   background-color: white
   border-radius: 50%
-  height: 100px
-  width: 100px
+  min-height: 100px
+  min-width: 100px
   margin-right: 40px
-  color: #455a89
+  color: $main-color
   font-size: 40px
-  @include flex(center,center)
+  @include flex(center, center)
   @media screen and (max-width: 768px)
     display: none
 
@@ -161,31 +209,40 @@ body
   @media screen and (max-width: 768px)
     margin: 0 15px
     text-align: center
+
   h1
     color: white
+
   p
     text-decoration: none
     font-size: 20px
     font-weight: 300
     color: white
+
     a
-     color: $link-touch-color
-     text-decoration: none
+      color: $orange-color
+      text-decoration: none
 
 .touchButton
   margin-left: 40px
-  height: 60px
+  border-radius: 5px
+  border: 2px solid white
+  padding: 20px 30px
+  text-align: center
+  white-space: nowrap
+
   a
-    border-radius: 5px
-    border: 2px solid white
-    padding: 20px 30px
     text-decoration: none
     color: white
     text-transform: uppercase
     font-weight: 700
-    &:hover
-      background-color: white
+
+  &:hover
+    background-color: white
+
+    a
       color: $accent-color
+
   @media screen and (max-width: 768px)
     margin: 20px 0
 
@@ -201,7 +258,8 @@ body
   width: 33px
   opacity: 0
   transition: all ease-in-out 0.33s
-  @include flex(center,center)
+  @include flex(center, center)
+
   i
     font-size: 12px
     height: 16px
@@ -209,7 +267,8 @@ body
     background-color: white
     border-radius: 50%
     color: $orange-color
-    @include flex(center,center)
+    @include flex(center, center)
+
   &:hover
     opacity: 1
 
