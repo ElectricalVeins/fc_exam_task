@@ -7,9 +7,9 @@ const ensureExists = require( './ensurePathExist' )
 const stat = promisify( fs.stat );
 const open = promisify( fs.open );
 
-async function checkFileExistence( fPath ) {
+async function checkFileExistence( filePath ) {
   try {
-    const result = await open( fPath, 'r' )
+    const result = await open( filePath, 'r' )
     return typeof result === 'number';
   } catch ( err ) {
     if( err && ( err.code === 'EEXIST' || err.code === 'ENOENT' ) ) {
@@ -19,9 +19,9 @@ async function checkFileExistence( fPath ) {
   }
 }
 
-async function getFileSize( fPath ) {
+async function getFileSize( filePath ) {
   try {
-    const stats = await stat( fPath );
+    const stats = await stat( filePath );
     return stats.size
   } catch ( e ) {
     throw e

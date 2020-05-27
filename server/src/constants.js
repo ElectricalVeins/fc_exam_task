@@ -33,4 +33,5 @@ module.exports={
     LOG_PROPS:  [ 'code', 'message', 'stack' ],
     LOG_FILE_PATH: '/server_logs/liveNodeLog.json',
     LAST_CHARS_TO_DELETE: 1,
+    DAY_LENGTH: 86400000,
 };
