@@ -36,7 +36,7 @@ function createLogObject( object, start, props ) {
   if( start === 1 ) {
     return jsonStr + ']'
   }
-  return ',' + jsonStr + ']' //изменено
+  return ',' + jsonStr + ']'
 }
 
 module.exports.logToFile = async ( data ) => {
@@ -45,7 +45,7 @@ module.exports.logToFile = async ( data ) => {
     const isFileExist = await checkFileExistence( LOG_FILE_PATH )
 
     if( !isFileExist ) {
-      await appendToFile( LOG_FILE_PATH, '[]', 0, 'w' ); //или создавать файл синхронно?
+      await appendToFile( LOG_FILE_PATH, '[]', 0, 'w' );
     }
 
     let start = await getFileSize( LOG_FILE_PATH ) - LAST_CHARS_TO_DELETE

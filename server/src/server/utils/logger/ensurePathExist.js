@@ -2,7 +2,7 @@ const fs = require( 'fs' );
 const { promisify } = require( 'util' );
 const mkdir = promisify( fs.mkdir )
 
-async function ensureExists( path, cb ) {
+async function ensureExists( path ) {
   try {
     await mkdir( path );
     return true

@@ -26,4 +26,4 @@ setInterval( () => {
     createLogHistory( CONSTANTS.LOG_FILE_PATH,
       `${CONSTANTS.DUMPS_PATH}${Date.parse( new Date() )}.json` )
   },
-  86400000 ) // to start logging every day
+  CONSTANTS.DAY_LENGTH )

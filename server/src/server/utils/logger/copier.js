@@ -6,7 +6,7 @@ const appendToFile = require( './appendToFile' )
 const ensureExists = require( './ensurePathExist' )
 const pipeline = promisify( stream.pipeline );
 
-async function createLogHistory( oldFilePath, newFilePath ) {  //or fs.copyFile
+async function createLogHistory( oldFilePath, newFilePath ) {
   try {
     await ensureExists( DUMPS_PATH );
     await createDump( oldFilePath, newFilePath )
@@ -18,8 +18,6 @@ async function createLogHistory( oldFilePath, newFilePath ) {  //or fs.copyFile
 
 async function createDump( oldFilePath, newFilePath ) {
   try {
-    // const source = await fs.createReadStream( oldFilePath )
-    // const target = await fs.createWriteStream( newFilePath )
     const xStream = new stream.Transform( {
       objectMode: true,
     } );
@@ -39,9 +37,8 @@ async function createDump( oldFilePath, newFilePath ) {
       xStream,
       fs.createWriteStream( newFilePath )
     )
-    //source.end()
-    //target.end()
-    //xStream.end()
+
+    xStream.end()
   } catch ( err ) {
     throw err
   }
