@@ -6,7 +6,8 @@
     "babel-node": "babel-node --presets=latest",
     "start": "nodemon --exec npm run babel-node -- ./src/index.js",
     "test": "jest",
-    "build": "babel src -d dist"
+    "build": "babel src -d dist",
+    "lint": "npx eslint --fix ./src/server"
   },
   "babel": {
     "presets": [

@@ -1,15 +1,15 @@
-const fs = require( 'fs' );
+const fs = require('fs');
 
-async function appendToFile( fPath, data, start, flags ) {
+async function appendToFile(fPath, data, start, flags) {
   try {
-    const streamLog = await fs.createWriteStream( fPath, {
+    const streamLog = await fs.createWriteStream(fPath, {
       flags,
-      start
-    } )
-    await streamLog.write( data, 'utf-8' );
+      start,
+    });
+    await streamLog.write(data, 'utf-8');
     streamLog.end();
-  } catch ( err ) {
-    throw err
+  } catch (err) {
+    throw err;
   }
 }
 

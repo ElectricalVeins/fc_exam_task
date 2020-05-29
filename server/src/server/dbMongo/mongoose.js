@@ -5,13 +5,13 @@ const configPath = env === 'production' ? path.join(__dirname, '..', '..', '..',
 const config = require(configPath)[env];
 
 
-mongoose.connect(`mongodb://${config.host}:27017/${config.database}`, {useNewUrlParser: true},(err)=>{
-    if(err){
-        process.exit(1);
-    }
+mongoose.connect(`mongodb://${config.host}:27017/${config.database}`, { useNewUrlParser: true }, (err)=>{
+  if(err){
+    process.exit(1);
+  }
 
 });
 
-mongoose.set('debug',true);
+mongoose.set('debug', true);
 
 module.exports=mongoose;
