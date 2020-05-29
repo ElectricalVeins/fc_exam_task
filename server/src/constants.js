@@ -27,5 +27,11 @@ module.exports={
     NOTIFICATION_CHANGE_MARK: 'changeMark',
     NOTIFICATION_CHANGE_OFFER_STATUS: 'changeOfferStatus',
     NEW_MESSAGE: 'newMessage',
-    CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS'
+    CHANGE_BLOCK_STATUS: 'CHANGE_BLOCK_STATUS',
+
+    DUMPS_PATH:'/server_logs/',
+    LOG_PROPS:  [ 'code', 'message', 'stack' ],
+    LOG_FILE_PATH: '/server_logs/liveNodeLog.json',
+    LAST_CHARS_TO_DELETE: 1,
+    DAY_LENGTH: 86400000,
 };
