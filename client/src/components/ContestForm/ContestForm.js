@@ -2,17 +2,18 @@ import React from 'react';
 import CONSTANTS from '../../constants';
 import {connect} from 'react-redux';
 import {getDataForContest} from '../../actions/actionCreator';
-import {withRouter} from 'react-router-dom';
-import styles from './ContestForm.module.sass';
-import Spinner from '../Spinner/Spinner';
+import {withRouter}       from 'react-router-dom';
+import styles             from './ContestForm.module.sass';
+import Spinner            from '../Spinner/Spinner';
 import {Field, reduxForm} from 'redux-form';
-import FormInput from '../FormInput/FormInput';
-import SelectInput from '../SelectInput/SelectInput';
-import customValidator from '../../validators/validator';
-import Schems from '../../validators/validationSchems';
-import FieldFileInput from '../InputComponents/FieldFileInput/FieldFileInput';
-import FormTextArea from '../InputComponents/FormTextArea/FormTextArea';
-import TryAgain from '../TryAgain/TryAgain';
+import FormInput          from '../FormInput/FormInput';
+import SelectInput        from '../SelectInput/SelectInput';
+import customValidator    from '../../validators/validator';
+import Schems             from '../../validators/validationSchems';
+import FieldFileInput     from '../InputComponents/FieldFileInput/FieldFileInput';
+import FormTextArea       from '../InputComponents/FormTextArea/FormTextArea';
+import TryAgain           from '../TryAgain/TryAgain';
+import ButtonGroup        from "../ButtonGroup/ButtonGroup";
 
 
 
@@ -229,6 +230,7 @@ class ContestForm extends React.Component {
                                         }}
                                         type='file'
                                     />
+                                  <ButtonGroup/>
                                 </form>
                             </div>
                     }

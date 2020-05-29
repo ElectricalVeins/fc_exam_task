@@ -1,0 +1,100 @@
+$accent-color: #455a89
+
+@mixin flex($direction, $justify, $align)
+  display: flex
+  flex-direction: $direction
+  justify-content: $justify
+  align-items: $align
+
+.pageContainer
+  max-width: 1200px
+  margin: 50px auto
+  min-height: 600px
+  display: flex
+  font-family: sans-serif, 'Roboto'
+  @media screen and (max-width: 900px)
+    margin: 10px auto
+    flex-direction: column
+    max-width: 600px
+
+.pageInfo
+  box-sizing: border-box
+  width: 480px
+  padding: 10px
+  @include flex(column, unset, center)
+  box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
+  @media screen and (max-width: 900px)
+    margin: 0 auto
+    width: 100%
+
+  p
+    align-self: flex-start
+    margin: 15px 0px 0 15px
+
+  ul
+    max-height: 500px
+    overflow-y: auto
+
+  .infoElem
+    box-sizing: inherit
+    width: 100%
+    text-align: center
+    font-size: 18px
+    padding: 10px
+    border-bottom: 1px solid $accent-color
+    text-decoration: none
+    color: $accent-color
+    font-weight: 600
+
+    &:hover
+      background-color: #eefaea
+
+.headLine
+  color: $accent-color
+  font-size: 20px
+  @media screen and (max-width: 900px)
+    text-align: center
+
+.createTimerContainer
+  @include flex(column, unset, center)
+  width: 100%
+
+  form
+    @include flex(column, unset, unset)
+    box-sizing: border-box
+    flex-wrap: wrap
+    box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
+    padding: 10px
+    @media screen and (max-width: 900px)
+      padding: 0
+      padding-bottom: 15px
+      width: 100%
+
+    label
+      margin-top: 12px
+
+    span
+      font-size: 18px
+      text-transform: capitalize
+      flex: 1
+
+    input
+      text-align: center
+      font-size: 16px
+      width: 300px
+      height: 30px
+
+    & > button
+      font-size: 16px
+      border-radius: 5px
+      margin-top: 10px
+      align-self: center
+      color: white
+      cursor: pointer
+      width: 180px
+      height: 40px
+      background-color: $accent-color
+
+.timerItem
+  span
+    font-size: 12px

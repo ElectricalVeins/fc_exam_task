@@ -1,0 +1,48 @@
+$accent-color: #2CB9B7
+$second-color: #77838F
+
+.transition
+  transition: all ease-in-out 0.2s
+
+.container
+  min-width: 250px
+  max-width: 360px
+  flex: 1
+  display: flex
+  flex-direction: column
+  align-self: center
+  text-align: center
+  box-sizing: border-box
+  margin: 0 20px
+  padding: 30px
+  border: 1px solid #e7eaf3
+  border-radius: 5px
+  color: rgba(0, 0, 0, 0.5)
+  font-size: 14px
+  cursor: pointer
+  @extend .transition
+  @media screen and (max-width: 900px)
+    margin-top: 10px
+
+.selectedContainer
+  border: 3px solid $accent-color
+
+  .valueContainer
+    background-color: $accent-color
+
+  .description
+    color: #555C6B
+
+.valueContainer
+  text-transform: capitalize
+  border-radius: 20px
+  background-color: $second-color
+  color: white
+  text-align: center
+  padding: 5px 15px
+  @extend .transition
+
+.description
+  align-self: center
+  margin-top: 20px
+  max-width: 250px

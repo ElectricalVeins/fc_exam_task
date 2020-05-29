@@ -1,0 +1,26 @@
+@import '../../pages/Events/Events.module'
+
+.errorTip
+  position: absolute
+  z-index: 10
+  background-color: #FFDCE0
+  border: 1px solid #cea0a5
+  color: #86181d
+  box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
+  padding: 10px 20px
+  top: calc(100% + 2px)
+  left: 50%
+  @media screen and (max-width: 576px)
+    transform: translateX(-50%)
+
+.container
+  @include flex(row, space-between, center)
+  min-width: 400px
+  max-width: 600px
+  position: relative
+  @media screen and (max-width: 900px)
+    min-width: 320px
+    padding: 0 20px
+
+  @media screen and (max-width: 576px)
+    flex-direction: column
