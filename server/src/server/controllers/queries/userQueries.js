@@ -12,7 +12,6 @@ module.exports.updateUser = async (data, userId, transaction) => {
   return updatedUser.dataValues;
 };
 
-
 module.exports.findUser = async (predicate, transaction) => {
   const result = await bd.Users.findOne({ where: predicate, transaction });
   if (!result){
@@ -22,7 +21,6 @@ module.exports.findUser = async (predicate, transaction) => {
     return result.get({ plain: true });
   }
 };
-
 
 module.exports.userCreation = async (data) => {
   const newUser = await bd.Users.create(data);

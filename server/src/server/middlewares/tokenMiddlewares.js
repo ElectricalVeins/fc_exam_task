@@ -6,9 +6,9 @@ const TokenError = require('../errors/TokenError');
 
 const signJWT = promisify(jwt.sign);
 
-module.exports.createAccessToken = async (req,res,next) => {
+module.exports.createAccessToken = async (req, res, next) => {
   try{
-    const {user}=req;
+    const { user }=req;
     req.accessToken = await signJWT({
       firstName: user.firstName,
       userId: user.id,
@@ -19,10 +19,10 @@ module.exports.createAccessToken = async (req,res,next) => {
       balance: user.balance,
       email: user.email,
       rating: user.rating,
-    }, CONSTANTS.JWT_SECRET, {expiresIn: CONSTANTS.ACCESS_TOKEN_TIME});
-    next()
+    }, CONSTANTS.JWT_SECRET, { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME });
+    next();
   }catch (err) {
-    next(new TokenError(err))
+    next(new TokenError(err));
   }
 };
 

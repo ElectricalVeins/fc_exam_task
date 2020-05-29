@@ -3,6 +3,7 @@ const CONSTANTS = require('../../constants');
 const TokenError = require('../errors/TokenError');
 import userQueries from '../controllers/queries/userQueries';
 const { promisify }= require('util');
+
 const verifyJWT = promisify(jwt.verify);
 
 

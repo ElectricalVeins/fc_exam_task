@@ -9,19 +9,19 @@ const userQueries = require('../controllers/queries/userQueries');
 
 module.exports.findUser = async (req, res, next) => {
   try {
-    const {body: {email}} = req;
-    req.user = await userQueries.findUser({email});
-    next()
+    const { body: { email } } = req;
+    req.user = await userQueries.findUser({ email });
+    next();
   } catch (err) {
-    next(new NotFound(err))
+    next(new NotFound(err));
   }
-}
+};
 
-module.exports.createUser = async (req,res,next) => {
+module.exports.createUser = async (req, res, next) => {
   try{
-    const {body, hashPass} = req;
+    const { body, hashPass } = req;
     req.user = await userQueries.userCreation(Object.assign(body, { password: hashPass }));
-    next()
+    next();
   }catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
       next(new NotUniqueEmail(err));
@@ -29,18 +29,18 @@ module.exports.createUser = async (req,res,next) => {
       next(new ServerError(err));
     }
   }
-}
+};
 
 module.exports.passwordCompare = async (req, res, next) => {
   try {
-    const {body: {password: pass1}, user: {password: pass2}} = req
+    const { body: { password: pass1 }, user: { password: pass2 } } = req;
     const passwordCompare = await bcrypt.compare(pass1, pass2);
     if (!passwordCompare) {
       next(new UncorrectPassword('Wrong password'));
     }
-    next()
+    next();
   } catch (err) {
-    next(new UncorrectPassword(err))
+    next(new UncorrectPassword(err));
   }
 };
 

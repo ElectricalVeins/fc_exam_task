@@ -14,15 +14,15 @@ const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
 
 
-module.exports.saveUserToken = async (req,res,next) => {
+module.exports.saveUserToken = async (req, res, next) => {
   try{
-    const {accessToken,user}=req
+    const { accessToken, user }=req;
     await userQueries.updateUser({ accessToken }, user.id);
     res.send({ token: accessToken });
   }catch(err){
-    next(new ServerError(err))
+    next(new ServerError(err));
   }
-}
+};
 
 module.exports.sendRestoreEmail = async (req, res, next) => {
   try{
@@ -144,7 +144,7 @@ module.exports.updateUser = async (req, res, next) => {
       req.body.avatar = req.file.filename;
     }
     const updatedUser = await userQueries.updateUser(req.body, req.tokenData.userId);
-    console.log('UPDATEDUSER', updatedUser)
+    console.log('UPDATEDUSER', updatedUser);
     res.send({
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
