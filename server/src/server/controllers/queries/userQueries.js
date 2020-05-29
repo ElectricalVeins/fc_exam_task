@@ -33,11 +33,3 @@ module.exports.userCreation = async (data) => {
     return newUser.get({ plain: true });
   }
 };
-
-
-module.exports.passwordCompare = async (pass1, pass2) => {
-  const passwordCompare = await bcrypt.compare(pass1, pass2);
-  if (!passwordCompare){
-    throw new NotFound('Wrong password');
-  }
-};
