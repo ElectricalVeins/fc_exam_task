@@ -2,8 +2,6 @@ FROM node:10.13.0
 
 ARG NODE_ENV="development"
 
-RUN mkdir /server
-
 RUN mkdir -p /var/www/html/images
 
 WORKDIR /server

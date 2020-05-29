@@ -2,8 +2,6 @@ FROM node:10.15.0-alpine as build-stage
 
 ARG NODE_ENV="production"
 
-RUN mkdir ./client
-
 WORKDIR ./client
 
 COPY package*.json ./
