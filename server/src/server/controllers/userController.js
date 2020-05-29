@@ -1,9 +1,12 @@
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
 const CONSTANTS = require('../../constants');
 const bd = require('../models/index');
 const NotFound = require('../errors/UserNotFoundError');
 const ServerError = require('../errors/ServerError');
+const BadRequestError = require('../errors/BadRequestError');
 const UtilFunctions = require('../utils/functions');
+const { sendRestorePasswordEmail } = require('../utils/sendEmail')
 const NotEnoughMoney = require('../errors/NotEnoughMoney');
 const bcrypt = require('bcrypt');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
@@ -61,6 +64,16 @@ module.exports.registration = async (req, res, next) => {
     }
 };
 
+module.exports.sendRestoreEmail = async (req, res, next) => {
+    try{
+        const {restorePassToken} = req
+        const restoreLink = `${CONSTANTS.BASE_URL}${CONSTANTS.PASSWORD_RESTORE_ROUTE}?token=${restorePassToken}`
+        await sendRestorePasswordEmail(restoreLink, req.body.email)
+        res.status(202).send('Check your email!')
+    }catch (err) {
+        next(new ServerError('restore pass error'))
+    }
+}
 
 function getQuery(offerId, userId, mark, isFirst, transaction) {
     const getCreateQuery = () => ratingQueries.createRating({
@@ -148,6 +161,24 @@ module.exports.payment = async (req, res, next) => {
     }
 };
 
+module.exports.updateLostPassword = async (req, res, next) => {
+    try {
+        const {userData:{hashPass, email}} = req
+        const [updatedCount,[updatedUser]] = await bd.Users.update({
+            password:hashPass
+        }, {
+            where: { email },
+            returning: true
+        })
+
+        if( updatedCount === 1 ) {
+            return res.status( 202 ).send( 'Your password have been successfully  changed' )
+        }
+        next(new BadRequestError('Can not update user'))
+    } catch (err) {
+        next( new ServerError( 'Can not update user' ) )
+    }
+}
 
 module.exports.updateUser = async (req, res, next) => {
     try {

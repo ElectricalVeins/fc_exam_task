@@ -114,3 +114,20 @@ module.exports.canUpdateContest = async (req, res, next) => {
     }
 };
 
+module.exports.checkUser = async ( req, res, next ) => {
+    try {
+        const { body: { email } } = req
+
+        const result = await bd.Users.findOne( {
+            where: { email }
+        } );
+
+        if( !result ) {
+            return next( new NotFound() );
+        }
+
+        next();
+    } catch ( e ) {
+        next( new NotFound() );
+    }
+}

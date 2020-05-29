@@ -34,4 +34,7 @@ module.exports={
     LOG_FILE_PATH: '/server_logs/liveNodeLog.json',
     LAST_CHARS_TO_DELETE: 1,
     DAY_LENGTH: 86400000,
+
+    BASE_URL: `http://localhost:5000/`,
+    PASSWORD_RESTORE_ROUTE: 'restorePassword'
 };

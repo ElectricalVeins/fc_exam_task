@@ -1,6 +1,7 @@
 const express = require('express');
 const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const hashPass = require('../middlewares/hashPassMiddle');
+const { createRestorePassToken } = require ('../middlewares/createToken');
 const userController = require('../controllers/userController');
 const contestController = require('../controllers/contestController');
 const checkToken = require('../middlewares/checkToken');
@@ -22,6 +23,21 @@ router.post(
     validators.validateLogin,
     userController.login
 );
+
+router.post(
+    '/restorePassword',
+    validators.validatePasswordRestore,
+    basicMiddlewares.checkUser,
+    hashPass,
+    createRestorePassToken,
+    userController.sendRestoreEmail
+)
+
+router.post(
+    '/updateLostPassword',
+    checkToken.verifyRestorePasswordToken,
+    userController.updateLostPassword
+)
 
 router.post(
     '/dataForContest',

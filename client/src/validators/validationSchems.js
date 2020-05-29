@@ -1,17 +1,19 @@
 import * as yup from 'yup';
 import valid from 'card-validator';
 
-
+const passwordScheme = yup.string().test('test-password', 'Minimum 6 symbols', value => (value && value.trim().length >= 6)).required('Password is required field')
+const confirmPasswordScheme = yup.string().required('Confirm password is required field').oneOf([yup.ref('password')], 'Confirmation password must be the same with password')
+const emailScheme = yup.string().email('Must be a valid Email').required('Email is required field');
 
 export default {
     LoginSchem: yup.object().shape({
-        email: yup.string().email('check email').required('required'),
-        password: yup.string().test('test-password','min 6 symbols',value => (value && value.trim().length>=6)).required('required')
+        email: emailScheme,
+        password: passwordScheme
     }),
     RegistrationSchem: yup.object().shape({
         email: yup.string().email('check email').required('Email is required'),
-        password: yup.string().test('test-password','min 6 symbols',value => (value && value.trim().length>=6)).required('required'),
-        confirmPassword: yup.string().required('confirm password is required').oneOf([yup.ref('password')],'confirmation pass must match password'),
+        password: passwordScheme,
+        confirmPassword: confirmPasswordScheme,
         firstName: yup.string().test('test-firstName','required',value => (value && value.trim().length>=1)).required('First Name is required'),
         lastName: yup.string().test('test-lastName','required',value => (value && value.trim().length>=1)).required('Last Name is required'),
         displayName: yup.string().test('test-displayName','required',value => (value && value.trim().length>=1)).required('Display Name is required'),
@@ -61,5 +63,11 @@ export default {
         lastName: yup.string().test('test-lastName','required',value => (value && value.trim().length>=1)).required('required'),
         displayName: yup.string().test('test-displayName','required',value => (value && value.trim().length>=1)).required('required'),
         file: yup.mixed()
+    }),
+    PasswordRestore: yup.object().shape({
+        email: emailScheme,
+        password: passwordScheme,
+        confirmPassword: confirmPasswordScheme,
+
     })
 }
