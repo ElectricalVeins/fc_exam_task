@@ -7,7 +7,7 @@
     "start": "nodemon --exec npm run babel-node -- ./src/index.js",
     "test": "jest",
     "build": "babel src -d dist",
-    "lint": "npx eslint --fix ./src/server"
+    "lint": "npx eslint --fix ./src"
   },
   "babel": {
     "presets": [
