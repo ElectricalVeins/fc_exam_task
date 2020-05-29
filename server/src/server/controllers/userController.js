@@ -1,69 +1,28 @@
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const moment = require('moment');
+const uuid = require('uuid/v1');
 const CONSTANTS = require('../../constants');
 const bd = require('../models/index');
 const NotFound = require('../errors/UserNotFoundError');
 const ServerError = require('../errors/ServerError');
 const BadRequestError = require('../errors/BadRequestError');
-const UtilFunctions = require('../utils/functions');
-const { sendRestorePasswordEmail } = require('../utils/sendEmail');
 const NotEnoughMoney = require('../errors/NotEnoughMoney');
-const bcrypt = require('bcrypt');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
-const moment = require('moment');
-const uuid = require('uuid/v1');
+const { sendRestorePasswordEmail } = require('../utils/sendEmail');
 const controller = require('../../socketInit');
 const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
 
 
-module.exports.login = async (req, res, next) => {
-  try {
-    const foundUser = await userQueries.findUser({ email: req.body.email });
-    await userQueries.passwordCompare(req.body.password, foundUser.password);
-    const accessToken = jwt.sign({
-      firstName: foundUser.firstName,
-      userId: foundUser.id,
-      role: foundUser.role,
-      lastName: foundUser.lastName,
-      avatar: foundUser.avatar,
-      displayName: foundUser.displayName,
-      balance: foundUser.balance,
-      email: foundUser.email,
-      rating: foundUser.rating,
-    }, CONSTANTS.JWT_SECRET, { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME });
-    await userQueries.updateUser({ accessToken }, foundUser.id);
+module.exports.saveUserToken = async (req,res,next) => {
+  try{
+    const {accessToken,user}=req
+    await userQueries.updateUser({ accessToken }, user.id);
     res.send({ token: accessToken });
-  } catch (err) {
-    next(err);
+  }catch(err){
+    next(new ServerError(err))
   }
-};
-
-module.exports.registration = async (req, res, next) => {
-  try {
-    const newUser = await userQueries.userCreation(Object.assign(req.body, { password: req.hashPass }));
-    const accessToken = jwt.sign({
-      firstName: newUser.firstName,
-      userId: newUser.id,
-      role: newUser.role,
-      lastName: newUser.lastName,
-      avatar: newUser.avatar,
-      displayName: newUser.displayName,
-      balance: newUser.balance,
-      email: newUser.email,
-      rating: newUser.rating,
-    }, CONSTANTS.JWT_SECRET, { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME });
-    await userQueries.updateUser({ accessToken }, newUser.id);
-    res.send({ token: accessToken });
-  } catch (err) {
-    if (err.name === 'SequelizeUniqueConstraintError') {
-      next(new NotUniqueEmail());
-    } else {
-      next(err);
-    }
-  }
-};
+}
 
 module.exports.sendRestoreEmail = async (req, res, next) => {
   try{
@@ -72,7 +31,7 @@ module.exports.sendRestoreEmail = async (req, res, next) => {
     await sendRestorePasswordEmail(restoreLink, req.body.email);
     res.status(202).send('Check your email!');
   }catch (err) {
-    next(new ServerError('restore pass error'));
+    next(new ServerError(err));
   }
 };
 
@@ -117,7 +76,7 @@ module.exports.changeMark = async (req, res, next) => {
     res.send({ userId: creatorId, rating: avg });
   } catch (err) {
     transaction.rollback();
-    next(err);
+    next(new ServerError(err));
   }
 };
 
@@ -156,7 +115,7 @@ module.exports.payment = async (req, res, next) => {
     res.send();
   } catch (err) {
     transaction.rollback();
-    next(err);
+    next(new ServerError(err));
   }
 };
 
@@ -175,7 +134,7 @@ module.exports.updateLostPassword = async (req, res, next) => {
     }
     next(new BadRequestError('Can not update user'));
   } catch (err) {
-    next(new ServerError('Can not update user'));
+    next(new ServerError(err));
   }
 };
 
@@ -185,6 +144,7 @@ module.exports.updateUser = async (req, res, next) => {
       req.body.avatar = req.file.filename;
     }
     const updatedUser = await userQueries.updateUser(req.body, req.tokenData.userId);
+    console.log('UPDATEDUSER', updatedUser)
     res.send({
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
@@ -196,7 +156,7 @@ module.exports.updateUser = async (req, res, next) => {
       id: updatedUser.id,
     });
   } catch (err) {
-    next(err);
+    next(new ServerError(err));
   }
 };
 
@@ -222,6 +182,6 @@ module.exports.cashout = async (req, res, next) => {
     res.send({ balance: updatedUser.balance });
   } catch (err) {
     transaction.rollback();
-    next(err);
+    next(new ServerError(err));
   }
 };

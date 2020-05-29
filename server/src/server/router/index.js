@@ -1,35 +1,41 @@
 const express = require('express');
 const basicMiddlewares = require('../middlewares/basicMiddlewares');
-const hashPass = require('../middlewares/hashPassMiddle');
-const { createRestorePassToken } = require ('../middlewares/createToken');
-const userController = require('../controllers/userController');
-const contestController = require('../controllers/contestController');
+const userMiddlewares = require("../middlewares/userMiddlewares");
+const tokenMiddlewares = require ('../middlewares/tokenMiddlewares');
 const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
+const userController = require('../controllers/userController');
+const contestController = require('../controllers/contestController');
 const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
-const router = express.Router();
 
+
+const router = express.Router();
 
 router.post(
   '/registration',
   validators.validateRegistrationData,
-  hashPass,
-  userController.registration
+  userMiddlewares.hashPass,
+  userMiddlewares.createUser,
+  tokenMiddlewares.createAccessToken,
+  userController.saveUserToken
 );
 
 router.post(
   '/login',
   validators.validateLogin,
-  userController.login
+  userMiddlewares.findUser,
+  userMiddlewares.passwordCompare,
+  tokenMiddlewares.createAccessToken,
+  userController.saveUserToken
 );
 
 router.post(
   '/restorePassword',
   validators.validatePasswordRestore,
   basicMiddlewares.checkUser,
-  hashPass,
-  createRestorePassToken,
+  userMiddlewares.hashPass,
+  tokenMiddlewares.createRestorePassToken,
   userController.sendRestoreEmail
 );
 
