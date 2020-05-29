@@ -25,10 +25,9 @@ module.exports.checkAuth = async (req, res, next) => {
       email: foundUser.email,
     });
   } catch (err) {
-    next(new TokenError());
+    next(new TokenError(err));
   }
 };
-
 
 module.exports.checkToken = async (req, res, next) => {
   const accessToken = req.headers.authorization;
@@ -39,7 +38,7 @@ module.exports.checkToken = async (req, res, next) => {
     req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
     next();
   } catch (err) {
-    next(new TokenError());
+    next(new TokenError(err));
   }
 };
 
@@ -49,6 +48,6 @@ module.exports.verifyRestorePasswordToken = async (req, res, next) => {
     req.userData = await verifyJWT(token, CONSTANTS.JWT_SECRET);
     next();
   } catch (err) {
-    next(new TokenError('Invalid token. Unable to Verify.', 400));
+    next(new TokenError(err, 400));
   }
 };

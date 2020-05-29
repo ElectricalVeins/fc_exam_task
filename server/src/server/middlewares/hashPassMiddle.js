@@ -9,6 +9,6 @@ module.exports = async (req, res, next) => {
     next();
   }
   catch(err){
-    next(new ServerError('Server Error on hash password'));
+    next(new ServerError(err));
   }
 };

@@ -17,7 +17,6 @@ module.exports.parseBody = (req, res, next) => {
   next();
 };
 
-
 module.exports.canGetContest = async (req, res, next) => {
   let result = null;
   try {
@@ -34,15 +33,14 @@ module.exports.canGetContest = async (req, res, next) => {
       });
     }
     result ? next() : next(new RightsError());
-  } catch (e) {
-    next(new ServerError(e));
+  } catch (err) {
+    next(new ServerError(err));
   }
 };
 
-
 module.exports.onlyForCreative =  (req, res, next) => {
   if (req.tokenData.role === CONSTANTS.CUSTOMER) {
-    next(new RightsError());
+    next(new RightsError('this page only for creatives'));
   }
   else{
     next();
@@ -62,7 +60,7 @@ module.exports.onlyForCustomer =  (req, res, next) => {
 
 module.exports.canSendOffer = async (req, res, next) => {
   if (req.tokenData.role === CONSTANTS.CUSTOMER) {
-    return next(new RightsError());
+    return next(new RightsError('this page only for creatives'));
   }
   try {
     const result = await bd.Contests.findOne({
@@ -74,10 +72,10 @@ module.exports.canSendOffer = async (req, res, next) => {
     if (result.get({ plain: true }).status === CONSTANTS.CONTEST_STATUS_ACTIVE) {
       next();
     } else {
-      return next(new RightsError());
+      return next(new RightsError('Rights Error.you cant send offer'));
     }
-  } catch (e) {
-    next(new ServerError());
+  } catch (err) {
+    next(new ServerError(err));
   }
 
 };
@@ -88,11 +86,11 @@ module.exports.onlyForCustomerWhoCreateContest = async (req, res, next) => {
       where: { userId: req.tokenData.userId, id: req.body.contestId, status: CONSTANTS.CONTEST_STATUS_ACTIVE },
     });
     if (!result) {
-      return next(new RightsError());
+      return next(new RightsError('you are not the creator of this contest'));
     }
     next();
-  } catch (e) {
-    next(new ServerError());
+  } catch (err) {
+    next(new ServerError(err));
   }
 };
 
@@ -106,11 +104,11 @@ module.exports.canUpdateContest = async (req, res, next) => {
       },
     });
     if (!result) {
-      return next(new RightsError());
+      return next(new RightsError('Cant update contest'));
     }
     next();
-  } catch (e) {
-    next(new ServerError());
+  } catch (err) {
+    next(new ServerError(err));
   }
 };
 
@@ -123,11 +121,11 @@ module.exports.checkUser = async (req, res, next) => {
     });
 
     if(!result) {
-      return next(new NotFound());
+      return next(new NotFound('User not found'));
     }
 
     next();
-  } catch (e) {
-    next(new NotFound());
+  } catch (err) {
+    next(new NotFound(err));
   }
 };

@@ -1,11 +1,9 @@
 const db = require('../models/index');
-import ServerError from '../errors/ServerError';
-
+const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
 const userQueries = require('./queries/userQueries');
 const controller = require('../../socketInit');
 const UtilFunctions = require('../utils/functions');
-const NotFound = require('../errors/UserNotFoundError');
 const CONSTANTS = require('../../constants');
 
 
@@ -24,10 +22,9 @@ module.exports.dataForContest = async (req, res, next) => {
     });
     res.send(response);
   } catch (err) {
-    next(new ServerError('cannot get contest preferences'));
+    next(new ServerError(err));
   }
 };
-
 
 module.exports.getContestById = async (req, res, next) => {
   try {
@@ -71,17 +68,15 @@ module.exports.getContestById = async (req, res, next) => {
       delete offer.Rating;
     });
     res.send(contestInfo);
-  } catch (e) {
-    next(new ServerError());
+  } catch (err) {
+    next(new ServerError(err));
   }
 };
-
 
 module.exports.downloadFile = async (req, res, next) => {
   const file = CONSTANTS.CONTESTS_DEFAULT_DIR + req.params.fileName;
   res.download(file);
 };
-
 
 module.exports.updateContest = async (req, res, next) => {
   if (req.file) {
@@ -96,11 +91,10 @@ module.exports.updateContest = async (req, res, next) => {
       userId: req.tokenData.userId,
     });
     res.send(updatedContest);
-  } catch (e) {
-    next(e);
+  } catch (err) {
+    next(err);
   }
 };
-
 
 module.exports.setNewOffer = async (req, res, next) => {
   const obj = {};
@@ -119,18 +113,16 @@ module.exports.setNewOffer = async (req, res, next) => {
     controller.getNotificationController().emitEntryCreated(req.body.customerId);
     const User = Object.assign({}, req.tokenData, { id: req.tokenData.userId });
     res.send(Object.assign({}, result, { User }));
-  } catch (e) {
-    return next(new ServerError());
+  } catch (err) {
+    return next(new ServerError(err));
   }
 };
-
 
 const rejectOffer = async (offerId, creatorId, contestId) => {
   const rejectedOffer = await contestQueries.updateOffer({ status: CONSTANTS.OFFER_STATUS_REJECTED }, { id: offerId });
   controller.getNotificationController().emitChangeOfferStatus(creatorId, 'Someone of yours offers was rejected', contestId);
   return rejectedOffer;
 };
-
 
 const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, transaction) => {
   const finishedContest = await contestQueries.updateContestStatus({
@@ -163,7 +155,6 @@ const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, tr
   return updatedOffers[0].dataValues;
 };
 
-
 module.exports.setOfferStatus = async (req, res, next) => {
   let transaction;
   if (req.body.command === 'reject') {
@@ -184,58 +175,56 @@ module.exports.setOfferStatus = async (req, res, next) => {
     }
 };
 
-
-module.exports.getCustomersContests = (req, res, next) => {
-  db.Contests.findAll({
-    where: { status: req.headers.status, userId: req.tokenData.userId },
-    limit: req.body.limit,
-    offset: req.body.offset ? req.body.offset : 0,
-    order: [['id', 'DESC']],
-    include: [
-      {
-        model: db.Offers,
-        required: false,
-        attributes: ['id'],
-      },
-    ],
-  })
-    .then(contests => {
-      contests.forEach(contest => contest.dataValues.count = contest.dataValues.Offers.length);
-      let haveMore=true;
-      if(contests.length===0){
-        haveMore=false;
-      }
-      res.send({ contests, haveMore });
-    })
-    .catch(err => next(new ServerError(err)));
+module.exports.getCustomersContests = async (req, res, next) => {
+  try{
+    const contests = await db.Contests.findAll({
+      where: { status: req.headers.status, userId: req.tokenData.userId },
+      limit: req.body.limit,
+      offset: req.body.offset ? req.body.offset : 0,
+      order: [['id', 'DESC']],
+      include: [
+        {
+          model: db.Offers,
+          required: false,
+          attributes: ['id'],
+        },
+      ],
+    });
+    contests.forEach(contest => contest.dataValues.count = contest.dataValues.Offers.length);
+    let haveMore=true;
+    if(contests.length===0){
+      haveMore=false;
+    }
+    res.send({ contests, haveMore });
+  }catch (err) {
+    next(new ServerError(err));
+  }
 };
 
-
-module.exports.getContests = (req, res, next) => {
-  const predicates = UtilFunctions.createWhereForAllContests(req.body.typeIndex, req.body.contestId, req.body.industry, req.body.awardSort);
-  db.Contests.findAll({
-    where: predicates.where,
-    order: predicates.order,
-    limit: req.body.limit,
-    offset: req.body.offset ? req.body.offset : 0,
-    include: [
-      {
-        model: db.Offers,
-        required: req.body.ownEntries,
-        where: req.body.ownEntries ? { userId: req.tokenData.userId } : {},
-        attributes: ['id'],
-      },
-    ],
-  })
-    .then(contests => {
-      contests.forEach(contest => contest.dataValues.count = contest.dataValues.Offers.length);
-      let haveMore=true;
-      if(contests.length===0){
-        haveMore=false;
-      }
-      res.send({ contests, haveMore });
-    })
-    .catch(err => {
-      next(new ServerError());
+module.exports.getContests = async (req, res, next) => {
+  try{
+    const { body:{ typeIndex, contestId, industry, awardSort } }=req;
+    const predicates = UtilFunctions.createWhereForAllContests(typeIndex, contestId, industry, awardSort);
+    const contests = await db.Contests.findAll({
+      where: predicates.where,
+      order: predicates.order,
+      limit: req.body.limit,
+      offset: req.body.offset ? req.body.offset : 0,
+      include: [
+        {
+          model: db.Offers,
+          required: req.body.ownEntries,
+          where: req.body.ownEntries ? { userId: req.tokenData.userId } : {},
+          attributes: ['id'],
+        }],
     });
+    contests.forEach(contest => contest.dataValues.count = contest.dataValues.Offers.length);
+    let haveMore=true;
+    if(contests.length===0){
+      haveMore=false;
+    }
+    res.send({ contests, haveMore });
+  }catch(err){
+    next(new ServerError(err));
+  }
 };

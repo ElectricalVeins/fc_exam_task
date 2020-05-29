@@ -1,7 +1,7 @@
 const multer = require('multer');
 const ServerError = require('../errors/ServerError');
-const env=process.env.NODE_ENV || 'development';
-const filePath=env==='production'? '/var/www/html/images/' : 'public/images/';
+const env = process.env.NODE_ENV || 'development';
+const filePath = env==='production'? '/var/www/html/images/' : 'public/images/';
 
 
 const storageContestFiles = multer.diskStorage({
@@ -13,7 +13,6 @@ const storageContestFiles = multer.diskStorage({
   },
 });
 
-
 const uploadAvatars = multer({ storage: storageContestFiles }).single('file');
 const uploadContestFiles=multer({ storage: storageContestFiles }).array('files', 3);
 const updateContestFile=multer({ storage: storageContestFiles }).single('file');
@@ -22,21 +21,20 @@ const uploadLogoFiles=multer({ storage: storageContestFiles }).single('offerData
 module.exports.uploadAvatar = (req, res, next) => {
   uploadAvatars(req, res, (err)=>{
     if (err instanceof multer.MulterError) {
-      next(new ServerError());
+      next(new ServerError(err));
     } else if (err) {
-      next(new ServerError());
+      next(new ServerError(err));
     }
     return next();
   });
 };
 
-
 module.exports.uploadContestFiles=(req, res, next)=>{
   uploadContestFiles(req, res, (err)=>{
     if (err instanceof multer.MulterError) {
-      next(new ServerError());
+      next(new ServerError(err));
     } else if (err) {
-      next(new ServerError());
+      next(new ServerError(err));
     }
     return next();
   });
@@ -45,9 +43,9 @@ module.exports.uploadContestFiles=(req, res, next)=>{
 module.exports.updateContestFile=(req, res, next)=>{
   updateContestFile(req, res, (err)=>{
     if (err instanceof multer.MulterError) {
-      next(new ServerError());
+      next(new ServerError(err));
     } else if (err) {
-      next(new ServerError());
+      next(new ServerError(err));
     }
     return next();
   });
@@ -56,9 +54,9 @@ module.exports.updateContestFile=(req, res, next)=>{
 module.exports.uploadLogoFiles=(req, res, next)=>{
   uploadLogoFiles(req, res, (err)=>{
     if (err instanceof multer.MulterError) {
-      next(new ServerError());
+      next(new ServerError(err));
     } else if (err) {
-      next(new ServerError());
+      next(new ServerError(err));
     }
     return next();
   });

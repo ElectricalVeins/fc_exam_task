@@ -18,6 +18,6 @@ module.exports.createRestorePassToken = async (req, res, next) => {
 
     next();
   } catch (err) {
-    next(new TokenError('Error on token sign', 500));
+    next(new TokenError(err, 500));
   }
 };

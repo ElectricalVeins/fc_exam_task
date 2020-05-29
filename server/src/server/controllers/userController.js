@@ -39,6 +39,7 @@ module.exports.login = async (req, res, next) => {
     next(err);
   }
 };
+
 module.exports.registration = async (req, res, next) => {
   try {
     const newUser = await userQueries.userCreation(Object.assign(req.body, { password: req.hashPass }));
@@ -90,9 +91,8 @@ module.exports.changeMark = async (req, res, next) => {
   let sum = 0;
   let avg = 0;
   let transaction;
-  const { isFirst, offerId, mark, creatorId } = req.body;
-  const userId = req.tokenData.userId;
   try {
+    const { body:{ isFirst, offerId, mark, creatorId }, tokenData:{ userId } } = req;
     transaction = await bd.sequelize.transaction({ isolationLevel: bd.Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED });
     const query = getQuery(offerId, userId, mark, isFirst, transaction);
     await query();
@@ -120,7 +120,6 @@ module.exports.changeMark = async (req, res, next) => {
     next(err);
   }
 };
-
 
 module.exports.payment = async (req, res, next) => {
   let transaction;
@@ -201,7 +200,6 @@ module.exports.updateUser = async (req, res, next) => {
   }
 };
 
-
 module.exports.cashout = async (req, res, next) => {
   let transaction;
   try {
@@ -227,5 +225,3 @@ module.exports.cashout = async (req, res, next) => {
     next(err);
   }
 };
-
-

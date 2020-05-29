@@ -12,12 +12,10 @@ module.exports.registrationSchem=yup.object().shape({
   role: yup.string().matches(/(customer|creator)/).required(),
 });
 
-
 module.exports.loginSchem=yup.object().shape({
   email: emailScheme,
   password: passwordScheme,
 });
-
 
 module.exports.contestSchem=yup.object().shape({
   contestType: yup.string().matches(/(name|logo|tagline)/).required(),
