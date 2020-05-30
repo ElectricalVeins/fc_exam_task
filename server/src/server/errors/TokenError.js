@@ -1,8 +1,8 @@
 const ApplicationError = require('./ApplicationError');
 
 class TokenError extends ApplicationError {
-  constructor(message, code) {
-    super(message || 'token error', code || 408);
+  constructor(error, code) {
+    super(error || { message:'Token error' }, code || 408);
   }
 }
 
