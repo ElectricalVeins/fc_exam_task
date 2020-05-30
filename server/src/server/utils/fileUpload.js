@@ -1,11 +1,37 @@
 const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const { promisify } = require('util');
 const ServerError = require('../errors/ServerError');
 const env = process.env.NODE_ENV || 'development';
 const filePath = env==='production'? '/var/www/html/images/' : 'public/images/';
 
+const access = promisify(fs.access);
+const mkdir = promisify(fs.mkdir);
+
+const isPathExists = async (filePath) => {
+  try {
+    await access(filePath);
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+const createPath = async (filePath) => {
+  try{
+    await mkdir(filePath, { recursive: true });
+  }catch (err) {
+    throw new Error('Multer Error');
+  }
+};
 
 const storageContestFiles = multer.diskStorage({
-  destination (req, file, cb) {
+  async destination(req, file, cb) {
+    const exist = await isPathExists(filePath);
+    if (!exist) {
+      await createPath(filePath);
+    }
     cb(null, filePath);
   },
   filename (req, file, cb) {
@@ -14,9 +40,9 @@ const storageContestFiles = multer.diskStorage({
 });
 
 const uploadAvatars = multer({ storage: storageContestFiles }).single('file');
-const uploadContestFiles=multer({ storage: storageContestFiles }).array('files', 3);
-const updateContestFile=multer({ storage: storageContestFiles }).single('file');
-const uploadLogoFiles=multer({ storage: storageContestFiles }).single('offerData');
+const uploadContestFiles = multer({ storage: storageContestFiles }).array('files', 3);
+const updateContestFile = multer({ storage: storageContestFiles }).single('file');
+const uploadLogoFiles = multer({ storage: storageContestFiles }).single('offerData');
 
 module.exports.uploadAvatar = (req, res, next) => {
   uploadAvatars(req, res, (err)=>{
@@ -29,7 +55,7 @@ module.exports.uploadAvatar = (req, res, next) => {
   });
 };
 
-module.exports.uploadContestFiles=(req, res, next)=>{
+module.exports.uploadContestFiles = async (req, res, next)=>{
   uploadContestFiles(req, res, (err)=>{
     if (err instanceof multer.MulterError) {
       next(new ServerError(err));
