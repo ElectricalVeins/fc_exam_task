@@ -2,7 +2,6 @@ const express = require('express');
 const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const userMiddlewares = require('../middlewares/userMiddlewares');
 const tokenMiddlewares = require ('../middlewares/tokenMiddlewares');
-const checkToken = require('../middlewares/checkToken');
 const validators = require('../middlewares/validators');
 const userController = require('../controllers/userController');
 const contestController = require('../controllers/contestController');
@@ -24,7 +23,7 @@ router.post(
 router.post(
   '/login',
   validators.validateLogin,
-  userMiddlewares.findUser,
+  userMiddlewares.findUserByEmail,
   userMiddlewares.passwordCompare,
   tokenMiddlewares.createAccessToken,
   userController.saveUserToken
@@ -41,19 +40,19 @@ router.post(
 
 router.post(
   '/updateLostPassword',
-  checkToken.verifyRestorePasswordToken,
+  tokenMiddlewares.verifyRestorePasswordToken,
   userController.updateLostPassword
 );
 
 router.post(
   '/dataForContest',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   contestController.dataForContest
 );
 
 router.post(
   '/pay',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   basicMiddlewares.onlyForCustomer,
   upload.uploadContestFiles,
   basicMiddlewares.parseBody,
@@ -63,45 +62,47 @@ router.post(
 
 router.post(
   '/getCustomersContests',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   contestController.getCustomersContests
 );
 
 router.get(
   '/getContestById',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   basicMiddlewares.canGetContest,
   contestController.getContestById
 );
 
 router.post(
   '/getAllContests',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   basicMiddlewares.onlyForCreative,
   contestController.getContests
 );
 
 router.post(
   '/getUser',
-  checkToken.checkAuth
+  tokenMiddlewares.verifyToken,
+  userMiddlewares.findUserByEmail,
+  userController.sendUser
 );
 
 router.get(
   '/downloadFile/:fileName',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   contestController.downloadFile
 );
 
 router.post(
   '/updateContest',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   upload.updateContestFile,
   contestController.updateContest
 );
 
 router.post(
   '/setNewOffer',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   upload.uploadLogoFiles,
   basicMiddlewares.canSendOffer,
   contestController.setNewOffer
@@ -109,28 +110,28 @@ router.post(
 
 router.post(
   '/setOfferStatus',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   basicMiddlewares.onlyForCustomerWhoCreateContest,
   contestController.setOfferStatus
 );
 
 router.post(
   '/changeMark',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   basicMiddlewares.onlyForCustomer,
   userController.changeMark
 );
 
 router.post(
   '/updateUser',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   upload.uploadAvatar,
   userController.updateUser
 );
 
 router.post(
   '/cashout',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   basicMiddlewares.onlyForCreative,
   userController.cashout
 );
@@ -138,70 +139,70 @@ router.post(
 
 router.post(
   '/newMessage',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.addMessage
 );
 
 router.post(
   '/getChat',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.getChat
 );
 
 router.post(
   '/getPreview',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.getPreview
 );
 
 
 router.post(
   '/blackList',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.blackList
 );
 
 
 router.post(
   '/favorite',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.favoriteChat
 );
 
 
 router.post(
   '/createCatalog',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.createCatalog
 );
 
 router.post(
   '/updateNameCatalog',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.updateNameCatalog
 );
 
 router.post(
   '/addNewChatToCatalog',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.addNewChatToCatalog
 );
 
 router.post(
   '/removeChatFromCatalog',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.removeChatFromCatalog
 );
 
 router.post(
   '/deleteCatalog',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.deleteCatalog
 );
 
 router.post(
   '/getCatalogs',
-  checkToken.checkToken,
+  tokenMiddlewares.verifyToken,
   chatController.getCatalogs
 );
 

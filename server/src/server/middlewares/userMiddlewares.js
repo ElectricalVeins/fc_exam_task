@@ -7,7 +7,7 @@ const NotEnoughMoney = require('../errors/NotEnoughMoney');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
 const userQueries = require('../controllers/queries/userQueries');
 
-module.exports.findUser = async (req, res, next) => {
+module.exports.findUserByEmail = async (req, res, next) => {
   try {
     const { body: { email } } = req;
     req.user = await userQueries.findUser({ email });
