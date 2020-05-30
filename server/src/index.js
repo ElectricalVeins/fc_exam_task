@@ -1,29 +1,28 @@
+const http = require('http');
 const express=require('express');
-import 'babel-polyfill';
-const router=require('./server/router');
 const cors=require('cors');
+require('./server/dbMongo/mongoose');
+require('babel-polyfill');
+const router=require('./server/router');
 const controller = require('./socketInit');
-const handlerError=require('./server/handlerError/handler');
+const errorHandler=require('./server/middlewares/errorHandlers');
 const CONSTANTS =require('./constants');
 const createLogHistory = require('./server/utils/logger/copier');
-const PORT = process.env.PORT || 9632;
-const app = express();
-const http = require('http');
-require('./server/dbMongo/mongoose');
 
+const PORT = process.env.PORT || 3000;
+const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use('/public', express.static('public'));
 app.use(router);
-app.use(handlerError);
+app.use(errorHandler);
 
 const server=http.createServer(app);
-server.listen(3000);
+server.listen(PORT);
 controller.createConnection(server);
 
 setInterval(() => {
   createLogHistory(CONSTANTS.LOG_FILE_PATH,
     `${CONSTANTS.DUMPS_PATH}${Date.parse(new Date())}.json`);
-},
-CONSTANTS.DAY_LENGTH);
+}, CONSTANTS.DAY_LENGTH);
