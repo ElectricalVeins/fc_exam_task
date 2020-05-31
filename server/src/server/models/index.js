@@ -38,6 +38,17 @@ db['Ratings'].belongsTo(db['Users'], { foreignKey: 'userId', targetKey: 'id' });
 db['Ratings'].belongsTo(db['Offers'], { foreignKey: 'offerId', targetKey: 'id' });
 
 
+db.ContestType.belongsToMany(db.ContestDescribe, { through: db.TypeToDescribe });
+db.ContestDescribe.belongsToMany(db.ContestType, { through: db.TypeToDescribe });
+
+sequelize.sync()
+  .then(() => {
+    console.log('sequelize soft sync has been done');
+  })
+  .catch(err =>
+    console.log(err)
+  );
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
