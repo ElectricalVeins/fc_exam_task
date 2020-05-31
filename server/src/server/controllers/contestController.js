@@ -10,7 +10,15 @@ const CONSTANTS = require('../../constants');
 module.exports.dataForContest = async (req, res, next) => {
   const response = {};
   try {
-    const characteristics = await db.Selects.findAll({ where: { type: { [db.Sequelize.Op.or]: [req.body.characteristic1, req.body.characteristic2, 'industry'] } } });
+    const characteristics = await db.ContestType.findAll({
+      include: [{
+        model: db.ContestDescribe,
+        required: true,
+      }],
+      where: {
+        type: [req.body.characteristic1, req.body.characteristic2, 'industry'],
+      },
+    });
     if (!characteristics) {
       return next(new ServerError());
     }
@@ -18,7 +26,9 @@ module.exports.dataForContest = async (req, res, next) => {
       if (!response[characteristic.type]) {
         response[characteristic.type] = [];
       }
-      response[characteristic.type].push(characteristic.describe);
+      characteristic.ContestDescribes.forEach(describeObject=>{
+        response[characteristic.type].push(describeObject.describe);
+      });
     });
     res.send(response);
   } catch (err) {
