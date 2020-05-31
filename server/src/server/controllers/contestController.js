@@ -14,6 +14,7 @@ module.exports.dataForContest = async (req, res, next) => {
       include: [{
         model: db.ContestDescribe,
         required: true,
+        attributes:['describe'],
       }],
       where: {
         type: [req.body.characteristic1, req.body.characteristic2, 'industry'],
@@ -22,14 +23,15 @@ module.exports.dataForContest = async (req, res, next) => {
     if (!characteristics) {
       return next(new ServerError());
     }
-    characteristics.forEach(characteristic => {
-      if (!response[characteristic.type]) {
-        response[characteristic.type] = [];
+    for (const characteristic of characteristics) {
+      const { type, ContestDescribes } = characteristic;
+      if (!response[type]) {
+        response[type] = [];
       }
-      characteristic.ContestDescribes.forEach(describeObject=>{
-        response[characteristic.type].push(describeObject.describe);
+      ContestDescribes.forEach(describeItem => {
+        response[type].push(describeItem.describe);
       });
-    });
+    }
     res.send(response);
   } catch (err) {
     next(new ServerError(err));
