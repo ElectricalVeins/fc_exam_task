@@ -96,7 +96,8 @@ class CreatorDashboard extends React.Component {
             contestId: obj.contestId ? obj.contestId : '',
             industry: obj.industry ? obj.industry : '',
             awardSort: obj.awardSort || 'asc',
-            ownEntries: typeof obj.ownEntries === "undefined" ? false : obj.ownEntries
+            ownEntries: typeof obj.ownEntries === "undefined" ? false : obj.ownEntries,
+            status: obj.status || ''
         };
         if (!isEqual(filter, this.props.creatorFilter)) {
             this.props.newFilter(filter);
@@ -183,6 +184,18 @@ class CreatorDashboard extends React.Component {
                             })} value={creatorFilter.awardSort} className={styles.input}>
                                 <option value='desc'>Descending</option>
                                 <option value='asc'>Ascending</option>
+                            </select>
+                        </div>
+                        <div className={styles.inputContainer}>
+                            <span>By status</span>
+                            <select onChange={({target}) => this.changePredicate({
+                                name: 'status',
+                                value: target.value
+                            })}
+                                   value={creatorFilter.status}
+                                   className={styles.input}>
+                                <option value='active'>Active</option>
+                                <option value=''>All</option>
                             </select>
                         </div>
                     </div>

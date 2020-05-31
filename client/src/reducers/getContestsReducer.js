@@ -11,7 +11,8 @@ const initialState = {
         contestId: '',
         industry: '',
         awardSort: 'asc',
-        ownEntries: false
+        ownEntries: false,
+        status: '',
     },
     haveMore: true
 };

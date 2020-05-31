@@ -215,8 +215,8 @@ module.exports.getCustomersContests = async (req, res, next) => {
 
 module.exports.getContests = async (req, res, next) => {
   try{
-    const { body:{ typeIndex, contestId, industry, awardSort } }=req;
-    const predicates = UtilFunctions.createWhereForAllContests(typeIndex, contestId, industry, awardSort);
+    const { body:{ typeIndex, contestId, industry, awardSort, status } }=req;
+    const predicates = UtilFunctions.createWhereForAllContests(typeIndex, contestId, industry, awardSort, status);
     const contests = await db.Contests.findAll({
       where: predicates.where,
       order: predicates.order,

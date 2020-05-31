@@ -5,6 +5,7 @@ import CONSTANTS from '../../constants';
 
 
 const ContestBox = (props) => {
+    const { data: { id, status, title, contestType, prize, count, goToExtended }, data} = props;
 
     const getTimeStr = () => {
         const diff = (moment.duration(moment().diff(moment(props.data.createdAt))));
@@ -19,7 +20,6 @@ const ContestBox = (props) => {
     };
 
     const getPreferenceContest = () => {
-        const data = props.data;
         if (data.contestType === CONSTANTS.NAME_CONTEST)
             return data.typeOfName;
         else if (data.contestType === CONSTANTS.LOGO_CONTEST)
@@ -32,9 +32,14 @@ const ContestBox = (props) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
-    const {id, title, contestType, prize, count, goToExtended} = props.data;
+    const renderStatus=()=><span>
+        {
+            status
+        }
+    </span>
+
     return (
-        <div className={styles.contestBoxContainer} onClick={() => props.goToExtended(id)}>
+        <div className={styles.contestBoxContainer} onClick={() => goToExtended(id)}>
             <div className={styles.mainContestInfo}>
                 <div className={styles.titleAndIdContainer}>
                     <span className={styles.title}>{title}</span>
@@ -69,7 +74,7 @@ const ContestBox = (props) => {
                 </div>
                 <div className={styles.timeContainer}>
                     <span className={styles.timeContest}>{getTimeStr()}</span>
-                    <span>Going</span>
+                    <span>{renderStatus()}</span>
                 </div>
             </div>
         </div>
