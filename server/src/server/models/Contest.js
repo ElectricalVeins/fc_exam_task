@@ -66,10 +66,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       type: DataTypes.STRING,
     },
-    createdAt: {
-      allowNull: true,
-      type: DataTypes.STRING,
-    },
     status: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -84,7 +80,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   },
   {
-    timestamps: false,
+    timestamps: true,
   });
 
 
