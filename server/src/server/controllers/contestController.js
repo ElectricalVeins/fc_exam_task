@@ -109,17 +109,17 @@ module.exports.updateContest = async (req, res, next) => {
 };
 
 module.exports.setNewOffer = async (req, res, next) => {
-  const obj = {};
+  const offer = {};
   if (req.body.contestType === CONSTANTS.LOGO_CONTEST) {
-    obj.fileName = req.file.filename;
-    obj.originalFileName = req.file.originalname;
+    offer.fileName = req.file.filename;
+    offer.originalFileName = req.file.originalname;
   } else {
-    obj.text = req.body.offerData;
+    offer.text = req.body.offerData;
   }
-  obj.userId = req.tokenData.userId;
-  obj.contestId = req.body.contestId;
+  offer.userId = req.tokenData.userId;
+  offer.contestId = req.body.contestId;
   try {
-    const result = await contestQueries.createOffer(obj);
+    const result = await contestQueries.createOffer(offer);
     delete result.contestId;
     delete result.userId;
     controller.getNotificationController().emitEntryCreated(req.body.customerId);
