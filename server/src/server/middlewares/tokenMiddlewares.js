@@ -46,7 +46,7 @@ module.exports.createRestorePassToken = async (req, res, next) => {
 module.exports.verifyToken = async (req, res, next) => {
   const accessToken = req.headers.authorization;
   if (!accessToken) {
-    return next(new TokenError('need token'));
+    return next(new TokenError(new Error('need token')));
   }
   try {
     req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);

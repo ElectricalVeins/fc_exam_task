@@ -155,7 +155,7 @@ module.exports.updateLostPassword = async (req, res, next) => {
     if(updatedCount === 1) {
       return res.status(202).send('Your password have been successfully  changed');
     }
-    next(new BadRequestError('Can not update user'));
+    next(new BadRequestError(new Error('Can not update user')));
   } catch (err) {
     next(new ServerError(err));
   }

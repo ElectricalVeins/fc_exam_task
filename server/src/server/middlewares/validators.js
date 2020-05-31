@@ -5,7 +5,7 @@ const BadRequestError = require('../errors/BadRequestError');
 module.exports.validateRegistrationData = async (req, res, next) => {
   const validationResult = await schems.registrationSchem.isValid(req.body);
   if (!validationResult) {
-    return next(new BadRequestError('Invalid data for registration'));
+    return next(new BadRequestError(new Error('Invalid data for registration')));
   } else {
     next();
   }
@@ -16,7 +16,7 @@ module.exports.validateLogin = async (req, res, next) => {
   if (validationResult) {
     next();
   } else {
-    return next(new BadRequestError('Invalid data for login'));
+    return next(new BadRequestError(new Error('Invalid data for login')));
   }
 };
 
@@ -25,7 +25,7 @@ module.exports.validatePasswordRestore = async (req, res, next) => {
 
   result
     ? next()
-    : next(new BadRequestError('Invalid data for password restore'));
+    : next(new BadRequestError(new Error('Invalid data for password restore')));
 };
 
 module.exports.validateContestCreation = (req, res, next) => {
@@ -37,7 +37,7 @@ module.exports.validateContestCreation = (req, res, next) => {
     .then(results => {
       results.forEach(result => {
         if (!result) {
-          return next(new BadRequestError());
+          return next(new BadRequestError(new Error('Invalid Data Provided')));
         }
       });
       next();

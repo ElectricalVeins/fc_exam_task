@@ -21,7 +21,7 @@ module.exports.dataForContest = async (req, res, next) => {
       },
     });
     if (!characteristics) {
-      return next(new ServerError());
+      return next(new ServerError(new Error('Can not get contest data')));
     }
     for (const characteristic of characteristics) {
       const { type, ContestDescribes } = characteristic;
