@@ -1,5 +1,6 @@
 const moment = require('moment');
 const uuid = require('uuid/v1');
+const _ = require('lodash');
 const CONSTANTS = require('../../constants');
 const bd = require('../models/index');
 const NotFound = require('../errors/UserNotFoundError');
@@ -115,11 +116,14 @@ module.exports.payment = async (req, res, next) => {
       cardNumber: { [bd.sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')] },
     },
     transaction);
+
     const orderId = uuid();
+
     req.body.contests.forEach((contest, index) => {
       const prize = index === req.body.contests.length - 1 ? Math.ceil(req.body.price / req.body.contests.length)
         : Math.floor(req.body.price / req.body.contests.length);
-      contest = Object.assign(contest, {
+
+      _.merge(contest, {
         status: index === 0 ? 'active' : 'pending',
         userId: req.tokenData.userId,
         priority: index + 1,
@@ -127,10 +131,11 @@ module.exports.payment = async (req, res, next) => {
         createdAt: moment().format('YYYY-MM-DD HH:mm'),
         prize,
       });
+
     });
     await bd.Contests.bulkCreate(req.body.contests, transaction);
     transaction.commit();
-    res.send();
+    res.status(200).send();
   } catch (err) {
     transaction.rollback();
     next(new ServerError(err));
