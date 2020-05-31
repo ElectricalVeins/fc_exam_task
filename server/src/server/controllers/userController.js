@@ -13,6 +13,24 @@ const userQueries = require('./queries/userQueries');
 const bankQueries = require('./queries/bankQueries');
 const ratingQueries = require('./queries/ratingQueries');
 
+module.exports.sendUser = async (req, res, next) => {
+  try {
+    const { user } = req;
+    console.log(JSON.stringify(user, null, 4));
+    res.send({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      id: user.id,
+      avatar: user.avatar,
+      displayName: user.displayName,
+      balance: user.balance,
+      email: user.email,
+    });
+  } catch (err) {
+    next(new ServerError(err));
+  }
+};
 
 module.exports.saveUserToken = async (req, res, next) => {
   try{
@@ -122,7 +140,7 @@ module.exports.payment = async (req, res, next) => {
 module.exports.updateLostPassword = async (req, res, next) => {
   try {
     const { userData:{ hashPass, email } } = req;
-    const [updatedCount, [updatedUser]] = await bd.Users.update({
+    const [updatedCount, []] = await bd.Users.update({
       password:hashPass,
     }, {
       where: { email },
