@@ -5,6 +5,7 @@ import UpdateUserInfoForm from '../../components/UpdateUserInfoForm/UpdateUserIn
 import {updateUserData, changeEditModeOnUserProfile} from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
 import styles from './UserInfo.module.sass';
+import UserProfile from "../UserProfile/UserProfile";
 
 const UserInfo = (props) => {
 
@@ -17,46 +18,20 @@ const UserInfo = (props) => {
         props.updateUser(formData);
     };
 
-
     const {isEdit, changeEditMode, data} = props;
-    const {avatar, firstName, lastName, displayName, email, role, balance} = data;
     return (
-        <div className={styles.mainContainer}>
-            {isEdit ? <UpdateUserInfoForm onSubmit={updateUserData}/>
-                :
-                <div className={styles.infoContainer}>
-                    <img src={avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`} className={styles.avatar} alt='user'/>
-                    <div className={styles.infoContainer}>
-                        <div className={styles.infoBlock}>
-                            <span className={styles.label}>First Name</span>
-                            <span className={styles.info}>{firstName}</span>
-                        </div>
-                        <div className={styles.infoBlock}>
-                            <span className={styles.label}>Last Name</span>
-                            <span className={styles.info}>{lastName}</span>
-                        </div>
-                        <div className={styles.infoBlock}>
-                            <span className={styles.label}>Display Name</span>
-                            <span className={styles.info}>{displayName}</span>
-                        </div>
-                        <div className={styles.infoBlock}>
-                            <span className={styles.label}>Email</span>
-                            <span className={styles.info}>{email}</span>
-                        </div>
-                        <div className={styles.infoBlock}>
-                            <span className={styles.label}>Role</span>
-                            <span className={styles.info}>{role}</span>
-                        </div>
-                        {role === CONSTANTS.CREATOR && <div className={styles.infoBlock}>
-                            <span className={styles.label}>Balance</span>
-                            <span className={styles.info}>{`${balance}$`}</span>
-                        </div>}
-                    </div>
-                </div>
-            }
-            <div onClick={() => changeEditMode(!isEdit)}
-                 className={styles.buttonEdit}>{isEdit ? 'Cancel' : 'Edit'}</div>
-        </div>
+      <div className={ styles.mainContainer }>
+          {
+              isEdit ? <UpdateUserInfoForm onSubmit={ updateUserData }/>
+                : <UserProfile { ...data }/>
+          }
+          <div onClick={ () => changeEditMode(!isEdit) }
+               className={ styles.buttonEdit }>
+              {
+                  isEdit ? 'Cancel' : 'Edit'
+              }
+          </div>
+      </div>
     )
 };
 
