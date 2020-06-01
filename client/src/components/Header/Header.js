@@ -34,14 +34,12 @@ class Header extends React.Component {
                         <span>{`Hi, ${data.displayName}`}</span>
                         <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt='menu'/>
                         <ul>
-                            <li><Link to='/dashboard'
-                                      style={{textDecoration: 'none'}}><span>View Dashboard</span></Link></li>
-                            <li><Link to='/account' style={{textDecoration: 'none'}}><span>My Account</span></Link></li>
-                            <li><Link to='http:/www.google.com'
-                                      style={{textDecoration: 'none'}}><span>Messages</span></Link></li>
-                            <li><Link to='http:/www.google.com' style={{textDecoration: 'none'}}><span>Affiliate Dashboard</span></Link>
+                            <li><Link to='/dashboard'><span>View Dashboard</span></Link></li>
+                            <li><Link to='/account' ><span>My Account</span></Link></li>
+                            <li><Link to='http:/www.google.com'><span>Messages</span></Link></li>
+                            <li><Link to='http:/www.google.com'><span>Affiliate Dashboard</span></Link>
                             </li>
-                            <li><span onClick={this.logOut}>Logout</span></li>
+                            <li onClick={this.logOut}><span>Logout</span></li>
                         </ul>
                     </div>
                     <img src={`${CONSTANTS.STATIC_IMAGES_PATH}email.png`} className={styles.emailIcon} alt='email'/>
