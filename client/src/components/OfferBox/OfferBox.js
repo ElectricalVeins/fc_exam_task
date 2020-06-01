@@ -37,7 +37,6 @@ const OfferBox = (props) => {
         return null;
     };
 
-
     const resolveOffer = () => {
         confirmAlert({
             title: 'confirm',
@@ -91,11 +90,9 @@ const OfferBox = (props) => {
         return null;
     };
 
-
     const goChat = () => {
         props.goToExpandedDialog({interlocutor: props.data.User, conversationData: findConversationInfo()});
     };
-
 
     const {data, role, id, contestType} = props;
     const {avatar, firstName, lastName, email, rating} = props.data.User;
