@@ -1,10 +1,11 @@
 .mainContainer
+  box-sizing: border-box
   background-color: #3ea9f5
   display: flex
   justify-content: center
   align-items: flex-start
   padding-top: 40px
-  height: 100vh
+  min-height: 100vh
 
 .loginContainer
   background-color: #3ea9f5
@@ -21,31 +22,57 @@
   margin-top: 80px
 
   a
+    margin-top: 25px
     text-decoration: none
     color: white
+
+  @media (max-width: 600px)
+    margin-top: 10px
 
 
 .headerSignUpPage
   display: flex
+  box-sizing: border-box
   flex-direction: row
   justify-content: space-between
   align-items: center
-  margin-top: 26px
-  padding-left: 45px
-  padding-right: 100px
-  @media (max-width: 530px)
-    padding-right: 45px
+  margin: 0 auto
+  max-width: 1140px
+  width: 100%
+  padding: 20px 70px 0 70px
+  @media (max-width: 600px)
+    justify-content: space-around
+    padding: 0
 
 .linkLoginContainer
-  border: 1px solid white
-  width: 80px
-  border-radius: 4px
-  display: flex
-  justify-content: center
-  align-items: center
   font-size: 18px
   font-weight: bold
-  height: 40px
-  text-decoration: none
+
+  a
+    display: flex
+    justify-content: center
+    align-items: center
+    border: 1px solid white
+    border-radius: 4px
+    width: 80px
+    height: 40px
+    text-decoration: none
+
   span
     color: white
+
+.loginForm
+  width: 100%
+  max-width: 600px
+  display: flex
+  flex-direction: column
+  align-items: stretch
+  justify-content: center
+  transition: all 0.2s ease-in-out
+
+  h2
+    text-align: center
+    font-size: 34px
+    letter-spacing: 0.6px
+    color: white
+    margin: 22px 5px
