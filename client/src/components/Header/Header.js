@@ -23,12 +23,14 @@ class Header extends React.Component {
         this.props.history.push('/startContest');
     };
     renderLoginButtons = () => {
+        console.log(this.props.data.avatar)
+        console.log(this.props.data.avatar ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${this.props.data.avatar}`)
         if (this.props.data) {
             return (
                 <>
                     <div className={styles.userInfo}>
                         <img
-                            src={this.props.data.avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${this.props.data.avatar}`}
+                            src={this.props.data.avatar === null ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${this.props.data.avatar}`}
                             alt='user'/>
                         <span>{`Hi, ${this.props.data.displayName}`}</span>
                         <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt='menu'/>
