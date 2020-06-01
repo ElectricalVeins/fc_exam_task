@@ -23,7 +23,7 @@ module.exports.sendUser = async (req, res, next) => {
       lastName: user.lastName,
       role: user.role,
       id: user.id,
-      avatar: user.avatar,
+      avatar: user.avatar ? user.avatar : undefined,
       displayName: user.displayName,
       balance: user.balance,
       email: user.email,

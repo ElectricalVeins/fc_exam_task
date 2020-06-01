@@ -106,7 +106,7 @@ const OfferBox = (props) => {
                 <div className={styles.userInfo}>
                     <div className={styles.creativeInfoContainer}>
                         <img
-                            src={avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`}
+                            src={avatar  ? `${CONSTANTS.publicURL}${avatar}` : CONSTANTS.ANONYM_IMAGE_PATH}
                             alt='user'/>
                         <div className={styles.nameAndEmail}>
                             <span>{firstName + ' ' + lastName}</span>

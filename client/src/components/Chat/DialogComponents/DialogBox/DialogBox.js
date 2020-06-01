@@ -19,7 +19,7 @@ const DialogBox = (props) => {
                 favoriteList: favoriteList
             }
         })}>
-            <img src={interlocutor.avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${interlocutor.avatar}`} alt='user'/>
+            <img src={interlocutor.avatar ? `${CONSTANTS.publicURL}${interlocutor.avatar}` : CONSTANTS.ANONYM_IMAGE_PATH} alt='user'/>
             <div className={styles.infoContainer}>
                 <div className={styles.interlocutorInfo}>
                     <span className={styles.interlocutorName}>{interlocutor.firstName}</span>
