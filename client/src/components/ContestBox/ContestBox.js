@@ -32,9 +32,9 @@ const ContestBox = (props) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
 
-    const renderStatus=()=><span>
+    const renderStatus = () => <span>
         {
-            status
+            status === CONSTANTS.CONTEST_STATUS_ACTIVE ? 'Going' : status
         }
     </span>
 
@@ -74,7 +74,11 @@ const ContestBox = (props) => {
                 </div>
                 <div className={styles.timeContainer}>
                     <span className={styles.timeContest}>{getTimeStr()}</span>
-                    <span>{renderStatus()}</span>
+                    <span>
+                        {
+                            renderStatus()
+                        }
+                    </span>
                 </div>
             </div>
         </div>
