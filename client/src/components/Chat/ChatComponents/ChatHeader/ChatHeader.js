@@ -16,7 +16,6 @@ const ChatHeader = (props) => {
         event.stopPropagation();
     };
 
-
     const isFavorite = (chatData, userId) => {
         const {favoriteList, participants} = chatData;
         return favoriteList[participants.indexOf(userId)];
@@ -27,7 +26,6 @@ const ChatHeader = (props) => {
         return blackList[participants.indexOf(userId)];
     };
 
-
     const {avatar, firstName} = props.interlocutor;
     const {backToDialogList, chatData, userId} = props;
     return (
@@ -37,7 +35,7 @@ const ChatHeader = (props) => {
             </div>
             <div className={styles.infoContainer}>
                 <div>
-                    <img src={avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${avatar}`} alt='user'/>
+                    <img src={avatar ? `${CONSTANTS.publicURL}${avatar}` : CONSTANTS.ANONYM_IMAGE_PATH} alt='user'/>
                     <span>{firstName}</span>
                 </div>
                 {chatData &&
@@ -64,7 +62,6 @@ const ChatHeader = (props) => {
         </div>
     )
 };
-
 
 const mapStateToProps = (state) => {
     const {interlocutor, chatData} = state.chatStore;

@@ -21,7 +21,6 @@ class Dialog extends React.Component {
         this.messagesEnd.current.scrollIntoView({behavior: 'smooth'})
     };
 
-
     componentWillReceiveProps(nextProps, nextContext) {
         if (nextProps.interlocutor.id !== this.props.interlocutor.id)
             this.props.getDialog({interlocutorId: nextProps.interlocutor.id});
@@ -65,7 +64,6 @@ class Dialog extends React.Component {
         )
     };
 
-
     blockMessage = () => {
         const {userId, chatData} = this.props;
         const {blackList, participants} = chatData;
@@ -81,7 +79,6 @@ class Dialog extends React.Component {
         )
     };
 
-
     render() {
         const {chatData, userId} = this.props;
         return (
@@ -93,9 +90,7 @@ class Dialog extends React.Component {
             </>
         )
     }
-
 }
-
 
 const mapStateToProps = (state) => {
     return state.chatStore;

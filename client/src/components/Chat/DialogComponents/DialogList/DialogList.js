@@ -50,7 +50,6 @@ const DialogList = (props) => {
             return moment(time).format('MMMM DD, YYYY');
     };
 
-
     const renderPreview = (filterFunc) => {
         const arrayList = [];
         const {userId, preview, goToExpandedDialog, chatMode, removeChat, interlocutor} = props;
@@ -70,7 +69,6 @@ const DialogList = (props) => {
         return arrayList.length ? arrayList : <span className={styles.notFound}>Not found</span>;
     };
 
-
     const renderChatPreview = () => {
         const {chatMode} = props;
         if (chatMode === CONSTANTS.FAVORITE_PREVIEW_CHAT_MODE)
@@ -87,14 +85,11 @@ const DialogList = (props) => {
             {renderChatPreview()}
         </div>
     )
-
 };
-
 
 const mapStateToProps = (state) => {
     return state.chatStore;
 };
-
 
 const mapDispatchToProps = (dispatch) => {
     return {

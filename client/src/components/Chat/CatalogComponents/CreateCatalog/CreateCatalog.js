@@ -13,16 +13,17 @@ const validate = (values) => {
     return errors;
 };
 
-
 const CreateCatalog = (props) => {
-    const click = (values) => {
+    const {handleSubmit, valid} = props;
+
+    const submitHandler = (values) => {
         const {createCatalog} = props;
         const {addChatId} = props;
         createCatalog({catalogName: values.catalogName, chatId: addChatId});
     };
-    const {handleSubmit, valid} = props;
+
     return (
-        <form onSubmit={handleSubmit(click)} className={styles.form}>
+        <form onSubmit={handleSubmit(submitHandler)} className={styles.form}>
             <Field
                 name='catalogName'
                 component={FormInput}
@@ -39,7 +40,6 @@ const CreateCatalog = (props) => {
         </form>
     )
 };
-
 
 const mapDispatchToProps = (dispatch) => {
     return {
