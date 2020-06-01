@@ -3,11 +3,12 @@ import RegistrationForm from '../../components/RegistrationForm/RegistrationForm
 import styles from './RegistrationPage.module.sass';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {clearErrorSignUpAndLogin} from '../../actions/actionCreator';
+import { clearAuth } from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
+import Error from "../../components/Error/Error";
 
 const RegistrationPage = (props) => {
-    props.clearError();
+    const {auth:{error}, authClear} = props;
 
     const changeRoute = () => {
         props.history.replace('/');
@@ -17,12 +18,26 @@ const RegistrationPage = (props) => {
         <div className={styles.signUpPage}>
             <div className={styles.signUpContainer}>
                 <div className={styles.headerSignUpPage}>
-                    <img src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} alt="logo"/>
+                    <Link to='/'><img src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} alt="logo"/></Link>
                     <div className={styles.linkLoginContainer}>
-                        <Link to='/login' style={{textDecoration: 'none'}}><span>Login</span></Link>
+                        <Link to='/login'><span>Login</span></Link>
                     </div>
                 </div>
-                <RegistrationForm changeRoute={changeRoute}/>
+                <div className={styles.signUpFormContainer}>
+                    {
+                        error &&
+                        <Error data={error.data} status={error.status} clearError={authClear}/>
+                    }
+                    <div className={styles.headerFormContainer}>
+                        <h2>
+                            CREATE AN ACCOUNT
+                        </h2>
+                        <h4>
+                            We always keep your name and email address private.
+                        </h4>
+                    </div>
+                    <RegistrationForm changeRoute={changeRoute}/>
+                </div>
             </div>
             <div className={styles.footer}>
                 <div className={styles.articlesMainContainer}>
@@ -111,11 +126,12 @@ const RegistrationPage = (props) => {
     )
 };
 
+const mapStateToProps = (state) => ({auth: state.auth });
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        clearError: () => dispatch(clearErrorSignUpAndLogin())
+        authClear: () => dispatch(clearAuth())
     }
 };
 
-export default connect(null, mapDispatchToProps)(RegistrationPage);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationPage);
