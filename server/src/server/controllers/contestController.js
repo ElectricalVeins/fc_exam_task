@@ -203,10 +203,14 @@ module.exports.getCustomersContests = async (req, res, next) => {
       ],
     });
     contests.forEach(contest => contest.dataValues.count = contest.dataValues.Offers.length);
-    let haveMore=true;
+    //let haveMore=true;
+    /*let haveMore
     if(contests.length===0){
       haveMore=false;
-    }
+    } else {
+      haveMore = true;
+    }*/
+    const haveMore = contests.length !== 0;
     res.send({ contests, haveMore });
   }catch (err) {
     next(new ServerError(err));

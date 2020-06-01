@@ -3,7 +3,7 @@ import styles from './Header.module.sass';
 import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
 import CONSTANTS from '../../constants';
-import {getUserAction, clearUserStore, headerRequest} from '../../actions/actionCreator';
+import {clearUserStore, headerRequest} from '../../actions/actionCreator';
 
 
 class Header extends React.Component {
@@ -48,9 +48,8 @@ class Header extends React.Component {
         } else {
             return (
                 <>
-                    <Link to='/login' style={{textDecoration: 'none'}}><span className={styles.btn}>LOGIN</span></Link>
-                    <Link to='/registration' style={{textDecoration: 'none'}}><span
-                        className={styles.btn}>SIGN UP</span></Link>
+                    <Link to='/login'><span>LOGIN</span></Link>
+                    <Link to='/registration'><span>SIGN UP</span></Link>
                 </>
             )
         }
@@ -66,13 +65,15 @@ class Header extends React.Component {
                     <span className={styles.info}>Squadhelp recognized as one of the Most Innovative Companies by Inc Magazine.</span>
                     <a href="http://www.google.com">Read Announcement</a>
                 </div>
-                <div className={styles.loginSignnUpHeaders}>
-                    <div className={styles.numberContainer}>
-                        <img src={`${CONSTANTS.STATIC_IMAGES_PATH}phone.png`} alt='phone'/>
-                        <span>(877)&nbsp;355-3585</span>
-                    </div>
-                    <div className={styles.userButtonsContainer}>
-                        {this.renderLoginButtons()}
+                <div className={ styles.loginSignnUpHeadersWrapper }>
+                    <div className={styles.loginSignnUpHeadersContainer}>
+                        <div className={ styles.numberContainer }>
+                            <img src={ `${ CONSTANTS.STATIC_IMAGES_PATH }phone.png` } alt='phone'/>
+                            <a href="tel:8773553585"><span>(877)&nbsp;355-3585</span></a>
+                        </div>
+                        <div className={ styles.userButtonsContainer }>
+                            { this.renderLoginButtons() }
+                        </div>
                     </div>
                 </div>
                 <div className={styles.navContainer}>
@@ -84,14 +85,14 @@ class Header extends React.Component {
                                     <span>NAME IDEAS</span><img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
                                                                 alt='menu'/>
                                     <ul>
-                                        <li><a href="http://www.google.com">Beauty</a></li>
-                                        <li><a href="http://www.google.com">Consulting</a></li>
-                                        <li><a href="http://www.google.com">E-Commerce</a></li>
-                                        <li><a href="http://www.google.com">Fashion & Clothing</a></li>
-                                        <li><a href="http://www.google.com">Finance</a></li>
-                                        <li><a href="http://www.google.com">Real Estate</a></li>
-                                        <li><a href="http://www.google.com">Tech</a></li>
-                                        <li className={styles.last}><a href="http://www.google.com">More Categories</a>
+                                        <li><Link to="http://www.google.com">Beauty</Link></li>
+                                        <li><Link to="http://www.google.com">Consulting</Link></li>
+                                        <li><Link to="http://www.google.com">E-Commerce</Link></li>
+                                        <li><Link to="http://www.google.com">Fashion & Clothing</Link></li>
+                                        <li><Link to="http://www.google.com">Finance</Link></li>
+                                        <li><Link to="http://www.google.com">Real Estate</Link></li>
+                                        <li><Link to="http://www.google.com">Tech</Link></li>
+                                        <li className={styles.last}><Link to="http://www.google.com">More Categories</Link>
                                         </li>
                                     </ul>
                                 </li>
@@ -100,23 +101,23 @@ class Header extends React.Component {
                                                               alt='menu'/>
                                     <ul>
                                         <li><Link to='/howItWorks'>HOW IT WORKS</Link></li>
-                                        <li><a href="http://www.google.com">PRICING</a></li>
-                                        <li><a href="http://www.google.com">AGENCY SERVICE</a></li>
-                                        <li><a href="http://www.google.com">ACTIVE CONTESTS</a></li>
-                                        <li><a href="http://www.google.com">WINNERS</a></li>
-                                        <li><a href="http://www.google.com">LEADERBOARD</a></li>
-                                        <li className={styles.last}><a href="http://www.google.com">BECOME A
-                                            CREATIVE</a></li>
+                                        <li><Link to="http://www.google.com">PRICING</Link></li>
+                                        <li><Link to="http://www.google.com">AGENCY SERVICE</Link></li>
+                                        <li><Link to="http://www.google.com">ACTIVE CONTESTS</Link></li>
+                                        <li><Link to="http://www.google.com">WINNERS</Link></li>
+                                        <li><Link to="http://www.google.com">LEADERBOARD</Link></li>
+                                        <li className={styles.last}><Link to="http://www.google.com">BECOME A
+                                            CREATIVE</Link></li>
                                     </ul>
                                 </li>
                                 <li>
                                     <span>Our Work</span><img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
                                                               alt='menu'/>
                                     <ul>
-                                        <li><a href="http://www.google.com">NAMES</a></li>
-                                        <li><a href="http://www.google.com">TAGLINES</a></li>
-                                        <li><a href="http://www.google.com">LOGOS</a></li>
-                                        <li className={styles.last}><a href="http://www.google.com">TESTIMONIALS</a>
+                                        <li><Link to="http://www.google.com">NAMES</Link></li>
+                                        <li><Link to="http://www.google.com">TAGLINES</Link></li>
+                                        <li><Link to="http://www.google.com">LOGOS</Link></li>
+                                        <li className={styles.last}><Link to="http://www.google.com">TESTIMONIALS</Link>
                                         </li>
                                     </ul>
                                 </li>
@@ -124,23 +125,23 @@ class Header extends React.Component {
                                     <span>Names For Sale</span>
                                     <img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`} alt='menu'/>
                                     <ul>
-                                        <li><a href="http://www.google.com">POPULAR NAMES</a></li>
-                                        <li><a href="http://www.google.com">SHORT NAMES</a></li>
-                                        <li><a href="http://www.google.com">INTRIGUING NAMES</a></li>
-                                        <li><a href="http://www.google.com">NAMES BY CATEGORY</a></li>
-                                        <li><a href="http://www.google.com">VISUAL NAME SEARCH</a></li>
-                                        <li className={styles.last}><a href="http://www.google.com">SELL YOUR
-                                            DOMAINS</a></li>
+                                        <li><Link to="http://www.google.com">POPULAR NAMES</Link></li>
+                                        <li><Link to="http://www.google.com">SHORT NAMES</Link></li>
+                                        <li><Link to="http://www.google.com">INTRIGUING NAMES</Link></li>
+                                        <li><Link to="http://www.google.com">NAMES BY CATEGORY</Link></li>
+                                        <li><Link to="http://www.google.com">VISUAL NAME SEARCH</Link></li>
+                                        <li className={styles.last}><Link to="http://www.google.com">SELL YOUR
+                                            DOMAINS</Link></li>
                                     </ul>
                                 </li>
                                 <li>
                                     <span>Blog</span><img src={`${CONSTANTS.STATIC_IMAGES_PATH}menu-down.png`}
                                                           alt='menu'/>
                                     <ul>
-                                        <li><a href="http://www.google.com">ULTIMATE NAMING GUIDE</a></li>
-                                        <li><a href="http://www.google.com">POETIC DEVICES IN BUSINESS NAMING</a></li>
-                                        <li><a href="http://www.google.com">CROWDED BAR THEORY</a></li>
-                                        <li className={styles.last}><a href="http://www.google.com">ALL ARTICLES</a>
+                                        <li><Link to="http://www.google.com">ULTIMATE NAMING GUIDE</Link></li>
+                                        <li><Link to="http://www.google.com">POETIC DEVICES IN BUSINESS NAMING</Link></li>
+                                        <li><Link to="http://www.google.com">CROWDED BAR THEORY</Link></li>
+                                        <li className={styles.last}><Link to="http://www.google.com">ALL ARTICLES</Link>
                                         </li>
                                     </ul>
                                 </li>
