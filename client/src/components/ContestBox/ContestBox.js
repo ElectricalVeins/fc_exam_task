@@ -5,7 +5,7 @@ import CONSTANTS from '../../constants';
 
 
 const ContestBox = (props) => {
-    const { data: { id, status, title, contestType, prize, count, goToExtended }, data} = props;
+    const { data: { id, status, title, contestType, prize, count }, data, goToExtended} = props;
 
     const getTimeStr = () => {
         const diff = (moment.duration(moment().diff(moment(props.data.createdAt))));
