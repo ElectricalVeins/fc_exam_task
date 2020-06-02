@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router-dom'
 import {getContestsForCustomer, clearContestList, setNewCustomerFilter} from '../../actions/actionCreator';
@@ -6,12 +6,11 @@ import CONSTANTS from '../../constants';
 import ContestsContainer from '../../components/ContestsContainer/ContestsContainer';
 import ContestBox from "../ContestBox/ContestBox";
 import styles from './CustomerDashboard.module.sass';
-import classNames from 'classnames';
 import TryAgain from '../../components/TryAgain/TryAgain';
+import CustomerFilterItem from "../CustomerFilterItem/CustomerFilterItem";
 
 
-class CustomerDashboard extends React.Component {
-
+class CustomerDashboard extends Component {
 
     loadMore = (startFrom) => {
         this.props.getContests({
@@ -21,7 +20,6 @@ class CustomerDashboard extends React.Component {
         });
     };
 
-
     componentDidMount() {
         this.getContests();
     }
@@ -29,7 +27,6 @@ class CustomerDashboard extends React.Component {
     getContests = () => {
         this.props.getContests({limit: 8, contestStatus: this.props.customerFilter});
     };
-
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.customerFilter !== prevProps.customerFilter) {
@@ -41,21 +38,19 @@ class CustomerDashboard extends React.Component {
         this.props.history.push('/contest/' + contest_id);
     };
 
-
     setContestList = () => {
-        const array = [];
+        const contestList = [];
         const {contests} = this.props;
         for (let i = 0; i < contests.length; i++) {
-            array.push(<ContestBox data={contests[i]} key={contests[i].id}
+            contestList.push(<ContestBox data={contests[i]} key={contests[i].id}
                                    goToExtended={this.goToExtended}/>)
         }
-        return array;
+        return contestList;
     };
 
     componentWillUnmount() {
         this.props.clearContestsList();
     }
-
 
     tryToGetContest = () => {
         this.props.clearContestsList();
@@ -63,29 +58,32 @@ class CustomerDashboard extends React.Component {
     };
 
     render() {
-        const {error, haveMore} = this.props;
-        const {customerFilter} = this.props;
+        const {error, haveMore, customerFilter} = this.props;
+        const filterStyles={
+            activeFilter: styles.activeFilter,
+            filter: styles.filter
+        }
         return (
             <div className={styles.mainContainer}>
                 <div className={styles.filterContainer}>
-                    <div onClick={() => this.props.newFilter(CONSTANTS.CONTEST_STATUS_ACTIVE)}
-                         className={classNames({
-                             [styles.activeFilter]: CONSTANTS.CONTEST_STATUS_ACTIVE === customerFilter,
-                             [styles.filter]: CONSTANTS.CONTEST_STATUS_ACTIVE !== customerFilter
-                         })}>Active Contests
-                    </div>
-                    <div onClick={() => this.props.newFilter(CONSTANTS.CONTEST_STATUS_FINISHED)}
-                         className={classNames({
-                             [styles.activeFilter]: CONSTANTS.CONTEST_STATUS_FINISHED === customerFilter,
-                             [styles.filter]: CONSTANTS.CONTEST_STATUS_FINISHED !== customerFilter
-                         })}>Completed contests
-                    </div>
-                    <div onClick={() => this.props.newFilter(CONSTANTS.CONTEST_STATUS_PENDING)}
-                         className={classNames({
-                             [styles.activeFilter]: CONSTANTS.CONTEST_STATUS_PENDING === customerFilter,
-                             [styles.filter]: CONSTANTS.CONTEST_STATUS_PENDING !== customerFilter
-                         })}>Inactive contests
-                    </div>
+                    <CustomerFilterItem newFilter={this.props.newFilter}
+                                        status={CONSTANTS.CONTEST_STATUS_ACTIVE}
+                                        customerFilter={customerFilter}
+                                        classes={filterStyles}>
+                        Active Contests
+                    </CustomerFilterItem>
+                    <CustomerFilterItem newFilter={this.props.newFilter}
+                                        status={CONSTANTS.CONTEST_STATUS_FINISHED}
+                                        customerFilter={customerFilter}
+                                        classes={filterStyles}>
+                        Completed contests
+                    </CustomerFilterItem>
+                    <CustomerFilterItem newFilter={this.props.newFilter}
+                                        status={CONSTANTS.CONTEST_STATUS_PENDING}
+                                        customerFilter={customerFilter}
+                                        classes={filterStyles}>
+                        Inactive contests
+                    </CustomerFilterItem>
                     <Link to='/events' className={styles.filter}>Events</Link>
                 </div>
                 <div className={styles.contestsContainer}>
@@ -95,17 +93,18 @@ class CustomerDashboard extends React.Component {
                             :
                             <ContestsContainer isFetching={this.props.isFetching}
                                                loadMore={this.loadMore}
-                                               history={this.props.history} haveMore={haveMore}>
-                                {this.setContestList()}
+                                               history={this.props.history}
+                                               haveMore={haveMore}>
+                                {
+                                    this.setContestList()
+                                }
                             </ContestsContainer>
                     }
                 </div>
             </div>
-
         );
     }
 }
-
 
 const mapStateToProps = (state) => {
     return state.contestsList;
