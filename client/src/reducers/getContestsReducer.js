@@ -7,7 +7,7 @@ const initialState = {
     contests: [],
     customerFilter: CONSTANTS.CONTEST_STATUS_ACTIVE,
     creatorFilter: {
-        typeIndex: 1,
+        types: CONSTANTS.CONTEST_TYPES,
         contestId: '',
         industry: '',
         awardSort: 'asc',
@@ -16,7 +16,6 @@ const initialState = {
     },
     haveMore: true
 };
-
 
 export default function (state = initialState, action) {
     switch (action.type) {
@@ -59,10 +58,13 @@ export default function (state = initialState, action) {
             }
         }
         case ACTION.SET_NEW_CREATOR_FILTER: {
+            const {creatorFilter}=state;
+            const {filter}=action;
+
             return {
                 ...initialState,
                 isFetching: false,
-                creatorFilter: {...state.creatorFilter,...action.filter}
+                creatorFilter: {...creatorFilter,...filter}
             }
         }
         default:

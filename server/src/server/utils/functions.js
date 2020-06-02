@@ -1,13 +1,13 @@
 const bd = require('../models/index');
 const CONSTANTS =require('../../constants');
 
-module.exports.createWhereForAllContests=(typeIndex, contestId, industry, awardSort, status)=>{
+module.exports.createWhereForAllContests=(types, contestId, industry, awardSort, status)=>{
   const predicate={
     where: {},
     order: [],
   };
-  if(typeIndex)
-    Object.assign(predicate.where, { contestType: getPredicateTypes(typeIndex) });
+  if(types)
+    Object.assign(predicate.where, { contestType: getPredicateTypes(types) });
   if(contestId)
     Object.assign(predicate.where, { id: contestId });
   if(industry)
@@ -19,8 +19,8 @@ module.exports.createWhereForAllContests=(typeIndex, contestId, industry, awardS
   return predicate;
 };
 
-function getPredicateTypes(index){
-  return { [bd.Sequelize.Op.or] : [types[index].split(',')] };
+function getPredicateTypes(types){
+  return { [bd.Sequelize.Op.or] : types };
 }
 
-const types = ['', 'name,tagline,logo', 'name', 'tagline', 'logo', 'name,tagline', 'logo,tagline', 'name,logo'];
+//const types = ['', 'name,tagline,logo', 'name', 'tagline', 'logo', 'name,tagline', 'logo,tagline', 'name,logo'];

@@ -10,6 +10,7 @@ export default {
     NAME_CONTEST: 'name',
     LOGO_CONTEST: 'logo',
     TAGLINE_CONTEST: 'tagline',
+    CONTEST_TYPES: ['name', 'tagline', 'logo'],
     OFFER_STATUS_REJECTED: 'rejected',
     OFFER_STATUS_WON: 'won',
     OFFER_STATUS_PENDING: 'pending',

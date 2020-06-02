@@ -219,8 +219,8 @@ module.exports.getCustomersContests = async (req, res, next) => {
 
 module.exports.getContests = async (req, res, next) => {
   try{
-    const { body:{ typeIndex, contestId, industry, awardSort, status } }=req;
-    const predicates = UtilFunctions.createWhereForAllContests(typeIndex, contestId, industry, awardSort, status);
+    const { body:{ types, contestId, industry, awardSort, status } }=req;
+    const predicates = UtilFunctions.createWhereForAllContests(types, contestId, industry, awardSort, status);
     const contests = await db.Contests.findAll({
       where: predicates.where,
       order: predicates.order,
@@ -235,10 +235,7 @@ module.exports.getContests = async (req, res, next) => {
         }],
     });
     contests.forEach(contest => contest.dataValues.count = contest.dataValues.Offers.length);
-    let haveMore=true;
-    if(contests.length===0){
-      haveMore=false;
-    }
+    const haveMore = contests.length===0 && contests.length < req.body.limit
     res.send({ contests, haveMore });
   }catch(err){
     next(new ServerError(err));
