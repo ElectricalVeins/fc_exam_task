@@ -36,7 +36,7 @@ module.exports.passwordCompare = async (req, res, next) => {
     const { body: { password: pass1 }, user: { password: pass2 } } = req;
     const passwordCompare = await bcrypt.compare(pass1, pass2);
     if (!passwordCompare) {
-      next(new UncorrectPassword(new Error('Wrong password')));
+      next(new UncorrectPassword(new Error('Incorrect password or email')));
     }
     next();
   } catch (err) {
