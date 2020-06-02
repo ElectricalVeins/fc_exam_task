@@ -1,108 +1,14 @@
-import React from 'react';
-import {withRouter} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {
-    getContestsForCreative,
-    clearContestList,
-    setNewCreatorFilter,
-    getDataForContest
-} from '../../actions/actionCreator';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getContestsForCreative, clearContestList, } from '../../actions/actionCreator';
 import ContestsContainer from '../../components/ContestsContainer/ContestsContainer';
 import ContestBox from "../ContestBox/ContestBox";
 import styles from './CreatorDashboard.module.sass';
-import queryString from 'query-string';
-import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
 import TryAgain from '../../components/TryAgain/TryAgain';
-import CONSTANTS from "../../constants";
+import CreatorFilter from "../CreatorFilter/CreatorFilter";
 
-const types = ['', 'name,tagline,logo', 'name', 'tagline', 'logo', 'name,tagline', 'logo,tagline', 'name,logo'];
-
-class CreatorDashboard extends React.Component {
-
-    renderSelectType = () => {
-        const array = [];
-        const {creatorFilter} = this.props;
-        types.forEach((el, i) => !i || array.push(<option key={i - 1} value={el}>{el}</option>));
-        return (
-            <select onChange={({target}) => this.changePredicate({
-                name: 'typeIndex',
-                value: types.indexOf(target.value)
-            })} value={types[creatorFilter.typeIndex]} className={styles.input}>
-                {array}
-            </select>
-        );
-    };
-
-    renderIndustryType = () => {
-        const array = [];
-        const {creatorFilter} = this.props;
-        const {industry} = this.props.dataForContest.data;
-        array.push(<option key={0} value={null}>Choose industry</option>);
-        industry.forEach((industry, i) => array.push(<option key={i + 1} value={industry}>{industry}</option>));
-        return (
-            <select onChange={({target}) => this.changePredicate({
-                name: 'industry',
-                value: target.value
-            })} value={creatorFilter.industry} className={styles.input}>
-                {array}
-            </select>
-        );
-    };
-
-    componentWillReceiveProps(nextProps, nextContext) {
-        if (nextProps.location.search !== this.props.location.search) {
-            this.parseUrlForParams(nextProps.location.search);
-        }
-    }
-
-    componentDidMount() {
-        this.props.getDataForContest();
-        if (this.parseUrlForParams(this.props.location.search) && !this.props.contests.length)
-            this.getContests(this.props.creatorFilter);
-    }
-
-    getContests = (filter) => {
-        this.props.getContests(Object.assign({}, {
-            limit: 8,
-            offset: 0
-        }, filter));
-    };
-
-    changePredicate = ({name, value}) => {
-        const {creatorFilter} = this.props;
-        this.props.newFilter({[name]: value === 'Choose industry' ? '' : value});
-        this.parseParamsToUrl({...creatorFilter, ...{[name]: value === 'Choose industry' ? '' : value}});
-    };
-
-
-    parseParamsToUrl = (creatorFilter) => {
-        const obj = {};
-        Object.keys(creatorFilter).forEach(el => {
-            if (creatorFilter[el])
-                obj[el] = creatorFilter[el];
-        });
-        this.props.history.push('/Dashboard?' + queryString.stringify(obj));
-    };
-
-    parseUrlForParams = (search) => {
-        const obj = queryString.parse(search);
-        const filter = {
-            typeIndex: obj.typeIndex || 1,
-            contestId: obj.contestId ? obj.contestId : '',
-            industry: obj.industry ? obj.industry : '',
-            awardSort: obj.awardSort || 'asc',
-            ownEntries: obj.ownEntries ? obj.ownEntries : false,
-            status: obj.status || ''
-        };
-        if (!isEqual(filter, this.props.creatorFilter)) {
-            this.props.newFilter(filter);
-            this.props.clearContestsList();
-            this.getContests(filter);
-            return false;
-        } else
-            return true;
-    };
+class CreatorDashboard extends Component {
 
     getPredicateOfRequest = () => {
         const obj = {};
@@ -127,8 +33,9 @@ class CreatorDashboard extends React.Component {
         const contestList = [];
         const {contests} = this.props;
         for (let i = 0; i < contests.length; i++) {
-            contestList.push(<ContestBox data={contests[i]} key={contests[i].id}
-                                   goToExtended={this.goToExtended}/>)
+            contestList.push(<ContestBox data={contests[i]}
+                                         key={contests[i].id}
+                                         goToExtended={this.goToExtended}/>)
         }
         return contestList;
     };
@@ -143,60 +50,12 @@ class CreatorDashboard extends React.Component {
     };
 
     render() {
-        const {error, haveMore, creatorFilter} = this.props;
-        const {isFetching} = this.props.dataForContest;
+        const {error, haveMore, history} = this.props;
         return (
             <div className={styles.mainContainer}>
                 <div className={styles.filterContainer}>
                     <span className={styles.headerFilter}>Filter Results</span>
-                    <div className={ styles.inputsContainer }>
-                        <div
-                          onClick={ () => this.changePredicate({
-                              name: 'ownEntries',
-                              value: !creatorFilter.ownEntries
-                          }) }
-                          className={ classNames(styles.myEntries, { [styles.activeMyEntries]: creatorFilter.ownEntries }) }>My
-                            Entries
-                        </div>
-                        <div className={ styles.inputContainer }>
-                          <span>By contest type</span>
-                          { this.renderSelectType() }
-                        </div>
-                        <div className={ styles.inputContainer }>
-                          <span>By contest ID</span>
-                          <input type="text" onChange={ ({target}) => this.changePredicate({
-                            name: 'contestId',
-                            value: target.value
-                          }) } name='contestId'
-                                 value={ creatorFilter.contestId } className={ styles.input }/>
-                        </div>
-                        { !isFetching && <div className={ styles.inputContainer }>
-                          <span>By industry</span>
-                          { this.renderIndustryType() }
-                        </div> }
-                        <div className={ styles.inputContainer }>
-                          <span>By amount award</span>
-                          <select onChange={ ({target}) => this.changePredicate({
-                            name: 'awardSort',
-                            value: target.value
-                          }) } value={ creatorFilter.awardSort } className={ styles.input }>
-                            <option value='desc'>Descending</option>
-                            <option value='asc'>Ascending</option>
-                          </select>
-                        </div>
-                        <div className={ styles.inputContainer }>
-                          <span>By status</span>
-                          <select onChange={ ({target}) => this.changePredicate({
-                            name: 'status',
-                            value: target.value
-                          }) }
-                                  value={ creatorFilter.status }
-                                  className={ styles.input }>
-                            <option value=''>All</option>
-                            <option value='active'>Active</option>
-                          </select>
-                        </div>
-                    </div>
+                    <CreatorFilter search={history.location.search} history={history}/>
                 </div>
                 {
                     error ?
@@ -206,8 +65,11 @@ class CreatorDashboard extends React.Component {
                         :
                         <ContestsContainer isFetching={this.props.isFetching}
                                            loadMore={this.loadMore}
-                                           history={this.props.history} haveMore={haveMore}>
-                            {this.setContestList()}
+                                           history={this.props.history}
+                                           haveMore={haveMore}>
+                            {
+                                this.setContestList()
+                            }
                         </ContestsContainer>
                 }
             </div>
@@ -224,8 +86,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getContests: (data) => dispatch(getContestsForCreative(data)),
         clearContestsList: () => dispatch(clearContestList()),
-        newFilter: (filter) => dispatch(setNewCreatorFilter(filter)),
-        getDataForContest: () => dispatch(getDataForContest())
     }
 };
 
