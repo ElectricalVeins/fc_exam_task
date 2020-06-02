@@ -46,7 +46,7 @@ const CreatorFilter = props => {
   const parseUrlForParams = (search) => {
     const parsedParams = queryString.parse(search, {arrayFormat: 'index'});
     const filter = {
-      types: parsedParams.types && parsedParams.types.length ? parsedParams.types : CONSTANTS.CONTEST_TYPES,
+      types: parsedParams.types && parsedParams.types.length > 0 ? parsedParams.types : CONSTANTS.CONTEST_TYPES,
       contestId: parsedParams.contestId ? parsedParams.contestId : '',
       industry: parsedParams.industry ? parsedParams.industry : '',
       awardSort: parsedParams.awardSort || 'asc',
@@ -123,7 +123,7 @@ const CreatorFilter = props => {
                            handler={changePredicate}>
           <option key={0} value={null}>All industries</option>
           {
-            data.industry && data.industry.length &&
+            data.industry && data.industry.length > 0 &&
             data.industry.map(indstr => (<option key={indstr} value={indstr}>{indstr}</option>))
           }
         </CreatorFilterItem>

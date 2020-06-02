@@ -21,7 +21,7 @@ const CustomerFilterItem = props => {
 CustomerFilterItem.propTypes = {
   newFilter: PropTypes.func.isRequired,
   status: PropTypes.string,
-  customerFilter: PropTypes.object,
+  customerFilter: PropTypes.string,
   classes: PropTypes.object,
 };
 

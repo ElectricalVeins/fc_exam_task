@@ -33,12 +33,6 @@ export default {
         typeOfTagline: yup.string(),
         brandStyle: yup.string()
     }),
-    filterSchem: yup.object().shape({
-        typeIndex: yup.number().oneOf[1, 2, 3, 4, 5, 6, 7],
-        contestId: yup.string(),
-        awardSort: yup.string().matches(/(desc|asc)/),
-        industry: yup.string()
-    }),
     LogoOfferSchema: yup.object().shape({
         offerData: yup.mixed().required('required')
     }),
