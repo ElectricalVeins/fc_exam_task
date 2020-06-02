@@ -14,7 +14,7 @@ const CreatorFilterItem = props => {
       <span>{description}</span>
       {
         type === 'text'
-          ? <input type='text' value={value} className={inputStyles}/>
+          ? <input type='text' value={value} className={inputStyles} onChange={onChangeHandler}/>
           : <select onChange={onChangeHandler} value={value} className={inputStyles}>
             {
               props.children
