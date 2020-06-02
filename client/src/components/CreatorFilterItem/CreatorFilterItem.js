@@ -25,6 +25,14 @@ const CreatorFilterItem = props => {
   );
 };
 
-CreatorFilterItem.propTypes = {};
+CreatorFilterItem.propTypes = {
+  containerStyles: PropTypes.string,
+  inputStyles: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string,
+  handler: PropTypes.func.isRequired,
+  description: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 export default CreatorFilterItem;
