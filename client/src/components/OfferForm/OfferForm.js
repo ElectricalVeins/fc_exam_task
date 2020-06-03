@@ -2,7 +2,7 @@ import React from 'react';
 import CONTANTS from '../../constants';
 import {connect} from 'react-redux';
 import {setOffer, clearAddOfferError} from '../../actions/actionCreator';
-import {withRouter} from 'react-router-dom';
+import classNames from 'classnames'
 import styles from './OfferForm.module.sass';
 import {reduxForm, Field} from 'redux-form';
 import ImageUpload from '../InputComponents/ImageUpload/ImageUpload';
@@ -10,7 +10,6 @@ import FormInput from '../FormInput/FormInput';
 import customValidator from "../../validators/validator";
 import Schems from "../../validators/validationSchems";
 import Error from '../../components/Error/Error';
-
 
 let contestType;
 
@@ -46,7 +45,6 @@ const OfferForm = (props) => {
         }
     };
 
-
     const setOffer = (values) => {
         props.clearOfferError();
         const data = new FormData();
@@ -59,20 +57,30 @@ const OfferForm = (props) => {
         reset();
     };
 
-    contestType = props.contestType;
-    const {handleSubmit, valid, addOfferError, clearOfferError} = props;
-    return (
-        <div className={styles.offerContainer}>
-            {addOfferError &&
-            <Error data={addOfferError.data} status={addOfferError.status} clearError={clearOfferError}/>}
-            <form onSubmit={handleSubmit(setOffer)} className={styles.form}>
-                {renderOfferInput()}
-                {valid && <button type='submit' className={styles.btnOffer}>Send Offer</button>}
-            </form>
-        </div>
-    )
-};
+  const renderSubmitButton = () => {
+    const btnStyles = classNames(styles.btnOffer, {
+      [styles.btnOfferDisabled]: !valid
+    })
+    return (<button type='submit' className={btnStyles}>Send Offer</button>)
+  }
 
+  contestType = props.contestType;
+  const {handleSubmit, valid, addOfferError, clearOfferError} = props;
+  return (
+      <div className={styles.offerContainer}>
+          {addOfferError &&
+          <Error data={addOfferError.data} status={addOfferError.status} clearError={clearOfferError}/>}
+          <form onSubmit={handleSubmit(setOffer)} className={styles.form}>
+              {
+                renderOfferInput()
+              }
+              {
+                renderSubmitButton()
+              }
+          </form>
+      </div>
+  )
+};
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -85,7 +93,6 @@ const mapStateToProps = (state) => {
     const {addOfferError} = state.contestByIdStore;
     return {addOfferError};
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
     form: 'offerForm',
