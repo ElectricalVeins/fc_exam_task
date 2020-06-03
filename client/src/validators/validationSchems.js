@@ -23,21 +23,21 @@ export default {
     ContestSchem: yup.object().shape({
         contestType: yup.string().matches(/(name|tagline|logo)/).required(),
         file: yup.mixed(),
-        title: yup.string().test('test-title','required',value => (value && value.trim().length>=1)).required('title of contest required'),
+        title: yup.string().test('test-title','required',value => (value && value.trim().length>=1)).max(255).required('title of contest required'),
         typeOfName: yup.string(),
         industry: yup.string().required('industry required'),
         focusOfWork: yup.string().test('test-focusOfWork','required',value => (value && value.trim().length>=1)).required('focus of work required'),
         targetCustomer: yup.string().test('test-targetCustomer','required',value => (value && value.trim().length>=1)).required('target customers required'),
-        styleName: yup.string(),
-        nameVenture: yup.string(),
-        typeOfTagline: yup.string(),
-        brandStyle: yup.string()
+        styleName: yup.string().max(255),
+        nameVenture: yup.string().max(255),
+        typeOfTagline: yup.string().max(255),
+        brandStyle: yup.string().max(255)
     }),
     LogoOfferSchema: yup.object().shape({
         offerData: yup.mixed().required('required')
     }),
     TextOfferSchema: yup.object().shape({
-        offerData: yup.string().test('test-offerData','required',value => (value && value.trim().length>=1)).required('suggestion is required')
+        offerData: yup.string().test('test-offerData','required',value => (value && value.trim().length>=1)).max(255,'Offer should not exceed 255 characters').required('suggestion is required')
     }),
     PaymentSchema: yup.object().shape({
         number: yup.string().test('test-cardNumber','Credit Card number is invalid',value => valid.number(value).isValid).required('required'),
