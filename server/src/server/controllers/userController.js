@@ -199,7 +199,7 @@ module.exports.cashout = async (req, res, next) => {
                 `),
     },
     {
-      cardNumber: { [db.sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')] },
+      cardNumber: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')],
     },
     transaction);
     transaction.commit();
