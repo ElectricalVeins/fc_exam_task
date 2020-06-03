@@ -3,7 +3,7 @@ import valid from 'card-validator';
 
 const passwordScheme = yup.string().test('test-password', 'Minimum 6 symbols', value => (value && value.trim().length >= 6)).required('Password is required field')
 const confirmPasswordScheme = yup.string().required('Confirm password is required field').oneOf([yup.ref('password')], 'Confirmation password must be the same with password')
-const emailScheme = yup.string().email('Must be a valid Email').required('Email is required field');
+const emailScheme = yup.string().email('Must be a valid Email').max(255).required('Email is required field');
 
 export default {
     LoginSchem: yup.object().shape({
@@ -14,9 +14,9 @@ export default {
         email: yup.string().email('check email').required('Email is required'),
         password: passwordScheme,
         confirmPassword: confirmPasswordScheme,
-        firstName: yup.string().test('test-firstName','required',value => (value && value.trim().length>=1)).required('First Name is required'),
-        lastName: yup.string().test('test-lastName','required',value => (value && value.trim().length>=1)).required('Last Name is required'),
-        displayName: yup.string().test('test-displayName','required',value => (value && value.trim().length>=1)).required('Display Name is required'),
+        firstName: yup.string().test('test-firstName','required',value => (value && value.trim().length>=1)).max(255).required('First Name is required'),
+        lastName: yup.string().test('test-lastName','required',value => (value && value.trim().length>=1)).max(255).required('Last Name is required'),
+        displayName: yup.string().test('test-displayName','required',value => (value && value.trim().length>=1)).max(255).required('Display Name is required'),
         role: yup.string().matches(/(customer|creator)/).required('Role is required'),
         agreeOfTerms: yup.boolean().oneOf([true],'Must Accept Terms and Conditions').required('Must Accept Terms and Conditions')
     }),
