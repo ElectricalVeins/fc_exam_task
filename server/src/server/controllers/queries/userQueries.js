@@ -4,8 +4,8 @@ const ServerError = require('../../errors/ServerError');
 const bcrypt = require('bcrypt');
 
 
-module.exports.updateUser = async (data, userId, transaction) => {
-  const [updatedCount, [updatedUser]] = await bd.Users.update(data, { where: { id: userId }, returning: true, transaction });
+module.exports.updateUser = async (data, id, transaction) => {
+  const [updatedCount, [updatedUser]] = await bd.Users.update(data, { where: { id }, returning: true, transaction });
   if (updatedCount !== 1){
     throw new ServerError(new Error('cannot update user'));
   }
@@ -13,12 +13,12 @@ module.exports.updateUser = async (data, userId, transaction) => {
 };
 
 module.exports.findUser = async (predicate, transaction) => {
-  const result = await bd.Users.findOne({ where: predicate, transaction });
-  if (!result){
+  const foundUser = await bd.Users.findOne({ where: predicate, transaction });
+  if (!foundUser){
     throw new NotFound(new Error('user with this data didn`t exist'));
   }
   else{
-    return result.get({ plain: true });
+    return foundUser.get({ plain: true });
   }
 };
 

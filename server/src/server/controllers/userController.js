@@ -2,7 +2,7 @@ const moment = require('moment');
 const uuid = require('uuid/v1');
 const _ = require('lodash');
 const CONSTANTS = require('../../constants');
-const bd = require('../models/index');
+const db = require('../models/index');
 const NotFound = require('../errors/UserNotFoundError');
 const ServerError = require('../errors/ServerError');
 const BadRequestError = require('../errors/BadRequestError');
@@ -17,7 +17,6 @@ const ratingQueries = require('./queries/ratingQueries');
 module.exports.sendUser = async (req, res, next) => {
   try {
     const { user } = req;
-    console.log(JSON.stringify(user, null, 4));
     res.send({
       firstName: user.firstName,
       lastName: user.lastName,
@@ -34,11 +33,15 @@ module.exports.sendUser = async (req, res, next) => {
 };
 
 module.exports.saveUserToken = async (req, res, next) => {
+  let transaction;
   try{
-    const { accessToken, user }=req;
-    await userQueries.updateUser({ accessToken }, user.id);
+    transaction = await db.sequelize.transaction();
+    const { accessToken, user:{ id } }=req;
+    await userQueries.updateUser({ accessToken }, id, transaction);
     res.send({ token: accessToken });
+    transaction.commit();
   }catch(err){
+    transaction.rollback();
     next(new ServerError(err));
   }
 };
@@ -71,13 +74,13 @@ module.exports.changeMark = async (req, res, next) => {
   let transaction;
   try {
     const { body:{ isFirst, offerId, mark, creatorId }, tokenData:{ userId } } = req;
-    transaction = await bd.sequelize.transaction({ isolationLevel: bd.Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED });
+    transaction = await db.sequelize.transaction({ isolationLevel: db.Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED });
     const query = getQuery(offerId, userId, mark, isFirst, transaction);
     await query();
-    const offersArray = await bd.Ratings.findAll({
+    const offersArray = await db.Ratings.findAll({
       include: [
         {
-          model: bd.Offers,
+          model: db.Offers,
           required: true,
           where: { userId: creatorId },
         },
@@ -102,9 +105,9 @@ module.exports.changeMark = async (req, res, next) => {
 module.exports.payment = async (req, res, next) => {
   let transaction;
   try {
-    transaction = await bd.sequelize.transaction();
+    transaction = await db.sequelize.transaction();
     await bankQueries.updateBankBalance({
-      balance: bd.sequelize.literal(`
+      balance: db.sequelize.literal(`
                 CASE
             WHEN "cardNumber"='${req.body.number.replace(/ /g, '')}' AND "cvc"='${req.body.cvc}' AND "expiry"='${req.body.expiry}'
                 THEN "balance"-${req.body.price}
@@ -113,7 +116,7 @@ module.exports.payment = async (req, res, next) => {
         `),
     },
     {
-      cardNumber: { [bd.sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')] },
+      cardNumber: { [db.sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')] },
     },
     transaction);
 
@@ -133,7 +136,7 @@ module.exports.payment = async (req, res, next) => {
       });
 
     });
-    await bd.Contests.bulkCreate(req.body.contests, transaction);
+    await db.Contests.bulkCreate(req.body.contests, transaction);
     transaction.commit();
     res.status(200).send();
   } catch (err) {
@@ -143,30 +146,28 @@ module.exports.payment = async (req, res, next) => {
 };
 
 module.exports.updateLostPassword = async (req, res, next) => {
+  let transaction;
   try {
-    const { userData:{ hashPass, email } } = req;
-    const [updatedCount, []] = await bd.Users.update({
-      password:hashPass,
-    }, {
-      where: { email },
-      returning: true,
-    });
-
-    if(updatedCount === 1) {
-      return res.status(202).send('Your password have been successfully  changed');
-    }
-    next(new BadRequestError(new Error('Can not update user')));
+    transaction = await db.sequelize.transaction();
+    const { userData: { hashPass, id } } = req;
+    await userQueries.updateUser({ password: hashPass }, id, transaction);
+    transaction.commit();
+    res.status(202).send('Your password have been successfully  changed');
   } catch (err) {
+    transaction.rollback();
     next(new ServerError(err));
   }
 };
 
 module.exports.updateUser = async (req, res, next) => {
+  let transaction;
   try {
+    transaction = await db.sequelize.transaction();
     if (req.file) {
       req.body.avatar = req.file.filename;
     }
-    const updatedUser = await userQueries.updateUser(req.body, req.tokenData.userId);
+    const updatedUser = await userQueries.updateUser(req.body, req.tokenData.userId, transaction);
+    transaction.commit();
     res.send({
       firstName: updatedUser.firstName,
       lastName: updatedUser.lastName,
@@ -178,6 +179,7 @@ module.exports.updateUser = async (req, res, next) => {
       id: updatedUser.id,
     });
   } catch (err) {
+    transaction.rollback();
     next(new ServerError(err));
   }
 };
@@ -185,10 +187,10 @@ module.exports.updateUser = async (req, res, next) => {
 module.exports.cashout = async (req, res, next) => {
   let transaction;
   try {
-    transaction = await bd.sequelize.transaction();
-    const updatedUser = await userQueries.updateUser({ balance: bd.sequelize.literal('balance - ' + req.body.sum) }, req.tokenData.userId, transaction);
+    transaction = await db.sequelize.transaction();
+    const updatedUser = await userQueries.updateUser({ balance: db.sequelize.literal('balance - ' + req.body.sum) }, req.tokenData.userId, transaction);
     await bankQueries.updateBankBalance({
-      balance: bd.sequelize.literal(`CASE 
+      balance: db.sequelize.literal(`CASE 
                 WHEN "cardNumber"='${req.body.number.replace(/ /g, '')}' AND "expiry"='${req.body.expiry}' AND "cvc"='${req.body.cvc}'
                     THEN "balance"+${req.body.sum}
                 WHEN "cardNumber"='${CONSTANTS.SQUADHELP_BANK_NUMBER}' AND "expiry"='${CONSTANTS.SQUADHELP_BANK_EXPIRY}' AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}'
@@ -197,7 +199,7 @@ module.exports.cashout = async (req, res, next) => {
                 `),
     },
     {
-      cardNumber: { [bd.sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')] },
+      cardNumber: { [db.sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')] },
     },
     transaction);
     transaction.commit();

@@ -40,7 +40,7 @@ module.exports.passwordCompare = async (req, res, next) => {
     }
     next();
   } catch (err) {
-    next(new UncorrectPassword(err));
+    next(new ServerError(err));
   }
 };
 
