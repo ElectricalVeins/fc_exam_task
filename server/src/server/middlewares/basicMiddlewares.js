@@ -129,3 +129,37 @@ module.exports.checkUser = async (req, res, next) => {
     next(new NotFound(err));
   }
 };
+
+module.exports.offerObjectCreator = async (req, res, next) => {
+  const offer = {};
+  try {
+    const { body, tokenData } = req;
+    offer.text = body.offerData;
+    offer.userId = tokenData.userId;
+    offer.contestId = body.contestId;
+
+    if (req.body.contestType === CONSTANTS.LOGO_CONTEST) {
+      const { file } = req;
+      offer.fileName = file.filename;
+      offer.originalFileName = file.originalname;
+    }
+    req.offer = offer;
+    next();
+  } catch (err) {
+    next(new ServerError(err));
+  }
+};
+
+module.exports.prepareOfferObjectToUpdate = async (req, res, next) => {
+  try {
+    if (req.file) {
+      req.body.fileName = req.file.filename;
+      req.body.originalFileName = req.file.originalname;
+    }
+    req.contestId = req.body.contestId;
+    delete req.body.contestId;
+    next();
+  } catch (err) {
+    next(new ServerError(err));
+  }
+};

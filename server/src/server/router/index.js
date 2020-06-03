@@ -97,6 +97,7 @@ router.post(
   '/updateContest',
   tokenMiddlewares.verifyToken,
   upload.updateContestFile,
+  basicMiddlewares.prepareOfferObjectToUpdate,
   contestController.updateContest
 );
 
@@ -105,6 +106,7 @@ router.post(
   tokenMiddlewares.verifyToken,
   upload.uploadLogoFiles,
   basicMiddlewares.canSendOffer,
+  basicMiddlewares.offerObjectCreator,
   contestController.setNewOffer
 );
 

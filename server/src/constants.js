@@ -16,6 +16,8 @@ module.exports={
   NAME_CONTEST: 'name',
   LOGO_CONTEST: 'logo',
   TAGLINE_CONTEST: 'tagline',
+  OFFER_COMMAND_REJECT:'reject',
+  OFFER_COMMAND_RESOLVE:'resolve',
   OFFER_STATUS_PENDING: 'pending',
   OFFER_STATUS_REJECTED: 'rejected',
   OFFER_STATUS_WON: 'won',
