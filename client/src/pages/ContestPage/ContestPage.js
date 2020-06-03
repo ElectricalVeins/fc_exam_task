@@ -35,12 +35,10 @@ class ContestPage extends React.Component {
         this.getData()
     }
 
-
     getData = () => {
         const {params} = this.props.match;
         this.props.getData({contestId: params.id});
     };
-
 
     setOffersList = () => {
         const array = [];
@@ -53,14 +51,12 @@ class ContestPage extends React.Component {
         return array.length !== 0 ? array : <div className={styles.notFound}>There is no suggestion at this moment</div>
     };
 
-
     needButtons = (offerStatus) => {
         const contestCreatorId = this.props.contestByIdStore.contestData.User.id;
         const userId = this.props.userStore.data.id;
         const contestStatus = this.props.contestByIdStore.contestData.status;
         return (contestCreatorId === userId && contestStatus === CONSTANTS.CONTEST_STATUS_ACTIVE && offerStatus === CONSTANTS.OFFER_STATUS_PENDING);
     };
-
 
     setOfferStatus = (creatorId, offerId, command) => {
         this.props.clearSetOfferStatusError();
@@ -75,7 +71,6 @@ class ContestPage extends React.Component {
         };
         this.props.setOfferStatus(obj);
     };
-
 
     findConversationInfo = (interlocutorId) => {
         const {messagesPreview} = this.props.chatStore;

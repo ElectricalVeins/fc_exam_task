@@ -12,20 +12,18 @@ import Spinner from '../../components/Spinner/Spinner';
 
 const Home = (props) => {
     const [index, setIndex] = useState(0);
-    const [styleName, setStyle] = useState(styles.headline__static);
-    let timeout;
+    const [loaderStyle, setLoaderStyle] = useState(styles.headline__static);
 
     useEffect(() => {
-        timeout = setInterval(() => {
+        const timeout = setInterval(() => {
             setIndex(index + 1);
-            setStyle(styles.headline__isloading);
+            setLoaderStyle(styles.headline__isloading);
         }, 3000);
         return () => {
-            setStyle(styles.headline__static);
+            setLoaderStyle(styles.headline__static);
             clearInterval(timeout);
         };
     });
-
 
     const {isFetching} = props;
     const text = CONSTANTS.HEADER_ANIMATION_TEXT[index % CONSTANTS.HEADER_ANIMATION_TEXT.length];
@@ -37,7 +35,7 @@ const Home = (props) => {
                     <div className={styles.headerBar}>
                         <div className={styles.headline}>
                             <span>Find the Perfect Name for</span>
-                            <span className={styleName}>{text}</span>
+                            <span className={loaderStyle}>{text}</span>
                         </div>
                         <p>Launch a naming contest to engage hundreds of naming
                             experts as you’re guided through our agency-level naming process.

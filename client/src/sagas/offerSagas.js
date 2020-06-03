@@ -22,7 +22,6 @@ export function* changeMarkSaga(action) {
     }
 }
 
-
 export function* addOfferSaga(action) {
     try {
         const {data} = yield restController.setNewOffer(action.data);
@@ -33,9 +32,6 @@ export function* addOfferSaga(action) {
         yield put({type: ACTION.ADD_OFFER_ERROR, error: e.response});
     }
 }
-
-
-
 
 export function* setOfferStatusSaga(action) {
     try {
@@ -53,5 +49,3 @@ export function* setOfferStatusSaga(action) {
         yield  put({type: ACTION.SET_OFFER_STATUS_ERROR, error: e.response});
     }
 }
-
-

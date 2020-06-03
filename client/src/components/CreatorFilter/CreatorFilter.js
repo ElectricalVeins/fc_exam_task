@@ -68,7 +68,7 @@ const CreatorFilter = props => {
   const renderContestTypesFilter = () => {
     return (<div className={styles.badgeContainer}>
       {
-        types.length &&
+        types.length > 0 &&
         types.map((badge) => (
           <button className={styles.badge}
                   key={badge}

@@ -28,7 +28,6 @@ const SliderBar = props => {
         }
     };
 
-
     const renderSlides = () => {
         const {carouselType} = props;
         switch (carouselType) {
@@ -67,6 +66,7 @@ const SliderBar = props => {
             }
         }
     };
+
     return (
         <Flickity className={getStyleName()}
                   elementType={'div'}
