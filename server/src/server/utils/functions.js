@@ -22,5 +22,3 @@ module.exports.createWhereForAllContests=(types, contestId, industry, awardSort,
 function getPredicateTypes(types){
   return { [bd.Sequelize.Op.or] : types };
 }
-
-//const types = ['', 'name,tagline,logo', 'name', 'tagline', 'logo', 'name,tagline', 'logo,tagline', 'name,logo'];

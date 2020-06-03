@@ -203,19 +203,16 @@ module.exports.getCustomersContests = async (req, res, next) => {
       ],
     });
     contests.forEach(contest => contest.dataValues.count = contest.dataValues.Offers.length);
-    //let haveMore=true;
-    /*let haveMore
-    if(contests.length===0){
-      haveMore=false;
-    } else {
-      haveMore = true;
-    }*/
-    const haveMore = contests.length !== 0;
+    const haveMore =isHaveMore(contests, req.body.limit)
     res.send({ contests, haveMore });
   }catch (err) {
     next(new ServerError(err));
   }
 };
+
+function isHaveMore(contests, limit){
+  return contests.length > 0 && contests.length === limit
+}
 
 module.exports.getContests = async (req, res, next) => {
   try{
@@ -235,7 +232,7 @@ module.exports.getContests = async (req, res, next) => {
         }],
     });
     contests.forEach(contest => contest.dataValues.count = contest.dataValues.Offers.length);
-    const haveMore = contests.length===0 && contests.length < req.body.limit
+    const haveMore =isHaveMore(contests, req.body.limit)
     res.send({ contests, haveMore });
   }catch(err){
     next(new ServerError(err));
