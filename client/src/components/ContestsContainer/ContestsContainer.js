@@ -14,10 +14,9 @@ class ContestsContainer extends React.Component {
         window.removeEventListener('scroll', this.scrollHandler);
     };
 
-
     scrollHandler = () => {
-        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-            if (this.props.haveMore) {
+        if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
+            if (this.props.haveMore && !this.props.isFetching) {
                 this.props.loadMore(this.props.children.length);
             }
         }
