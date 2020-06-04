@@ -1,8 +1,6 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {
     getContestById,
-    setOfferStatus,
-    clearSetOfferStatusError,
     goToExpandedDialog,
     changeEditContest,
     changeContestViewMode,
@@ -25,24 +23,24 @@ import Error from "../../components/Error/Error";
 import OfferList from "../../components/OfferList/OfferList";
 
 
-class ContestPage extends React.Component {
+const ContestPage = props => {
+    const {data:{role}} = props.userStore;
+    const {contestByIdStore, changeShowImage, changeContestViewMode, getData, clearSetOfferStatusError} = props;
+    const {isShowOnFull, imagePath, error, isFetching, isBrief, contestData, offers, setOfferStatusError} = contestByIdStore;
 
-    componentWillUnmount() {
-        this.props.changeEditContest(false);
-    }
+    useEffect(()=>{
+        fetchData()
+        return ()=> props.changeEditContest(false);
+    },[])
 
-    componentDidMount() {
-        this.getData()
-    }
-
-    getData = () => {
-        const {params} = this.props.match;
-        this.props.getData({contestId: params.id});
+    const fetchData = () => {
+        const {params} = props.match;
+        props.getData({contestId: params.id});
     };
 
-    findConversationInfo = (interlocutorId) => {
-        const {messagesPreview} = this.props.chatStore;
-        const {id} = this.props.userStore.data;
+    const findConversationInfo = (interlocutorId) => {
+        const {messagesPreview} = props.chatStore;
+        const {id} = props.userStore.data;
         const participants = [id, interlocutorId];
         participants.sort((participant1, participant2) => participant1 - participant2);
         for (let i = 0; i < messagesPreview.length; i++) {
@@ -58,18 +56,14 @@ class ContestPage extends React.Component {
         return null;
     };
 
-    goChat = () => {
-        const {User} = this.props.contestByIdStore.contestData;
-        this.props.goToExpandedDialog({
+    const goChat = () => {
+        const {User} = props.contestByIdStore.contestData;
+        props.goToExpandedDialog({
             interlocutor: User,
-            conversationData: this.findConversationInfo(User.id)
+            conversationData: findConversationInfo(User.id)
         });
     };
 
-    render() {
-        const {role} = this.props.userStore.data;
-        const {contestByIdStore, changeShowImage, changeContestViewMode, getData, clearSetOfferStatusError} = this.props;
-        const {isShowOnFull, imagePath, error, isFetching, isBrief, contestData, offers, setOfferStatusError} = contestByIdStore;
         return (
             <div>
                 {
@@ -97,7 +91,7 @@ class ContestPage extends React.Component {
                                     </div>
                                     {
                                         isBrief ?
-                                            <Brief contestData={contestData} role={role} goChat={this.goChat}/>
+                                            <Brief contestData={contestData} role={role} goChat={goChat}/>
                                             :
                                             <div className={styles.offersContainer}>
                                                 {(role === CONSTANTS.CREATOR && contestData.status === CONSTANTS.CONTEST_STATUS_ACTIVE) &&
@@ -119,9 +113,7 @@ class ContestPage extends React.Component {
                 }
             </div>
         )
-    }
-}
-
+};
 
 const mapStateToProps = (state) => {
     const {contestByIdStore, userStore, chatStore} = state;
@@ -131,8 +123,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getData: (data) => dispatch(getContestById(data)),
-        setOfferStatus: (data) => dispatch(setOfferStatus(data)),
-        clearSetOfferStatusError: () => dispatch(clearSetOfferStatusError()),
         goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
         changeEditContest: (data) => dispatch(changeEditContest(data)),
         changeContestViewMode: (data) => dispatch(changeContestViewMode(data)),
