@@ -16,4 +16,4 @@ class NotificationController extends WebSocket {
   }
 }
 
-module.exports = new NotificationController();
+module.exports = NotificationController;

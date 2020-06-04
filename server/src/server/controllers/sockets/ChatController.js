@@ -29,4 +29,4 @@ class ChatController extends WebSocket {
 }
 
 
-module.exports = new ChatController();
+module.exports = ChatController;

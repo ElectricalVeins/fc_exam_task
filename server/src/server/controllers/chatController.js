@@ -7,7 +7,6 @@ const userQueries = require('./queries/userQueries');
 const controller = require('../../socketInit');
 const _ = require('lodash');
 
-
 module.exports.addMessage = async (req, res, next) => {
   const participants = [req.tokenData.userId, req.body.recipient];
   participants.sort((participant1, participant2) => participant1 - participant2);
@@ -90,15 +89,15 @@ module.exports.getChat = async (req, res, next) => {
       },
     ]);
 
-    const interlocutor = await userQueries.findUser({ id: req.body.interlocutorId });
+    const {firstName,lastName,displayName,id,avatar} = await userQueries.findUser({ id: req.body.interlocutorId });
     res.send({
       messages,
       interlocutor: {
-        firstName: interlocutor.firstName,
-        lastName: interlocutor.lastName,
-        displayName: interlocutor.displayName,
-        id: interlocutor.id,
-        avatar: interlocutor.avatar,
+        firstName,
+        lastName,
+        displayName,
+        id,
+        avatar,
       },
     });
   } catch (err) {
@@ -194,7 +193,6 @@ module.exports.favoriteChat = async (req, res, next) => {
 };
 
 module.exports.createCatalog = async (req, res, next) => {
-  console.log(req.body);
   const catalog = new Catalog({
     userId: req.tokenData.userId,
     catalogName: req.body.catalogName,
