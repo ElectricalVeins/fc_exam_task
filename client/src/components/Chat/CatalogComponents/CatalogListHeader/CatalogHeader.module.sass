@@ -17,15 +17,15 @@
     cursor: pointer
     font-size: 24px
     color: white
-    transition: font-size 0.2s
-    &:hover
-      transition: font-size 0.2s
-      font-size: 28px
   .infoContainer
     margin-left: 25px
+    overflow: hidden
     display: flex
     align-items: center
     span
+      overflow: hidden
+      white-space: nowrap
+      text-overflow: ellipsis
       font-size: 18px
       color: white
     i
@@ -66,10 +66,13 @@
         border: none
         width: 140px
         border-radius: 4px
-        color: #9ca8b7
+        color: #434e5a
         font-size: 16px
         padding: 4px
         outline: none
 
       .notValid
         border: 0.5px solid red !important
+
+      button
+        color: white

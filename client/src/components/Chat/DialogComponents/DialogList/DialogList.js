@@ -29,7 +29,6 @@ const DialogList = (props) => {
         event.stopPropagation();
     };
 
-
     const onlyFavoriteDialogs = (chatPreview, userId) => {
         return chatPreview.favoriteList[chatPreview.participants.indexOf(userId)];
     };

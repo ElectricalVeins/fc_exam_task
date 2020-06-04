@@ -6,7 +6,6 @@ import {changeShowModeCatalog, deleteCatalog} from '../../../../actions/actionCr
 
 const CatalogList = (props) => {
 
-
     const goToCatalog = (event, catalog) => {
         props.changeShowModeCatalog(catalog);
         event.stopPropagation();
