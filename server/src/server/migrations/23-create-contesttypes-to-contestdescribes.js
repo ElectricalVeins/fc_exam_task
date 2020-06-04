@@ -19,12 +19,12 @@ module.exports = {
         },
       },
     }).then(value => {
-      return queryInterface.addConstraint('TypeToDescribe', ['ContestTypeId', 'ContestDescribeId'], {
+      return queryInterface.addConstraint('TypeToDescribes', ['ContestTypeId', 'ContestDescribeId'], {
         type: 'primary key',
       });
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('TypeToDescribe');
+    return queryInterface.dropTable('TypeToDescribes');
   },
 };

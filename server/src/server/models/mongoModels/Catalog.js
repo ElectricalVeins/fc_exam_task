@@ -12,7 +12,6 @@ const Schema = new mongoose.Schema({
   chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Conversation', required: false, unique: false }],
 });
 
-
 const Catalog = mongoose.model('Catalog', Schema);
 module.exports = Catalog;
 
