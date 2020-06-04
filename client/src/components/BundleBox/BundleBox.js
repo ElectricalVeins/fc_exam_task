@@ -27,7 +27,6 @@ const BundleBox = (props) => {
         }
     };
 
-
     const getBackClass = () => {
         return props.path.length === 1 ? ' ' : ` ${styles.combinedBundle}`
     };
@@ -46,7 +45,6 @@ const BundleBox = (props) => {
             </div>
         </div>
     )
-
 };
 
 

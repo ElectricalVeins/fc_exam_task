@@ -22,7 +22,6 @@ const Brief = (props) => {
         props.update(data);
     };
 
-
     const getContestObjInfo = () => {
         const {focusOfWork, industry, nameVenture, styleName, targetCustomer, title, brandStyle, typeOfName, typeOfTagline, originalFileName, contestType} = props.contestData;
         const data = {
@@ -51,10 +50,7 @@ const Brief = (props) => {
         return defaultData;
     };
 
-
-    const {isEditContest, contestData, changeEditContest, updateContest, role, goChat, clearUpdateContestStore} = props;
-    const {error} = props.updateContestStore;
-    const {id} = props.userStore.data;
+    const {isEditContest, contestData, changeEditContest, updateContest, role, goChat, clearUpdateContestStore,updateContestStore:{error}, userStore:{data:{id}}} = props;
     if (!isEditContest) {
         return <ContestInfo userId={id} contestData={contestData} changeEditContest={changeEditContest} role={role}
                             goChat={goChat}/>

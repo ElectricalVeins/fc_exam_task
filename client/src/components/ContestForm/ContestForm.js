@@ -15,17 +15,13 @@ import FormTextArea       from '../InputComponents/FormTextArea/FormTextArea';
 import TryAgain           from '../TryAgain/TryAgain';
 import ButtonGroup        from "../ButtonGroup/ButtonGroup";
 
-
-
 let submitFunc;
-
 
 class ContestForm extends React.Component {
     constructor(props) {
         super(props);
         submitFunc = props.submitData;
     }
-
 
     getPreference = () => {
         const {contestType}=this.props;
@@ -49,7 +45,6 @@ class ContestForm extends React.Component {
         this.getPreference(this.props.contestType);
         this.props.initialize(this.props.defaultData);
     }
-
 
     renderSpecialInputs = () => {
         switch (this.props.contestType) {
@@ -146,9 +141,6 @@ class ContestForm extends React.Component {
         }
     };
 
-
-
-
     render() {
         const {isFetching, error} = this.props.dataForContest;
         const {handleSubmit, submitting} = this.props;
@@ -239,11 +231,9 @@ class ContestForm extends React.Component {
     }
 }
 
-
 const submit = (values) => {
     submitFunc(values);
 };
-
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -252,6 +242,7 @@ const mapStateToProps = (state, ownProps) => {
         initialValues: ownProps.defaultData
     }
 };
+
 const mapDispatchToProps = (dispatch) => {
     return {
         getData: (data) => dispatch(getDataForContest(data))

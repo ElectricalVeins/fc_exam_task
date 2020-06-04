@@ -7,9 +7,7 @@ import {changeFocusOnCard} from '../../actions/actionCreator';
 import PayInput from '../InputComponents/PayInput/PayInput';
 import customValidator from "../../validators/validator";
 import Schems from "../../validators/validationSchems";
-
 import("react-credit-cards/es/styles-compiled.css");
-
 
 let isPayForOrder;
 
@@ -135,9 +133,7 @@ const PayForm = (props) => {
             </div>
         </div>
     )
-
 };
-
 
 const mapStateToProps = (state) => {
     const selector = formValueSelector('payForm');

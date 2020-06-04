@@ -19,7 +19,6 @@ const ContestSideBar = (props) => {
         return str;
     };
 
-
     const renderContestInfo = () => {
         const {totalEntries} = props;
         const {User, prize} = props.contestData;
