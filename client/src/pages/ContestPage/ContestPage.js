@@ -12,7 +12,6 @@ import {connect} from 'react-redux';
 import Header from "../../components/Header/Header";
 import ContestSideBar from '../../components/ContestSideBar/ContestSideBar';
 import styles from './ContestPage.module.sass';
-import OfferBox from '../../components/OfferBox/OfferBox';
 import OfferForm from '../../components/OfferForm/OfferForm';
 import CONSTANTS from '../../constants';
 import Brief from '../../components/Brief/Brief';
@@ -23,6 +22,7 @@ import Spinner from '../../components/Spinner/Spinner';
 import TryAgain from '../../components/TryAgain/TryAgain';
 import 'react-image-lightbox/style.css';
 import Error from "../../components/Error/Error";
+import OfferList from "../../components/OfferList/OfferList";
 
 
 class ContestPage extends React.Component {
@@ -38,38 +38,6 @@ class ContestPage extends React.Component {
     getData = () => {
         const {params} = this.props.match;
         this.props.getData({contestId: params.id});
-    };
-
-    setOffersList = () => {
-        const array = [];
-        for (let i = 0; i < this.props.contestByIdStore.offers.length; i++) {
-            array.push(<OfferBox data={this.props.contestByIdStore.offers[i]}
-                                 key={this.props.contestByIdStore.offers[i].id} needButtons={this.needButtons}
-                                 setOfferStatus={this.setOfferStatus}
-                                 contestType={this.props.contestByIdStore.contestData.contestType} date={new Date()}/>)
-        }
-        return array.length !== 0 ? array : <div className={styles.notFound}>There is no suggestion at this moment</div>
-    };
-
-    needButtons = (offerStatus) => {
-        const contestCreatorId = this.props.contestByIdStore.contestData.User.id;
-        const userId = this.props.userStore.data.id;
-        const contestStatus = this.props.contestByIdStore.contestData.status;
-        return (contestCreatorId === userId && contestStatus === CONSTANTS.CONTEST_STATUS_ACTIVE && offerStatus === CONSTANTS.OFFER_STATUS_PENDING);
-    };
-
-    setOfferStatus = (creatorId, offerId, command) => {
-        this.props.clearSetOfferStatusError();
-        const {id, orderId, priority} = this.props.contestByIdStore.contestData;
-        const obj = {
-            command,
-            offerId,
-            creatorId,
-            orderId,
-            priority,
-            contestId: id
-        };
-        this.props.setOfferStatus(obj);
     };
 
     findConversationInfo = (interlocutorId) => {
@@ -104,11 +72,13 @@ class ContestPage extends React.Component {
         const {isShowOnFull, imagePath, error, isFetching, isBrief, contestData, offers, setOfferStatusError} = contestByIdStore;
         return (
             <div>
-                {/*<Chat/>*/}
-                {isShowOnFull && <LightBox
-                    mainSrc={`${CONSTANTS.publicURL}${imagePath}`}
-                    onCloseRequest={() => changeShowImage({isShowOnFull: false, imagePath: null})}
-                />}
+                {
+                    isShowOnFull && <LightBox mainSrc={`${CONSTANTS.publicURL}${imagePath}`}
+                                              onCloseRequest={() => changeShowImage({
+                                                  isShowOnFull: false,
+                                                  imagePath: null
+                                              })}/>
+                }
                 <Header/>
                 {error ? <div className={styles.tryContainer}><TryAgain getData={getData}/></div> :
                     (
@@ -138,7 +108,7 @@ class ContestPage extends React.Component {
                                                                                status={setOfferStatusError.status}
                                                                                clearError={clearSetOfferStatusError}/>}
                                                 <div className={styles.offers}>
-                                                    {this.setOffersList()}
+                                                    <OfferList/>
                                                 </div>
                                             </div>}
                                 </div>
