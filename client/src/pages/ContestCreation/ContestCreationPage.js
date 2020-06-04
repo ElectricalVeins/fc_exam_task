@@ -54,7 +54,6 @@ const ContestCreationPage = (props) => {
     )
 };
 
-
 const mapStateToProps = (state) => {
     const {contestStore, bundleStore} = state;
     return {contestStore, bundleStore};

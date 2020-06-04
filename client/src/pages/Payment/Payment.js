@@ -34,7 +34,6 @@ const Payment = (props) => {
         props.history.goBack();
     };
 
-
     const {contests} = props.contestStore;
     const {error} = props.payment;
     const {clearPaymentStore} = props;
@@ -68,7 +67,6 @@ const Payment = (props) => {
         </div>
     )
 };
-
 
 const mapStateToProps = (state) => {
     return {

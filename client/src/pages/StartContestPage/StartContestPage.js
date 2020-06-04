@@ -9,7 +9,6 @@ import Footer from '../../components/Footer/Footer';
 import ProgressBar from '../../components/ProgressBar/ProgressBar';
 import Header from "../../components/Header/Header";
 
-
 const StartContestPage = (props) => {
 
     if (props.userStore.data.role !== CONSTANTS.CUSTOMER) {
@@ -26,7 +25,6 @@ const StartContestPage = (props) => {
         props.choseBundle(bundleList);
         props.history.push(`/startContest/${bundleList.first}Contest`);
     };
-
 
     return (
         <div>
@@ -86,7 +84,6 @@ const StartContestPage = (props) => {
         </div>
     )
 };
-
 
 const mapStateToProps = (state) => {
     const {bundleStore, userStore} = state;
