@@ -1,7 +1,7 @@
 const bd = require('../models/index');
 const CONSTANTS =require('../../constants');
 
-module.exports.createWhereForAllContests=(types, contestId, industry, awardSort, status)=>{
+module.exports.createWhereForAllContests = (types, contestId, industry, awardSort, status) => {
   const predicate={
     where: {},
     order: [],

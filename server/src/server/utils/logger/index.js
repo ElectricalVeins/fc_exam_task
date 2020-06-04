@@ -56,10 +56,7 @@ module.exports.logToFile = async (data) => {
 
     const appendData = await createLogObject(data, start, LOG_PROPS);
     await appendToFile(LOG_FILE_PATH, appendData, start, 'r+');
-
-    console.log('RETURN');
   } catch (err) {
-    console.log('RETURN MAIN FUNC ERROR');
-    throw err;
+    console.log(err);
   }
 };

@@ -2,7 +2,7 @@ const db = require('../models/index');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
 const controller = require('../../socketInit');
-const UtilFunctions = require('../utils/functions');
+const {createWhereForAllContests} = require('../utils/createPredicate');
 const CONSTANTS = require('../../constants');
 
 
@@ -171,7 +171,7 @@ async function isHaveMore(contests, limit){
 module.exports.getContests = async (req, res, next) => {
   try{
     const { body:{ types, contestId, industry, awardSort, status, offset, limit, ownEntries }, tokenData:{ userId } }=req;
-    const { where, order } = UtilFunctions.createWhereForAllContests(types, contestId, industry, awardSort, status);
+    const { where, order } = createWhereForAllContests(types, contestId, industry, awardSort, status);
     const contests = await db.Contests.findAll({
       where,
       order,
