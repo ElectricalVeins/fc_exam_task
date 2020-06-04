@@ -14,6 +14,7 @@ import FieldFileInput     from '../InputComponents/FieldFileInput/FieldFileInput
 import FormTextArea       from '../InputComponents/FormTextArea/FormTextArea';
 import TryAgain           from '../TryAgain/TryAgain';
 import ButtonGroup        from "../ButtonGroup/ButtonGroup";
+import ContestSpecialInputs from "../ContestSpecialInput/ContestSpecialInput";
 
 let submitFunc;
 
@@ -46,104 +47,8 @@ class ContestForm extends React.Component {
         this.props.initialize(this.props.defaultData);
     }
 
-    renderSpecialInputs = () => {
-        switch (this.props.contestType) {
-            case CONSTANTS.NAME_CONTEST: {
-                return (
-                    <>
-                        <Field
-                            name='styleName'
-                            component={SelectInput}
-                            header='Style name'
-                            classes={{
-                                inputContainer: styles.selectInputContainer,
-                                inputHeader: styles.selectHeader,
-                                selectInput: styles.select
-                            }}
-                            optionsArray={this.props.dataForContest.data.nameStyle}
-                        />
-                        <Field
-                            name='typeOfName'
-                            component={SelectInput}
-                            classes={{
-                                inputContainer: styles.selectInputContainer,
-                                inputHeader: styles.selectHeader,
-                                selectInput: styles.select
-                            }}
-                            header='type of company'
-                            optionsArray={this.props.dataForContest.data.typeOfName}
-                        />
-                    </>
-                )
-            }
-            case CONSTANTS.LOGO_CONTEST: {
-                return (
-                    <>
-                        <div className={styles.inputContainer}>
-                            <span className={styles.inputHeader}>What name of your venture?</span>
-                            <Field
-                                name='nameVenture'
-                                component={FormInput}
-                                type='text'
-                                label='name of venture'
-                                classes={{
-                                    container: styles.componentInputContainer,
-                                    input: styles.input,
-                                    warning: styles.warning
-                                }}
-                            />
-                        </div>
-                        <Field
-                            name='brandStyle'
-                            component={SelectInput}
-                            classes={{
-                                inputContainer: styles.selectInputContainer,
-                                inputHeader: styles.selectHeader,
-                                selectInput: styles.select
-                            }}
-                            header='Brand Style'
-                            optionsArray={this.props.dataForContest.data.brandStyle}
-                        />
-                    </>
-                )
-            }
-            case CONSTANTS.TAGLINE_CONTEST: {
-                return (
-                    <>
-                        <div className={styles.inputContainer}>
-                            <span className={styles.inputHeader}>What name of your venture?</span>
-                            <Field
-                                name='nameVenture'
-                                component={FormInput}
-                                type='text'
-                                label='name of venture'
-                                classes={{
-                                    container: styles.componentInputContainer,
-                                    input: styles.input,
-                                    warning: styles.warning
-                                }}
-                            />
-                        </div>
-                        <Field
-                            name='typeOfTagline'
-                            component={SelectInput}
-                            classes={{
-                                inputContainer: styles.selectInputContainer,
-                                inputHeader: styles.selectHeader,
-                                selectInput: styles.select
-                            }}
-                            header='Type tagline'
-                            optionsArray={this.props.dataForContest.data.typeOfTagline}
-                        />
-                    </>
-                )
-            }
-        }
-    };
-
     render() {
-        const {isFetching, error} = this.props.dataForContest;
-        const {handleSubmit, submitting} = this.props;
+        const {dataForContest:{isFetching, error}, dataForContest, contestType, handleSubmit} = this.props;
         if (error)
            return <TryAgain getData={this.getPreference}/>;
         else
@@ -152,8 +57,7 @@ class ContestForm extends React.Component {
                     {
                         isFetching ? <Spinner/>
                             :
-                            <div className={styles.formContainer}>
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit} className={styles.formContainer}>
                                     <div className={styles.inputContainer}>
                                         <span className={styles.inputHeader}>Title of contest</span>
                                         <Field
@@ -178,7 +82,7 @@ class ContestForm extends React.Component {
                                                 selectInput: styles.select
                                             }}
                                             header='Describe industry associated with your venture'
-                                            optionsArray={this.props.dataForContest.data.industry}
+                                            optionsArray={dataForContest.data.industry}
                                         />
                                     </div>
                                     <div className={styles.inputContainer}>
@@ -210,7 +114,9 @@ class ContestForm extends React.Component {
                                             }}
                                         />
                                     </div>
-                                    {this.renderSpecialInputs()}
+                                    <ContestSpecialInputs dataForContest={dataForContest}
+                                                          classes={{...styles}}
+                                                          contestType={contestType}/>
                                     <Field
                                         name='file'
                                         component={FieldFileInput}
@@ -224,7 +130,6 @@ class ContestForm extends React.Component {
                                     />
                                   <ButtonGroup/>
                                 </form>
-                            </div>
                     }
                 </>
             )
