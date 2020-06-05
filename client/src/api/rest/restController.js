@@ -43,12 +43,7 @@ export const getContestById = (data) => {
     });
 };
 
-export const restorePasswordRequest = ({data}) => http.post('restorePassword', data)
-
-export const updateLostPassword = ({token}) => http.post('updateLostPassword', token)
-
-
-
-
-
-
+export const restorePasswordRequest = ({data}) => http.post('restorePassword', data);
+export const updateLostPassword = ({token}) => http.post('updateLostPassword', token);
+export const getUnModeratedOffers = offset => http.get(`moderator/getOffers/${offset}`);
+export const setOffer = data => http.post('moderator/setOffer', data)
