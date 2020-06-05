@@ -39,7 +39,7 @@ module.exports = {
       status: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: 'pending',
+        defaultValue: 'moderating',
       },
     });
   },
