@@ -46,19 +46,45 @@ module.exports.setOfferStatus = async (req, res, next) => {
 
 module.exports.getAllUnModeratedOffers = async (req, res, next) => {
   try {
-    //const {body:{{offset}}} = req
-    const offers = db.Offers.findAll({
-      where:{
-        status: CONSTANTS.OFFER_STATUS_MODERATING
+    const { query: { offset } } = req;
+    const offers = await db.Offers.findAll({
+      where: {
+        status: CONSTANTS.OFFER_STATUS_MODERATING,
       },
-      //limit: 4,
-      //offset: req.body.offset,
-    }).get({ plain: true });
+      include: [{
+        model: db.Users,
+        required: true,
+        attributes: ['displayName', 'email'],
+      },
+      ],
+      limit: 8,
+      offset: offset || 0,
+    });
+    res.send(offers);
+  } catch (err) {
+    next(new ServerError(err));
+  }
+};
 
-    console.log(offers)
+module.exports.offerModeration = async (req, res, next) => {
+  let transaction;
+  let updatedOffer;
+  try{
+    transaction = await db.sequelize.transaction();
+    const { body:{ command, id } }=req;
 
-    res.send()
+    if(command === CONSTANTS.OFFER_COMMAND_APPROVE){
+      updatedOffer = await offerQueries.updateOffer({ status:CONSTANTS.OFFER_STATUS_PENDING }, { id }, transaction);
+    }
+
+    if(command === CONSTANTS.OFFER_COMMAND_BAN){
+      updatedOffer = await offerQueries.updateOffer({ status:CONSTANTS.OFFER_STATUS_BANNED }, { id }, transaction);
+    }
+
+    transaction.commit();
+    res.send(updatedOffer);
   }catch (err) {
-    next(new ServerError(err))
+    transaction.rollback();
+    next(new ServerError(err));
   }
 };
