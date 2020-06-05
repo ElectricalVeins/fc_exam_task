@@ -440,13 +440,47 @@ export const changeModalShow=(data)=>{
 export const createRestorePasswordAction = (data) => ({
     type: ACTION.RESTORE_PASSWORD_ACTION,
     data
-})
+});
 
 export const createUpdatePasswordAction = (token) => ({
     type: ACTION.UPDATE_LOST_PASSWORD,
     token
-})
+});
 
 export const createClearPasswordReecoverStateAction = () => ({
     type:ACTION.CLEAR_PASSWORD_RECOVER_STATE
-})
+});
+
+export const createGetOffersAction = offset => ({
+    type: ACTION.GET_UN_MODERATED_OFFERS,
+    offset,
+});
+
+export const createGetOffersErrorAction = data => ({
+    type: ACTION.GET_UN_MODERATED_OFFERS_ERROR,
+    data,
+});
+
+export const createGetOffersSuccessAction = data => ({
+    type: ACTION.GET_UN_MODERATED_OFFERS_SUCCESS,
+    data,
+});
+
+export const createClearOffersAction = () => ({
+    type: ACTION.CLEAR_OFFER_STORE,
+});
+
+export const createSetOfferAction = data => ({
+    type: ACTION.MODERATOR_SET_OFFER,
+    data
+});
+
+export const createSetOfferSuccessAction = data => ({
+    type: ACTION.MODERATOR_SET_OFFER_SUCCESS,
+    data
+});
+
+export const createSetOfferErrorAction = data => ({
+    type: ACTION.MODERATOR_SET_OFFER_ERROR,
+    data
+});
