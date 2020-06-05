@@ -53,7 +53,7 @@ module.exports.getContestById = async (req, res, next) => {
         {
           model: db.Offers,
           required: false,
-          where: req.tokenData.role === CONSTANTS.CREATOR ? { userId: req.tokenData.userId } : {},
+          where: req.tokenData.role === CONSTANTS.CREATOR ? {userId: req.tokenData.userId} : {status: {[db.Sequelize.Op.ne]: CONSTANTS.OFFER_STATUS_MODERATING}},
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
@@ -152,6 +152,7 @@ module.exports.getCustomersContests = async (req, res, next) => {
         {
           model: db.Offers,
           required: false,
+          where: {status: {[db.Sequelize.Op.ne]: CONSTANTS.OFFER_STATUS_MODERATING}},
           attributes: ['id'],
         },
       ],
