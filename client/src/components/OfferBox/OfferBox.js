@@ -69,7 +69,6 @@ const OfferBox = (props) => {
         });
     };
 
-
     const changeMark = (value) => {
         props.clearError();
         props.changeMark({
@@ -141,7 +140,11 @@ const OfferBox = (props) => {
                         placeholderRating={data.mark}
                     />}
                 </div>
-                {role !== CONSTANTS.CREATOR && <i onClick={goChat} className="fas fa-comments"/>}
+                {
+                    role !== CONSTANTS.CREATOR
+                  ? <i onClick={goChat} className="fas fa-comments"/>
+                  : <div className={styles.offerStatus}>Offer Status: {props.data.status}</div>
+                }
             </div>
             {props.needButtons(data.status) && <div className={styles.btnsContainer}>
                 <div onClick={resolveOffer} className={styles.resolveBtn}>Resolve</div>
