@@ -6,7 +6,7 @@ const CONSTANTS = require('../../constants');
 
 module.exports.setNewOffer = async (req, res, next) => {
   try {
-    const { offer, body, tokenData }=req;
+    const { offer, body, tokenData } = req;
     const result = await offerQueries.createOffer(offer);
     delete result.contestId;
     delete result.userId;
@@ -22,23 +22,23 @@ module.exports.setNewOffer = async (req, res, next) => {
 module.exports.setOfferStatus = async (req, res, next) => {
   let transaction;
   let offer;
-  try{
-    const { body:{ command } }=req;
+  try {
+    const { body: { command } } = req;
     transaction = await db.sequelize.transaction();
 
     switch (command) {
-      case CONSTANTS.OFFER_COMMAND_REJECT:{
-        offer = await offerQueries.rejectOffer(req.body.offerId, req.body.creatorId, req.body.contestId, transaction);
-        break;
-      }
-      case CONSTANTS.OFFER_COMMAND_RESOLVE:{
-        offer = await offerQueries.resolveOffer(req.body.contestId, req.body.creatorId, req.body.orderId, req.body.offerId, req.body.priority, transaction);
-        break;
-      }
+    case CONSTANTS.OFFER_COMMAND_REJECT: {
+      offer = await offerQueries.rejectOffer(req.body.offerId, req.body.creatorId, req.body.contestId, transaction);
+      break;
+    }
+    case CONSTANTS.OFFER_COMMAND_RESOLVE: {
+      offer = await offerQueries.resolveOffer(req.body.contestId, req.body.creatorId, req.body.orderId, req.body.offerId, req.body.priority, transaction);
+      break;
+    }
     }
     transaction.commit();
     res.send(offer);
-  }catch (err) {
+  } catch (err) {
     transaction.rollback();
     next(err);
   }

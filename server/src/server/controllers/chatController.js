@@ -89,7 +89,7 @@ module.exports.getChat = async (req, res, next) => {
       },
     ]);
 
-    const {firstName,lastName,displayName,id,avatar} = await userQueries.findUser({ id: req.body.interlocutorId });
+    const { firstName, lastName, displayName, id, avatar } = await userQueries.findUser({ id: req.body.interlocutorId });
     res.send({
       messages,
       interlocutor: {

@@ -80,14 +80,14 @@ module.exports.canSendOffer = async (req, res, next) => {
 
 };
 
-module.exports.canModerateOffers = async (req,res, next) => {
+module.exports.canModerateOffers = async (req, res, next) => {
   try{
     if(req.tokenData.role !== CONSTANTS.MODERATOR){
-      return next(new RightsError(new Error('Only for moderators')))
+      return next(new RightsError(new Error('Only for moderators')));
     }
-    next()
+    next();
   }catch (err) {
-    next(err)
+    next(err);
   }
 };
 
