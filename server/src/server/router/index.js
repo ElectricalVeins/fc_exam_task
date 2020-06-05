@@ -4,6 +4,7 @@ const userMiddlewares = require('../middlewares/userMiddlewares');
 const tokenMiddlewares = require ('../middlewares/tokenMiddlewares');
 const validators = require('../middlewares/validators');
 const userController = require('../controllers/userController');
+const offerController = require('../controllers/offerController');
 const contestController = require('../controllers/contestController');
 const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
@@ -107,14 +108,14 @@ router.post(
   upload.uploadLogoFiles,
   basicMiddlewares.canSendOffer,
   basicMiddlewares.offerObjectCreator,
-  contestController.setNewOffer
+  offerController.setNewOffer
 );
 
 router.post(
   '/setOfferStatus',
   tokenMiddlewares.verifyToken,
   basicMiddlewares.onlyForCustomerWhoCreateContest,
-  contestController.setOfferStatus
+  offerController.setOfferStatus
 );
 
 router.post(
