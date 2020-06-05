@@ -209,6 +209,12 @@ router.post(
   chatController.getCatalogs
 );
 
+router.get('/moderator/getOffers',
+  tokenMiddlewares.verifyToken,
+  basicMiddlewares.canModerateOffers,
+  offerController.getAllUnModeratedOffers
+  );
+
 module.exports = router;
 
 
