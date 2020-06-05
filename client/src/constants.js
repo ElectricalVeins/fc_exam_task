@@ -4,6 +4,7 @@ const serverIP='localhost';
 export default {
     CUSTOMER: 'customer',
     CREATOR: 'creator',
+    MODERATOR: 'moderator',
     CONTEST_STATUS_ACTIVE: 'active',
     CONTEST_STATUS_FINISHED: 'finished',
     CONTEST_STATUS_PENDING: 'pending',
@@ -11,6 +12,9 @@ export default {
     LOGO_CONTEST: 'logo',
     TAGLINE_CONTEST: 'tagline',
     CONTEST_TYPES: ['name', 'tagline', 'logo'],
+    OFFER_STATUS_MODERATING: 'moderating',
+    OFFER_COMMAND_BAN:'ban',
+    OFFER_COMMAND_APPROVE: 'approve',
     OFFER_STATUS_REJECTED: 'rejected',
     OFFER_STATUS_WON: 'won',
     OFFER_STATUS_PENDING: 'pending',
