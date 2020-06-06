@@ -60,6 +60,7 @@ module.exports.getAllUnModeratedOffers = async (req, res, next) => {
       ],
       limit: 8,
       offset: offset || 0,
+      order: [['id', 'ASC']],
     });
     res.send(offers);
   } catch (err) {
