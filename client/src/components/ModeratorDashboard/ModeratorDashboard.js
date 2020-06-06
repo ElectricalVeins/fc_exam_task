@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import LightBox from 'react-image-lightbox';
 import { connect } from 'react-redux';
+import styles from './ModeratorDashboard.module.sass'
 import * as actionCreator from '../../actions/actionCreator';
 import ModeratorOfferBox from "../ModeratorOfferBox/ModeratorOfferBox";
 import ModeratorOfferContainer from "../ModeratorOfferContainer/ModeratorOfferContainer";
@@ -20,7 +21,7 @@ const ModeratorDashboard = props => {
   const closeModal = () => props.changeModalView({isShowModal: false, filePath: null})
 
   return (
-    <>
+    <div className={styles.pageWrapper}>
       {
         isShowModal && <LightBox mainSrc={`${CONSTANTS.publicURL}${filePath}`}
                                  onCloseRequest={closeModal}/>
@@ -30,7 +31,7 @@ const ModeratorDashboard = props => {
           offers.map(offer => <ModeratorOfferBox key={offer.id} {...offer}/>)
         }
       </ModeratorOfferContainer>
-    </>
+    </div>
   );
 };
 
