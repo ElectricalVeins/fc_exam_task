@@ -82,6 +82,7 @@ module.exports.offerModeration = async (req, res, next) => {
     }
 
     transaction.commit();
+
     res.send(updatedOffer);
   }catch (err) {
     transaction.rollback();

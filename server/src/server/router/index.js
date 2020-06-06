@@ -209,7 +209,7 @@ router.post(
   chatController.getCatalogs
 );
 
-router.get('/moderator/getOffers(/:offset)?',
+router.get('/moderator/getOffers',
   tokenMiddlewares.verifyToken,
   basicMiddlewares.canModerateOffers,
   offerController.getAllUnModeratedOffers

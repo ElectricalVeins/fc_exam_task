@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import * as actionCreator from '../../actions/actionCreator';
+import LightBox from 'react-image-lightbox';
 import { connect } from 'react-redux';
 import SpinnerLoader from "../Spinner/Spinner";
 import TryAgain from "../TryAgain/TryAgain";
@@ -19,11 +19,17 @@ const ModeratorDashboard = props => {
   if (error) return <TryAgain getData={props.getOffers}/>
 
   return (
-    <div>
+    <>
       {
-        offers.map(offer => <ModeratorOfferBox key={offer.id} {...offer}/>)
+        isShowModal && <LightBox mainSrc={`${CONSTANTS.publicURL}${filePath}`}
+                                 onCloseRequest={closeModal}/>
       }
-    </div>
+      <ModeratorOfferContainer loadMore={props.getOffers} isFetching={isFetching} error={error}>
+        {
+          offers.map(offer => <ModeratorOfferBox key={offer.id} {...offer}/>)
+        }
+      </ModeratorOfferContainer>
+    </>
   );
 };
 
