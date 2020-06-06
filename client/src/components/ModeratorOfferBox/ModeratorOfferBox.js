@@ -17,11 +17,16 @@ const ModeratorOfferBox = props => {
     props.setOffer({id, command: CONSTANTS.OFFER_COMMAND_APPROVE})
   }
 
+  const onImageHandler = () => {
+    props.changeModalView({filePath: fileName, isShowModal: true})
+  }
+
   const renderBody = () => {
     return text
       ? <div className={styles.textContainer}>{text}</div>
       : <div className={styles.fileContainer}>{
         <img className={styles.logo}
+             onClick={onImageHandler}
              src={`${CONSTANTS.publicURL}${fileName}`}
              alt='logo'/>
       }</div>
@@ -49,7 +54,8 @@ const ModeratorOfferBox = props => {
 ModeratorOfferBox.propTypes = {};
 
 const mapDispatchToProps = dispatch => ({
-  setOffer: (data) => dispatch(createSetOfferAction(data))
+  setOffer: (data) => dispatch(createSetOfferAction(data)),
+  changeModalView: data => dispatch(actionCreator.createChangeModalViewAction(data))
 })
 
 export default connect(null, mapDispatchToProps)(ModeratorOfferBox);

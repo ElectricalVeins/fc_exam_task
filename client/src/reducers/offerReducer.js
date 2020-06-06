@@ -5,6 +5,8 @@ const initialState = {
   isFetching: false,
   error: null,
   offers: [],
+  isShowModal: false,
+  filePath: null,
 };
 
 export default function (state = initialState, action) {
@@ -49,6 +51,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         error: action.data
+      }
+    }
+    case ACTION.CHANGE_MODERATOR_OFFERS_MODAL: {
+      const {data: {isShowModal, filePath}} = action
+      return {
+        ...state,
+        isShowModal,
+        filePath
       }
     }
     default:

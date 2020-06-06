@@ -2,21 +2,22 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import LightBox from 'react-image-lightbox';
 import { connect } from 'react-redux';
-import SpinnerLoader from "../Spinner/Spinner";
-import TryAgain from "../TryAgain/TryAgain";
+import * as actionCreator from '../../actions/actionCreator';
 import ModeratorOfferBox from "../ModeratorOfferBox/ModeratorOfferBox";
+import ModeratorOfferContainer from "../ModeratorOfferContainer/ModeratorOfferContainer";
+import CONSTANTS from "../../constants";
 
 const ModeratorDashboard = props => {
-
-  const {offerStore: {isFetching, error, offers}, userData} = props
+  const {isFetching, error, offers, isShowModal, filePath} = props
 
   useEffect(() => {
     !isFetching && props.getOffers(offers.length || 0);
-    return () => props.clearOffers();
+    return () => {
+      props.clearOffers();
+    }
   }, [])
 
-  if (isFetching) return <SpinnerLoader/>
-  if (error) return <TryAgain getData={props.getOffers}/>
+  const closeModal = () => props.changeModalView({isShowModal: false, filePath: null})
 
   return (
     <>
@@ -34,16 +35,14 @@ const ModeratorDashboard = props => {
 };
 
 const mapStateToProps = state => {
-  return {
-    offerStore: state.offerStore,
-    userData: state.userStore.data,
+  return {...state.offerStore}
 
-  }
 };
 
 const mapDispatchToProps = dispatch => ({
   getOffers: offset => dispatch(actionCreator.createGetOffersAction(offset)),
-  clearOffers: () => dispatch(actionCreator.createClearOffersAction())
+  clearOffers: () => dispatch(actionCreator.createClearOffersAction()),
+  changeModalView: data => dispatch(actionCreator.createChangeModalViewAction(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModeratorDashboard);

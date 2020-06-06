@@ -484,3 +484,8 @@ export const createSetOfferErrorAction = data => ({
     type: ACTION.MODERATOR_SET_OFFER_ERROR,
     data
 });
+
+export const createChangeModalViewAction = data => ({
+    type: ACTION.CHANGE_MODERATOR_OFFERS_MODAL,
+    data
+})
