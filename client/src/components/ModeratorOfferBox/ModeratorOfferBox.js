@@ -36,14 +36,14 @@ const ModeratorOfferBox = props => {
   return (
     <section className={styles.moderatorOfferBox}>
       <div className={styles.infoContainer}>
-        <h5>Offer ID:<span>{id}</span></h5>
-        <h5>User email:<span>{email}</span></h5>
-        <h5>User login:<span>{displayName}</span></h5>
+        <p>Offer ID:<span>{id}</span></p>
+        <p>User email:<span>{email}</span></p>
+        <p>User login:<span>{displayName}</span></p>
       </div>
       {renderBody()}
-      <div className={styles.btnCnt}>
-        <div className={styles.btn} onClick={banHandler}>BAN</div>
-        <div className={styles.btn} onClick={approveHandler}>APPROVE</div>
+      <div className={styles.buttonContainer}>
+        <div className={styles.button} onClick={banHandler}>Ban</div>
+        <div className={styles.button} onClick={approveHandler}>Approve</div>
       </div>
     </section>
   );
