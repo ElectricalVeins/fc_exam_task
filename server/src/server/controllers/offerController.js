@@ -3,6 +3,7 @@ const ServerError = require('../errors/ServerError');
 const offerQueries = require('./queries/offerQueries');
 const controller = require('../../socketInit');
 const CONSTANTS = require('../../constants');
+const {sendOfferModerationEmail} = require('../utils/sendEmail')
 
 module.exports.setNewOffer = async (req, res, next) => {
   try {
@@ -70,8 +71,8 @@ module.exports.offerModeration = async (req, res, next) => {
   let transaction;
   let updatedOffer;
   try{
+    const { body:{ command, id, email } }=req;
     transaction = await db.sequelize.transaction();
-    const { body:{ command, id } }=req;
 
     if(command === CONSTANTS.OFFER_COMMAND_APPROVE){
       updatedOffer = await offerQueries.updateOffer({ status:CONSTANTS.OFFER_STATUS_PENDING }, { id }, transaction);
@@ -82,7 +83,7 @@ module.exports.offerModeration = async (req, res, next) => {
     }
 
     transaction.commit();
-
+    sendOfferModerationEmail(updatedOffer, email)
     res.send(updatedOffer);
   }catch (err) {
     transaction.rollback();
