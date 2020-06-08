@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './ModeratorOfferBox.module.sass'
-import PropTypes from 'prop-types';
+import classNames from 'classnames'
 import { connect } from 'react-redux';
 import CONSTANTS from "../../constants";
 import * as actionCreator from "../../actions/actionCreator";
@@ -24,15 +24,14 @@ const ModeratorOfferBox = props => {
   const renderBody = () => {
     return text
       ? <div className={styles.textContainer}>{text}</div>
-      : <div className={styles.fileContainer}>{
+      : <div className={styles.fileContainer}>
         <img className={styles.logo}
              onClick={onImageHandler}
              src={`${CONSTANTS.publicURL}${fileName}`}
              alt='logo'/>
-      }</div>
+      </div>
   }
 
-  /*onClick={() => props.changeShowImage({imagePath: data.fileName, isShowOnFull: true})}*/
   return (
     <section className={styles.moderatorOfferBox}>
       <div className={styles.infoContainer}>
@@ -40,16 +39,20 @@ const ModeratorOfferBox = props => {
         <p>User email:<span>{email}</span></p>
         <p>User login:<span>{displayName}</span></p>
       </div>
-      {renderBody()}
+      {
+        renderBody()
+      }
       <div className={styles.buttonContainer}>
-        <div className={styles.button} onClick={banHandler}>Ban</div>
-        <div className={styles.button} onClick={approveHandler}>Approve</div>
+        <div className={classNames(styles.button, styles.ban)}
+             onClick={banHandler}>Ban
+        </div>
+        <div className={classNames(styles.button, styles.approve)}
+             onClick={approveHandler}>Approve
+        </div>
       </div>
     </section>
   );
 };
-
-ModeratorOfferBox.propTypes = {};
 
 const mapDispatchToProps = dispatch => ({
   setOffer: (data) => dispatch(createSetOfferAction(data)),

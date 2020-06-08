@@ -16,7 +16,6 @@ const ModeratorOfferContainer = props => {
   const scrollHandler = () => {
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
       if (!isFetching) {
-        console.log('fetching',props.children.length)
         loadMore(props.children.length);
       }
     }

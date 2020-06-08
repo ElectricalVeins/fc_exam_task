@@ -26,7 +26,9 @@ const ModeratorDashboard = props => {
         isShowModal && <LightBox mainSrc={`${CONSTANTS.publicURL}${filePath}`}
                                  onCloseRequest={closeModal}/>
       }
-      <ModeratorOfferContainer loadMore={props.getOffers} isFetching={isFetching} error={error}>
+      <ModeratorOfferContainer loadMore={props.getOffers}
+                               isFetching={isFetching}
+                               error={error}>
         {
           offers.map(offer => <ModeratorOfferBox key={offer.id} {...offer}/>)
         }
