@@ -49,6 +49,9 @@
       &:hover
         background-color: rgba(205, 92, 92,0.7)
   .mainInfoContainer
+    max-width: 100%
+    width: 100%
+    //overflow: hidden
     align-self: stretch
     display: flex
     flex-direction: row
@@ -77,15 +80,12 @@
         font-size: 34px
         transition: font-size 0.2s
     .responseConainer
-      //width: 70%
+      max-width: 50%
       align-self: center
       display: flex
       flex-direction: column
       justify-content: flex-start
       align-items: center
-      @media(max-width: 800px)
-        margin-top: 10px
-        max-width: 200px
       .responseLogo
         cursor: pointer
         width: auto
@@ -94,9 +94,7 @@
         text-align: center
         overflow-wrap: break-word
         align-self: stretch
-        margin-left: 10px
         color: #556da5
-        margin-bottom: 10px
         font-size: 18px
     .creativeRating
       display: flex
@@ -127,8 +125,11 @@
         border-radius: 25px
 
 .offerStatus
+  align-self: flex-end
+  margin: auto 0
   color: #556da5
   text-transform: capitalize
+  text-align: center
 
 .winner
   background-color: #8aca6b

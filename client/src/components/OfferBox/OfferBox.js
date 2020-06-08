@@ -131,19 +131,21 @@ const OfferBox = (props) => {
                             :
                             <span className={styles.response}>{data.text}</span>
                     }
-                    {data.User.id !== id && <Rating
-                        fractions={2}
-                        fullSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt='star'/>}
-                        placeholderSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt='star'/>}
-                        emptySymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt='star'/>}
-                        onClick={changeMark}
-                        placeholderRating={data.mark}
-                    />}
+                    {
+                        role !== CONSTANTS.CUSTOMER && <div className={styles.offerStatus}>Offer Status: {props.data.status}</div>
+                    }
+                    {
+                        data.User.id !== id && <Rating fractions={2}
+                                                    fullSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt='star'/>}
+                                                    placeholderSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt='star'/>}
+                                                    emptySymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt='star'/>}
+                                                    onClick={changeMark}
+                                                    placeholderRating={data.mark}/>
+                    }
                 </div>
                 {
                     role !== CONSTANTS.CREATOR
-                  ? <i onClick={goChat} className="fas fa-comments"/>
-                  : <div className={styles.offerStatus}>Offer Status: {props.data.status}</div>
+                  && <i onClick={goChat} className="fas fa-comments"/>
                 }
             </div>
             {props.needButtons(data.status) && <div className={styles.btnsContainer}>
