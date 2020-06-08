@@ -72,7 +72,7 @@ module.exports.offerModeration = async (req, res, next) => {
   let transaction;
   let updatedOffer;
   try{
-    const { body:{ command, id, email } }=req;
+    const { body:{ command, id, userEmail } }=req;
     transaction = await db.sequelize.transaction();
 
     if(command === CONSTANTS.OFFER_COMMAND_APPROVE){
@@ -84,7 +84,7 @@ module.exports.offerModeration = async (req, res, next) => {
     }
 
     transaction.commit();
-    sendOfferModerationEmail(updatedOffer, email)
+    sendOfferModerationEmail(updatedOffer, userEmail)
     res.send(updatedOffer);
   }catch (err) {
     transaction.rollback();

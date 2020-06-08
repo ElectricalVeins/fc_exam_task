@@ -10,11 +10,11 @@ const ModeratorOfferBox = props => {
   const {id, text, fileName, User: {displayName, email}} = props;
 
   const banHandler = () => {
-    props.setOffer({id, command: CONSTANTS.OFFER_COMMAND_BAN, email})
+    props.setOffer({id, command: CONSTANTS.OFFER_COMMAND_BAN, userEmail: email})
   }
 
   const approveHandler = () => {
-    props.setOffer({id, command: CONSTANTS.OFFER_COMMAND_APPROVE, email})
+    props.setOffer({id, command: CONSTANTS.OFFER_COMMAND_APPROVE, userEmail: email})
   }
 
   const onImageHandler = () => {

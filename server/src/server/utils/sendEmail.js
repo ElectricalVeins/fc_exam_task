@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const CONSTANTS = require('../../constants');
 
 async function sendRestorePasswordEmail(restoreLink, receiver) {
   try {
@@ -50,6 +51,7 @@ async function sendOfferModerationEmail(offer, receiver) {
       to: receiver, // list of receivers
       subject: 'Offer Moderation', // Subject line
       text: `Your offer has been moderated! Contest ID: ${offer.contestId}, status: ${offer.status}`, // plain text body
+      html:`<a href="${CONSTANTS.BASE_URL}contest/${offer.contestId}">Your offer has been moderated! Contest ID: ${offer.contestId}, status: ${offer.status}</a>`
     });
 
     // Preview only available when sending through an Ethereal account
