@@ -8,7 +8,6 @@ import {
     clearChangeMarkError,
     goToExpandedDialog,
     changeShowImage,
-    changeModalShow
 } from '../../actions/actionCreator';
 import {withRouter} from 'react-router-dom';
 import isEqual from 'lodash/isEqual';
@@ -44,7 +43,7 @@ const OfferBox = (props) => {
             buttons: [
                 {
                     label: 'Yes',
-                    onClick: () => props.setOfferStatus(props.data.User.id, props.data.id, 'resolve')
+                    onClick: () => props.setOfferStatus(props.data.User.id, props.data.id, CONSTANTS.OFFER_COMMAND_RESOLVE)
                 },
                 {
                     label: 'No',
@@ -60,7 +59,7 @@ const OfferBox = (props) => {
             buttons: [
                 {
                     label: 'Yes',
-                    onClick: () => props.setOfferStatus(props.data.User.id, props.data.id, 'reject')
+                    onClick: () => props.setOfferStatus(props.data.User.id, props.data.id, CONSTANTS.OFFER_COMMAND_REJECT)
                 },
                 {
                     label: 'No',
