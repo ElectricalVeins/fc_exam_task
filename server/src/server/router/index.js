@@ -218,6 +218,7 @@ router.get('/moderator/getOffers',
 router.post('/moderator/setOffer',
   tokenMiddlewares.verifyToken,
   basicMiddlewares.canModerateOffers,
+  userMiddlewares.findUserIdByContestId,
   offerController.offerModeration
 );
 
