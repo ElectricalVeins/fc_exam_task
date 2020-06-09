@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import LightBox from 'react-image-lightbox';
 import { connect } from 'react-redux';
 import styles from './ModeratorDashboard.module.sass'
@@ -9,16 +8,16 @@ import ModeratorOfferContainer from "../ModeratorOfferContainer/ModeratorOfferCo
 import CONSTANTS from "../../constants";
 
 const ModeratorDashboard = props => {
-  const {isFetching, error, offers, isShowModal, filePath} = props
+  const {isFetching, error, offers, isShowModal, filePath} = props;
 
   useEffect(() => {
     !isFetching && props.getOffers(offers.length || 0);
     return () => {
       props.clearOffers();
     }
-  }, [])
+  }, []);
 
-  const closeModal = () => props.changeModalView({isShowModal: false, filePath: null})
+  const closeModal = () => props.changeModalView({isShowModal: false, filePath: null});
 
   return (
     <div className={styles.pageWrapper}>
@@ -38,14 +37,13 @@ const ModeratorDashboard = props => {
 };
 
 const mapStateToProps = state => {
-  return {...state.offerStore}
-
+  return {...state.offerStore};
 };
 
 const mapDispatchToProps = dispatch => ({
   getOffers: offset => dispatch(actionCreator.createGetOffersAction(offset)),
   clearOffers: () => dispatch(actionCreator.createClearOffersAction()),
   changeModalView: data => dispatch(actionCreator.createChangeModalViewAction(data))
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ModeratorDashboard);

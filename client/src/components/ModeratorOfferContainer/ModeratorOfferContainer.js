@@ -2,6 +2,7 @@ import React,{useEffect} from 'react';
 import PropTypes from 'prop-types';
 import SpinnerLoader from "../Spinner/Spinner";
 import TryAgain from "../TryAgain/TryAgain";
+import CONSTANTS from '../../constants'
 
 const ModeratorOfferContainer = props => {
   const{loadMore, isFetching, error}=props;
@@ -14,19 +15,23 @@ const ModeratorOfferContainer = props => {
   })
 
   const scrollHandler = () => {
-    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
+    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - CONSTANTS.SCROLL_DELTA) {
       if (!isFetching) {
-        loadMore(props.children.length);
+        fetchAgain()
       }
     }
   };
 
-  if (!isFetching && props.children.length === 0) return <div style={{margin: '0 auto'}}>There are no unmoderated offers</div>;
-  if (error) return <TryAgain getData={props.getOffers}/>
+  const fetchAgain = () => {
+    loadMore(props.children.length);
+  }
+
+  if (error) return <TryAgain getData={fetchAgain}/>
 
   return <>
     {props.children}
     {isFetching && <SpinnerLoader/>}
+    <TryAgain getData={fetchAgain} text={'Load Offers'}/>
   </>
 };
 
