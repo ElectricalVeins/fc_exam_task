@@ -1,3 +1,4 @@
+const db = require('../models/index');
 const bcrypt = require('bcrypt');
 const CONSTANTS = require('../../constants');
 const NotFound = require('../errors/UserNotFoundError');
@@ -16,6 +17,23 @@ module.exports.findUserByEmail = async (req, res, next) => {
     next(new NotFound(err));
   }
 };
+
+module.exports.findUserIdByContestId = async (req, res, next) => {
+  try {
+    const {body: {contestId}} = req;
+    const {userId} = await db.Contests.findOne({
+      where: {id: contestId},
+      attributes: ['userId'],
+    });
+    if (!userId) {
+      next(new ServerError(new Error('Owner of contest not found')));
+    }
+    req.customerId = userId
+    next();
+  } catch (err) {
+    next(new ServerError(err))
+  }
+}
 
 module.exports.createUser = async (req, res, next) => {
   try{
