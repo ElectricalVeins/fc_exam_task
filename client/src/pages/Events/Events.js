@@ -7,6 +7,7 @@ import TimerForm                      from "../../components/TimerForm/TimerForm
 import Footer                         from "../../components/Footer/Footer";
 
 const Events = props => {
+  //exam react task. use only react
   const [ events, setEvents ] = useState( [
       {
     id: '1',
