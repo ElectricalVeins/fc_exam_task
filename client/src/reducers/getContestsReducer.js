@@ -12,7 +12,7 @@ const initialState = {
         industry: '',
         awardSort: 'asc',
         ownEntries: false,
-        status: '',
+        status: 'active',
     },
     haveMore: true
 };

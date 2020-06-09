@@ -47,11 +47,11 @@ const CreatorFilter = props => {
     const parsedParams = queryString.parse(search, {arrayFormat: 'index'});
     const filter = {
       types: parsedParams.types && parsedParams.types.length > 0 ? parsedParams.types : CONSTANTS.CONTEST_TYPES,
-      contestId: parsedParams.contestId ? parsedParams.contestId : '',
-      industry: parsedParams.industry ? parsedParams.industry : '',
-      awardSort: parsedParams.awardSort || 'asc',
-      ownEntries: parsedParams.ownEntries ? parsedParams.ownEntries : false,
-      status: parsedParams.status || ''
+      contestId: parsedParams.contestId || '',
+      industry: parsedParams.industry || '',
+      awardSort: parsedParams.awardSort || 'desc',
+      ownEntries: parsedParams.ownEntries || false,
+      status: parsedParams.status === 'all' ? '' : 'active'
     };
     props.newFilter(filter);
     props.clearContestsList();
@@ -143,7 +143,7 @@ const CreatorFilter = props => {
                          value={creatorFilter.status}
                          inputStyles={styles.input}
                          handler={changePredicate}>
-        <option value=''>All</option>
+        <option value='all'>All</option>
         <option value='active'>Active</option>
       </CreatorFilterItem>
     </div>
