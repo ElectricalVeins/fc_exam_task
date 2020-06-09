@@ -23,16 +23,16 @@ function getPredicateTypes(types){
   return { [db.Sequelize.Op.or] : types };
 }
 
-module.exports.createWhereForOffers = (role,req,ownEntries,userId) => {
+module.exports.createWhereForOffers = (role, req, ownEntries, userId) => {
   const predicate={};
 
   if(role === CONSTANTS.CREATOR){
     predicate.userId = req.tokenData.userId;
   }else{
-    predicate.status = {[db.Sequelize.Op.ne]: CONSTANTS.OFFER_STATUS_MODERATING};
+    predicate.status = { [db.Sequelize.Op.ne]: CONSTANTS.OFFER_STATUS_MODERATING };
   }
   if(ownEntries){
-    predicate.userId = userId
+    predicate.userId = userId;
   }
 
   return predicate;

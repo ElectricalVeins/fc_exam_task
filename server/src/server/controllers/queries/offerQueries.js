@@ -80,5 +80,5 @@ module.exports = {
   rejectOffer,
   createOffer,
   updateOfferStatus,
-  updateOffer
-}
+  updateOffer,
+};

@@ -20,20 +20,20 @@ module.exports.findUserByEmail = async (req, res, next) => {
 
 module.exports.findUserIdByContestId = async (req, res, next) => {
   try {
-    const {body: {contestId}} = req;
-    const {userId} = await db.Contests.findOne({
-      where: {id: contestId},
+    const { body: { contestId } } = req;
+    const { userId } = await db.Contests.findOne({
+      where: { id: contestId },
       attributes: ['userId'],
     });
     if (!userId) {
       next(new ServerError(new Error('Owner of contest not found')));
     }
-    req.customerId = userId
+    req.customerId = userId;
     next();
   } catch (err) {
-    next(new ServerError(err))
+    next(new ServerError(err));
   }
-}
+};
 
 module.exports.createUser = async (req, res, next) => {
   try{

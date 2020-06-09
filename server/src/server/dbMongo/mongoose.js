@@ -5,7 +5,7 @@ const configPath = env === 'production' ? path.join(__dirname, '..', '..', '..',
 const config = require(configPath)[env];
 
 
-mongoose.connect(`mongodb://${config.host}:27017/${config.database}`, {useCreateIndex: true, useNewUrlParser: true }, (err)=>{
+mongoose.connect(`mongodb://${config.host}:27017/${config.database}`, { useCreateIndex: true, useNewUrlParser: true }, (err)=>{
   if(err){
     console.log(err);
     process.exit(1);

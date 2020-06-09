@@ -3,7 +3,7 @@ const ServerError = require('../errors/ServerError');
 const offerQueries = require('./queries/offerQueries');
 const controller = require('../../socketInit');
 const CONSTANTS = require('../../constants');
-const {sendOfferModerationEmail} = require('../utils/sendEmail')
+const { sendOfferModerationEmail } = require('../utils/sendEmail');
 
 module.exports.setNewOffer = async (req, res, next) => {
   try {
@@ -70,7 +70,7 @@ module.exports.offerModeration = async (req, res, next) => {
   let transaction;
   let updatedOffer;
   try{
-    const {body: {command, offerId: id, userEmail, creatorId, contestId}, customerId} = req;
+    const { body: { command, offerId: id, userEmail, creatorId, contestId }, customerId } = req;
     transaction = await db.sequelize.transaction();
 
     if(command === CONSTANTS.OFFER_COMMAND_APPROVE){
@@ -80,11 +80,11 @@ module.exports.offerModeration = async (req, res, next) => {
 
     if(command === CONSTANTS.OFFER_COMMAND_BAN){
       updatedOffer = await offerQueries.updateOffer({ status:CONSTANTS.OFFER_STATUS_BANNED }, { id }, transaction);
-      controller.getNotificationController().emitChangeOfferStatus(creatorId, 'One of your offer was banned!', contestId)
+      controller.getNotificationController().emitChangeOfferStatus(creatorId, 'One of your offer was banned!', contestId);
     }
 
     transaction.commit();
-    sendOfferModerationEmail(updatedOffer, userEmail)
+    sendOfferModerationEmail(updatedOffer, userEmail);
     res.send(updatedOffer);
   }catch (err) {
     transaction.rollback();

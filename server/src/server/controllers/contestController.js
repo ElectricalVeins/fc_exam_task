@@ -133,7 +133,7 @@ module.exports.getContests = async (req, res, next) => {
   try{
     const { body:{ types, contestId, industry, awardSort, status, offset, limit, ownEntries }, tokenData:{ userId, role } }=req;
     const { where, order } = createWhereForAllContests(types, contestId, industry, awardSort, status);
-    const whereForOffers = createWhereForOffers(role,req,ownEntries,userId)
+    const whereForOffers = createWhereForOffers(role, req, ownEntries, userId);
     const contests = await db.Contests.findAll({
       where,
       order,
