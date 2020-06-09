@@ -7,14 +7,18 @@ import * as actionCreator from "../../actions/actionCreator";
 import { createSetOfferAction } from "../../actions/actionCreator";
 
 const ModeratorOfferBox = props => {
-  const {id, text, fileName, User: {displayName, email}} = props;
+  const {
+    text, fileName, contestId,
+    id: offerId, userId: creatorId,
+    User: {displayName, email: userEmail}
+  } = props;
 
   const banHandler = () => {
-    props.setOffer({id, command: CONSTANTS.OFFER_COMMAND_BAN, userEmail: email})
+    props.setOffer({contestId, offerId, creatorId, userEmail, command: CONSTANTS.OFFER_COMMAND_BAN})
   }
 
   const approveHandler = () => {
-    props.setOffer({id, command: CONSTANTS.OFFER_COMMAND_APPROVE, userEmail: email})
+    props.setOffer({contestId, offerId, creatorId, userEmail, command: CONSTANTS.OFFER_COMMAND_APPROVE})
   }
 
   const onImageHandler = () => {
@@ -35,8 +39,8 @@ const ModeratorOfferBox = props => {
   return (
     <section className={styles.moderatorOfferBox}>
       <div className={styles.infoContainer}>
-        <p>Offer ID:<span>{id}</span></p>
-        <p>User email:<span>{email}</span></p>
+        <p>Offer ID:<span>{offerId}</span></p>
+        <p>User email:<span>{userEmail}</span></p>
         <p>User login:<span>{displayName}</span></p>
       </div>
       {
