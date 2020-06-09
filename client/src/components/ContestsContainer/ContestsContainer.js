@@ -1,5 +1,5 @@
 import React from 'react';
-import {withRouter} from 'react-router';
+import CONSTANTS from '../../constants';
 import styles from './ContestContainer.module.sass';
 import Spinner from '../../components/Spinner/Spinner';
 
@@ -15,7 +15,7 @@ class ContestsContainer extends React.Component {
     };
 
     scrollHandler = () => {
-        if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
+        if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - CONSTANTS.SCROLL_DELTA) {
             if (this.props.haveMore && !this.props.isFetching) {
                 this.props.loadMore(this.props.children.length);
             }
