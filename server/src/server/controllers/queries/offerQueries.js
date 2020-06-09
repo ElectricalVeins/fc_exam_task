@@ -62,14 +62,18 @@ const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, tr
   }, transaction);
 
   const arrayRoomsId = [];
-  updatedOffers.forEach(offer => {
+  let resolvedOfferIndex;
+  updatedOffers.forEach((offer, index) => {
     if (offer.status === CONSTANTS.OFFER_STATUS_REJECTED && creatorId !== offer.userId) {
       arrayRoomsId.push(offer.userId);
+    }
+    if(offer.status === CONSTANTS.OFFER_STATUS_WON){
+      resolvedOfferIndex = index;
     }
   });
   controller.getNotificationController().emitChangeOfferStatus(arrayRoomsId, 'Someone of yours offers was rejected', contestId);
   controller.getNotificationController().emitChangeOfferStatus(creatorId, 'Someone of your offers WIN', contestId);
-  return updatedOffers[0].dataValues;
+  return updatedOffers[resolvedOfferIndex].dataValues;
 };
 /*
   async function approveOffer (){}
