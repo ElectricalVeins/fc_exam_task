@@ -7,18 +7,8 @@ class WebSocket {
         this.dispatch = dispatch;
         this.getState = getState;
         this.socket = socketIoClient(`${CONSTANTS.BASE_URL}${room}`, {origins: "localhost:*"});
-        this.listen();
+
     }
-
-    listen = () => {
-        this.socket.on('connect', () => {
-            this.anotherSubscribes();
-        });
-    };
-
-    anotherSubscribes = () => {
-
-    };
 }
 
 

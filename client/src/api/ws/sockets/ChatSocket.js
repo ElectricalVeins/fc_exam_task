@@ -6,12 +6,20 @@ import isEqual from 'lodash/isEqual';
 class ChatSocket extends WebSocket {
     constructor(dispatch, getState, room) {
         super(dispatch, getState, room);
+        this.listen();
     }
+
+    listen = () => {
+        this.socket.on('connect', () => {
+            this.anotherSubscribes();
+        });
+    };
 
     anotherSubscribes = () => {
         this.onNewMessage();
         this.onChangeBlockStatus();
     };
+
     onChangeBlockStatus = () => {
         this.socket.on(CONTANTS.CHANGE_BLOCK_STATUS, (data) => {
             const {message} = data;

@@ -6,16 +6,24 @@ import {toast} from 'react-toastify';
 class NotificationSocket extends WebSocket {
     constructor(dispatch, getState, room) {
         super(dispatch, getState, room);
+        this.listen();
     }
+
+    listen = () => {
+        this.socket.on('connect', () => {
+            this.anotherSubscribes();
+        });
+    };
 
     anotherSubscribes = () => {
         this.onEntryCreated();
         this.onChangeMark();
         this.onChangeOfferStatus();
     };
+
     onChangeMark = () => {
         this.socket.on('changeMark', () => {
-            toast('Someone liked your offer');
+            toast('Someone rated your offer');
         })
     };
 
@@ -34,6 +42,7 @@ class NotificationSocket extends WebSocket {
     subscribe = (id) => {
         this.socket.emit('subscribe', id);
     };
+
     unsubsctibe = (id) => {
         this.socket.emit('unsubscribe', id);
     }
