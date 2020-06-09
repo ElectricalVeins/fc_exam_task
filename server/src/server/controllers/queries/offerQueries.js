@@ -5,7 +5,7 @@ const CONSTANTS = require('../../../constants');
 const controller = require('../../../socketInit');
 const ServerError = require('../../errors/ServerError');
 
-module.exports.updateOffer = async (data, predicate, transaction) => {
+const updateOffer = async (data, predicate, transaction) => {
   const [updatedCount, [updatedOffer]] = await db.Offers.update(data, { where: predicate, returning: true, transaction });
   if (updatedCount !==1){
     throw new ServerError(new Error('cannot update offer!'));
@@ -15,7 +15,7 @@ module.exports.updateOffer = async (data, predicate, transaction) => {
   }
 };
 
-module.exports.updateOfferStatus = async (data, predicate, transaction) => {
+const updateOfferStatus = async (data, predicate, transaction) => {
   const [updatedOffersCount, updatedOffers] = await db.Offers.update(data, { where: predicate, returning: true, transaction });
   if (updatedOffersCount < 1) {
     throw new ServerError(new Error('can not update offer!'));
@@ -24,7 +24,7 @@ module.exports.updateOfferStatus = async (data, predicate, transaction) => {
   }
 };
 
-module.exports.createOffer = async (data) => {
+const createOffer = async (data) => {
   const result = await db.Offers.create(data);
   if (!result){
     throw new ServerError(new Error('cannot create new Offer'));
@@ -34,13 +34,13 @@ module.exports.createOffer = async (data) => {
   }
 };
 
-module.exports.rejectOffer = async (offerId, creatorId, contestId, transaction) => {
-  const rejectedOffer = await contestQueries.updateOffer({ status: CONSTANTS.OFFER_STATUS_REJECTED }, { id: offerId }, transaction);
+const rejectOffer = async (offerId, creatorId, contestId, transaction) => {
+  const rejectedOffer = await updateOffer({ status: CONSTANTS.OFFER_STATUS_REJECTED }, { id: offerId }, transaction);
   controller.getNotificationController().emitChangeOfferStatus(creatorId, 'Someone of yours offers was rejected', contestId);
   return rejectedOffer;
 };
 
-module.exports.resolveOffer = async (contestId, creatorId, orderId, offerId, priority, transaction) => {
+const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, transaction) => {
   const finishedContest = await contestQueries.updateContestStatus({
     status: db.sequelize.literal(`   CASE
               WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
@@ -50,7 +50,7 @@ module.exports.resolveOffer = async (contestId, creatorId, orderId, offerId, pri
       `),
   }, { orderId }, transaction);
   await userQueries.updateUser({ balance: db.sequelize.literal('balance + ' + finishedContest.prize) }, creatorId, transaction);
-  const updatedOffers = await contestQueries.updateOfferStatus({
+  const updatedOffers = await updateOfferStatus({
     status: db.sequelize.literal(` CASE
               WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'
               ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}'
@@ -75,3 +75,10 @@ module.exports.resolveOffer = async (contestId, creatorId, orderId, offerId, pri
   async function banOffer (){}
   */
 
+module.exports = {
+  resolveOffer,
+  rejectOffer,
+  createOffer,
+  updateOfferStatus,
+  updateOffer
+}
