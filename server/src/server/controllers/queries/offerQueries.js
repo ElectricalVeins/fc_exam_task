@@ -45,6 +45,7 @@ const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, tr
     status: db.sequelize.literal(`   CASE
               WHEN "id"=${contestId}  AND "orderId"='${orderId}' THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
               WHEN "orderId"='${orderId}' AND "priority"=${priority + 1}  THEN '${CONSTANTS.CONTEST_STATUS_ACTIVE}'
+              WHEN "orderId"='${orderId}' AND "priority"<${priority}  THEN '${CONSTANTS.CONTEST_STATUS_FINISHED}'
               ELSE '${CONSTANTS.CONTEST_STATUS_PENDING}'
               END
       `),
