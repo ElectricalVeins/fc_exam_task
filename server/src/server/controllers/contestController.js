@@ -1,8 +1,7 @@
 const db = require('../models/index');
 const ServerError = require('../errors/ServerError');
 const contestQueries = require('./queries/contestQueries');
-const controller = require('../../socketInit');
-const { createWhereForAllContests } = require('../utils/createPredicate');
+const { createWhereForAllContests, createWhereForOffers } = require('../utils/createPredicate');
 const CONSTANTS = require('../../constants');
 
 
@@ -53,7 +52,7 @@ module.exports.getContestById = async (req, res, next) => {
         {
           model: db.Offers,
           required: false,
-          where: req.tokenData.role === CONSTANTS.CREATOR ? { userId: req.tokenData.userId } : { status: { [db.Sequelize.Op.ne]: CONSTANTS.OFFER_STATUS_MODERATING } },
+          where: req.tokenData.role === CONSTANTS.CREATOR ? { userId: req.tokenData.userId } : { status: { [db.Sequelize.Op.or]: [CONSTANTS.OFFER_STATUS_PENDING, CONSTANTS.OFFER_STATUS_REJECTED, CONSTANTS.OFFER_STATUS_WON] } },
           attributes: { exclude: ['userId', 'contestId'] },
           include: [
             {
@@ -102,46 +101,6 @@ module.exports.updateContest = async (req, res, next) => {
   }
 };
 
-// module.exports.setNewOffer = async (req, res, next) => {
-//   try {
-//     const { offer, body, tokenData }=req;
-//     const result = await contestQueries.createOffer(offer);
-//     delete result.contestId;
-//     delete result.userId;
-//     controller.getNotificationController().emitEntryCreated(body.customerId);
-//     //controller.getNotificationController().offerWillBeModerated();
-//     const User = Object.assign({}, req.tokenData, { id: tokenData.userId });
-//     res.send(Object.assign({}, result, { User }));
-//   } catch (err) {
-//     return next(new ServerError(err));
-//   }
-// };
-//
-// module.exports.setOfferStatus = async (req, res, next) => {
-//   let transaction;
-//   let offer;
-//   try{
-//     const { body:{ command } }=req;
-//     transaction = await db.sequelize.transaction();
-//
-//     switch (command) {
-//     case CONSTANTS.OFFER_COMMAND_REJECT:{
-//       offer = await contestQueries.rejectOffer(req.body.offerId, req.body.creatorId, req.body.contestId, transaction);
-//       break;
-//     }
-//     case CONSTANTS.OFFER_COMMAND_RESOLVE:{
-//       offer = await contestQueries.resolveOffer(req.body.contestId, req.body.creatorId, req.body.orderId, req.body.offerId, req.body.priority, transaction);
-//       break;
-//     }
-//     }
-//     transaction.commit();
-//     res.send(offer);
-//   }catch (err) {
-//     transaction.rollback();
-//     next(err);
-//   }
-// };
-
 module.exports.getCustomersContests = async (req, res, next) => {
   try{
     const contests = await db.Contests.findAll({
@@ -172,8 +131,9 @@ async function isHaveMore(contests, limit){
 
 module.exports.getContests = async (req, res, next) => {
   try{
-    const { body:{ types, contestId, industry, awardSort, status, offset, limit, ownEntries }, tokenData:{ userId } }=req;
+    const { body:{ types, contestId, industry, awardSort, status, offset, limit, ownEntries }, tokenData:{ userId, role } }=req;
     const { where, order } = createWhereForAllContests(types, contestId, industry, awardSort, status);
+    const whereForOffers = createWhereForOffers(role,req,ownEntries,userId)
     const contests = await db.Contests.findAll({
       where,
       order,
@@ -183,7 +143,7 @@ module.exports.getContests = async (req, res, next) => {
         {
           model: db.Offers,
           required: ownEntries,
-          where: ownEntries ? { userId } : {},
+          where: whereForOffers,
           attributes: ['id'],
         }],
     });
