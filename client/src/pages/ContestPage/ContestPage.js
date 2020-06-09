@@ -4,7 +4,7 @@ import {
     goToExpandedDialog,
     changeEditContest,
     changeContestViewMode,
-    changeShowImage
+    changeShowImage, clearSetOfferStatusError
 } from '../../actions/actionCreator';
 import {connect} from 'react-redux';
 import Header from "../../components/Header/Header";
@@ -126,7 +126,8 @@ const mapDispatchToProps = (dispatch) => {
         goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
         changeEditContest: (data) => dispatch(changeEditContest(data)),
         changeContestViewMode: (data) => dispatch(changeContestViewMode(data)),
-        changeShowImage: data => dispatch(changeShowImage(data))
+        changeShowImage: data => dispatch(changeShowImage(data)),
+        clearSetOfferStatusError: () => dispatch(clearSetOfferStatusError()),
     }
 };
 
