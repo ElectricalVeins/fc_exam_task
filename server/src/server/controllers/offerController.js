@@ -22,16 +22,16 @@ module.exports.setOfferStatus = async (req, res, next) => {
   let transaction;
   let offer;
   try {
-    const { body: { command } } = req;
+    const { body: { command,priority,offerId,orderId,creatorId,contestId } } = req;
     transaction = await db.sequelize.transaction();
 
     switch (command) {
     case CONSTANTS.OFFER_COMMAND_REJECT: {
-      offer = await offerQueries.rejectOffer(req.body.offerId, req.body.creatorId, req.body.contestId, transaction);
+      offer = await offerQueries.rejectOffer(offerId, creatorId, contestId, transaction);
       break;
     }
     case CONSTANTS.OFFER_COMMAND_RESOLVE: {
-      offer = await offerQueries.resolveOffer(req.body.contestId, req.body.creatorId, req.body.orderId, req.body.offerId, req.body.priority, transaction);
+      offer = await offerQueries.resolveOffer(contestId, creatorId, orderId, offerId, priority, transaction);
       break;
     }
     }
