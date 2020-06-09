@@ -39,7 +39,7 @@ const OfferBox = (props) => {
 
     const resolveOffer = () => {
         confirmAlert({
-            title: 'confirm',
+            title: 'Confirm',
             message: 'Are u sure?',
             buttons: [
                 {

@@ -21,7 +21,7 @@ const ModeratorOfferContainer = props => {
     }
   };
 
-  if (!isFetching && props.children.length === 0) return <div>There are no unmoderated offers</div>;
+  if (!isFetching && props.children.length === 0) return <div style={{margin: '0 auto'}}>There are no unmoderated offers</div>;
   if (error) return <TryAgain getData={props.getOffers}/>
 
   return <>
