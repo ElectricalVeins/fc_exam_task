@@ -54,6 +54,7 @@ const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, tr
   const updatedOffers = await updateOfferStatus({
     status: db.sequelize.literal(` CASE
               WHEN "id"=${offerId} THEN '${CONSTANTS.OFFER_STATUS_WON}'
+              WHEN "status"='${CONSTANTS.OFFER_STATUS_BANNED}' THEN '${CONSTANTS.OFFER_STATUS_BANNED}'
               ELSE '${CONSTANTS.OFFER_STATUS_REJECTED}'
               END
       `),
