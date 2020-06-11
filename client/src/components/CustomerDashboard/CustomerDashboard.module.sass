@@ -9,6 +9,7 @@
     width: auto
   @media(max-width: 1000px)
     flex-direction: column
+
   .errorContainer
     margin: 0 auto
     text-align: center
@@ -16,17 +17,21 @@
     flex-direction: column
     width: 260px
     padding: 15px
+
     .message
       color: red
       font-size: 18px
+
     .try
       color: #333
       font-size: 18px
+
   .contestsContainer
     display: flex
     justify-content: center
     width: 100%
     margin-top: 15px
+
   .filterContainer
     min-width: 250px
     height: 350px
@@ -34,7 +39,8 @@
     margin-right: 50px
     display: flex
     flex-direction: column
-    box-shadow: 0 5px 10px 3px rgba(0,0,0,0.1)
+    flex-wrap: wrap
+    box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
     align-items: flex-start
     background-color: white
     margin-bottom: 15px
@@ -43,8 +49,13 @@
       flex-direction: row
       margin-right: 0
       justify-content: center
-      height: 80px
+      height: auto
+      min-height: 80px
+    @media(max-width: 425px)
+      flex-direction: column
+
     .filter
+      cursor: pointer
       text-decoration: none
       margin-top: 15px
       align-self: stretch
@@ -56,9 +67,12 @@
       @media(max-width: 1000px)
         height: 20px
         margin: 0 5px
+
       &:hover
         background-color: #eefaea
+
     .activeFilter
+      cursor: pointer
       transition: 0.5s background-color
       margin-top: 15px
       align-self: stretch
