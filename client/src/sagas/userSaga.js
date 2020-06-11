@@ -3,8 +3,6 @@ import ACTION from '../actions/actionTypes';
 import * as restController from '../api/rest/restController';
 import {controller} from '../api/ws/socketController';
 
-
-
 export  function* privateSaga(action){
     yield put({type: ACTION.GET_USER_REQUEST});
     try{
@@ -13,10 +11,10 @@ export  function* privateSaga(action){
         controller.subscribe(data.id);
     }
     catch (e) {
+        action.replace('/');
         yield put({type: ACTION.GET_USER_ERROR, error: e.response});
     }
 }
-
 
 export function* notAuthorizeSaga(action){
     yield put({type: ACTION.GET_USER_REQUEST});
@@ -31,7 +29,6 @@ export function* notAuthorizeSaga(action){
     }
 
 }
-
 
 export  function* updateUserData(action){
     try{
