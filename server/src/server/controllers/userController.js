@@ -75,8 +75,7 @@ module.exports.changeMark = async (req, res, next) => {
   try {
     const { body:{ isFirst, offerId, mark, creatorId }, tokenData:{ userId } } = req;
     transaction = await db.sequelize.transaction({ isolationLevel: db.Sequelize.Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED });
-    const query = getQuery(offerId, userId, mark, isFirst, transaction);
-    await query();
+    await getQuery(offerId, userId, mark, isFirst, transaction)();
     const offersArray = await db.Ratings.findAll({
       include: [
         {
@@ -84,14 +83,10 @@ module.exports.changeMark = async (req, res, next) => {
           required: true,
           where: { userId: creatorId },
         },
-      ],
-      transaction,
+      ], transaction,
     });
-    for (let i = 0; i < offersArray.length; i++) {
-      sum += offersArray[i].dataValues.mark;
-    }
+    offersArray.forEach(offer => sum += offer.dataValues.mark);
     avg = sum / offersArray.length;
-
     await userQueries.updateUser({ rating: avg }, creatorId, transaction);
     transaction.commit();
     controller.getNotificationController().emitChangeMark(creatorId);
@@ -109,16 +104,14 @@ module.exports.payment = async (req, res, next) => {
     await bankQueries.updateBankBalance({
       balance: db.sequelize.literal(`
                 CASE
-            WHEN "cardNumber"='${req.body.number.replace(/ /g, '')}' AND "cvc"='${req.body.cvc}' AND "expiry"='${req.body.expiry}'
+            WHEN "cardNumber"='${req.body.number.replace(/ /g, '')}' AND "cvc"='${req.body.cvc}' AND "expiry"='${req.body.expiry}' AND "name"='${req.body.name}'
                 THEN "balance"-${req.body.price}
-            WHEN "cardNumber"='${CONSTANTS.SQUADHELP_BANK_NUMBER}' AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}' AND "expiry"='${CONSTANTS.SQUADHELP_BANK_EXPIRY}'
+            WHEN "cardNumber"='${CONSTANTS.SQUADHELP_BANK_NUMBER}' AND "cvc"='${CONSTANTS.SQUADHELP_BANK_CVC}' AND "expiry"='${CONSTANTS.SQUADHELP_BANK_EXPIRY}' AND "name"='${CONSTANTS.SQUADHELP_BANK_NAME}'
                 THEN "balance"+${req.body.price} END
         `),
-    },
-    {
+    }, {
       cardNumber: { [db.sequelize.Op.in]: [CONSTANTS.SQUADHELP_BANK_NUMBER, req.body.number.replace(/ /g, '')] },
-    },
-    transaction);
+    }, transaction);
 
     const orderId = uuid();
 
@@ -166,18 +159,9 @@ module.exports.updateUser = async (req, res, next) => {
     if (req.file) {
       req.body.avatar = req.file.filename;
     }
-    const updatedUser = await userQueries.updateUser(req.body, req.tokenData.userId, transaction);
+    const { firstName, lastName, displayName, avatar, email, balance, role, id } = await userQueries.updateUser(req.body, req.tokenData.userId, transaction);
     transaction.commit();
-    res.send({
-      firstName: updatedUser.firstName,
-      lastName: updatedUser.lastName,
-      displayName: updatedUser.displayName,
-      avatar: updatedUser.avatar,
-      email: updatedUser.email,
-      balance: updatedUser.balance,
-      role: updatedUser.role,
-      id: updatedUser.id,
-    });
+    res.send({ firstName, lastName, displayName, avatar, email, balance, role, id });
   } catch (err) {
     transaction.rollback();
     next(new ServerError(err));
