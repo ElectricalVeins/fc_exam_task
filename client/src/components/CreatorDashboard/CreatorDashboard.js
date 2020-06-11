@@ -10,6 +10,10 @@ import CreatorFilter from "../CreatorFilter/CreatorFilter";
 
 class CreatorDashboard extends Component {
 
+    componentWillUnmount() {
+        this.props.clearContestsList();
+    }
+
     getPredicateOfRequest = () => {
         const obj = {};
         const {creatorFilter} = this.props;
