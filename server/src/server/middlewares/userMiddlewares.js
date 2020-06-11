@@ -8,6 +8,15 @@ const NotEnoughMoney = require('../errors/NotEnoughMoney');
 const NotUniqueEmail = require('../errors/NotUniqueEmail');
 const userQueries = require('../controllers/queries/userQueries');
 
+module.exports.findInterlocutorById = async (req, res, next) => {
+  try {
+    const { body: { interlocutorId } } = req;
+    req.interlocutor = await userQueries.findUser({ id: interlocutorId });
+  } catch (err) {
+    next(new NotFound(err));
+  }
+};
+
 module.exports.findUserByEmail = async (req, res, next) => {
   try {
     const { body: { email } } = req;
