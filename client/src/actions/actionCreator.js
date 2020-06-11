@@ -33,7 +33,6 @@ export const clearAddOfferError = () => {
     }
 };
 
-
 export const clearChangeMarkError = () => {
     return {
         type: ACTION.CLEAR_CHANGE_MARK_ERROR
@@ -53,7 +52,6 @@ export const getUserAction = (data) => {
     }
 };
 
-
 export const getDataForContest = (data) => {
     return {
         type: ACTION.GET_DATA_FOR_CONTEST_ACTION,
@@ -63,14 +61,12 @@ export const getDataForContest = (data) => {
 
 export const clearDataForContest = () => ({type: ACTION.CLEAR_DATA_FOR_SELECTS});
 
-
 export const payRequest = (data) => {
     return {
         type: ACTION.PAYMENT_ACTION,
         data: data
     }
 };
-
 
 export const getContestsForCreative = (data) => {
     return {
@@ -79,7 +75,6 @@ export const getContestsForCreative = (data) => {
     }
 };
 
-
 export const getContestsForCustomer = (data) => {
     return {
         type: ACTION.GET_CONTESTS_FOR_CUSTOMER,
@@ -87,14 +82,12 @@ export const getContestsForCustomer = (data) => {
     }
 };
 
-
 export const getContestById = (data) => {
     return {
         type: ACTION.GET_CONTEST_BY_ID_ACTION,
         data: data
     }
 };
-
 
 export const selectBundle = (bundle) => {
     return {
@@ -109,18 +102,12 @@ export const clearBundle = () => {
     }
 };
 
-
-
-
 export const updateContest = (data) => {
     return {
         type: ACTION.UPDATE_CONTEST_ACTION,
         data: data
     }
 };
-
-
-
 
 export const saveContestToStore = (data) => {
     return {
@@ -129,14 +116,12 @@ export const saveContestToStore = (data) => {
     }
 };
 
-
 export const changeMark = (data) => {
     return {
         type: ACTION.CHANGE_MARK_ACTION,
         data: data
     }
 };
-
 
 export const setOffer = (data) => {
     return {
@@ -152,7 +137,6 @@ export const setOfferStatus = (data) => {
     }
 };
 
-
 export const createCatalog=(data)=>{
     return{
         type: ACTION.CREATE_CATALOG_REQUEST,
@@ -167,9 +151,6 @@ export const updateUserData = (data) => {
     }
 };
 
-
-
-
 export const cashOut = (data) => {
     return {
         type: ACTION.CASHOUT_ACTION,
@@ -182,7 +163,6 @@ export const clearContestList = () => {
         type: ACTION.CLEAR_CONTESTS_LIST
     }
 };
-
 
 export const onlyForNotAuthorize = (data) => {
     return {
@@ -202,7 +182,6 @@ export const clearAuth = () => {
         type: ACTION.AUTH_ACTION_CLEAR
     }
 };
-
 
 export const getPreviewChat = () => {
     return {
@@ -271,7 +250,6 @@ export const setNewCreatorFilter=(filter)=>{
     }
 };
 
-
 export const setPreviewChatMode=(mode)=>{
     return {
         type: ACTION.SET_CHAT_PREVIEW_MODE,
@@ -306,7 +284,6 @@ export const getCatalogList=(data)=>{
         data: data
     }
 };
-
 
 export const changeShowModeCatalog=(data)=>{
     return{
@@ -390,7 +367,6 @@ export const changeFocusOnCard=(data)=>{
         data: data
     }
 };
-
 
 export const changeProfileModeView=(data)=>{
     return{
