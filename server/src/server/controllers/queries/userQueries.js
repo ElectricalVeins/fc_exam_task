@@ -15,7 +15,7 @@ module.exports.updateUser = async (data, id, transaction) => {
 module.exports.findUser = async (predicate, transaction) => {
   const foundUser = await db.Users.findOne({ where: predicate, transaction });
   if (!foundUser){
-    throw new NotFound(new Error('user with this data didn`t exist'));
+    throw new NotFound(new Error('user with this data does not exist'));
   }
   else{
     return foundUser.get({ plain: true });

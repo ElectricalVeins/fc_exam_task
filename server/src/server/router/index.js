@@ -149,6 +149,7 @@ router.post(
 router.post(
   '/getChat',
   tokenMiddlewares.verifyToken,
+  userMiddlewares.findInterlocutorById,
   chatController.getChat
 );
 

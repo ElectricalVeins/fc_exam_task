@@ -22,7 +22,7 @@ module.exports.setOfferStatus = async (req, res, next) => {
   let transaction;
   let offer;
   try {
-    const { body: { command,priority,offerId,orderId,creatorId,contestId } } = req;
+    const { body: { command, priority, offerId, orderId, creatorId, contestId } } = req;
     transaction = await db.sequelize.transaction();
 
     switch (command) {
