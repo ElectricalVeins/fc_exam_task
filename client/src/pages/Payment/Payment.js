@@ -12,7 +12,7 @@ const Payment = (props) => {
 
     const pay = (values) => {
         const {contests} = props.contestStore;
-        const {number, expiry, cvc} = values;
+        const {number, expiry, cvc, name} = values;
         const contestArray = [];
         Object.keys(contests).forEach(key => contestArray.push(contests[key]));
         const data = new FormData();
@@ -22,6 +22,7 @@ const Payment = (props) => {
         });
         data.append('number', number);
         data.append('expiry', expiry);
+        data.append('name', name);
         data.append('cvc', cvc);
         data.append('contests', JSON.stringify(contestArray));
         data.append('price', '100');
