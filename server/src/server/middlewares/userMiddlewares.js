@@ -12,6 +12,7 @@ module.exports.findInterlocutorById = async (req, res, next) => {
   try {
     const { body: { interlocutorId } } = req;
     req.interlocutor = await userQueries.findUser({ id: interlocutorId });
+    next()
   } catch (err) {
     next(new NotFound(err));
   }
