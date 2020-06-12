@@ -1,16 +1,16 @@
-import React       from 'react';
-import { Link }    from "react-router-dom";
+import React from 'react';
+import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import styles              from './RestorePassword.module.sass'
-import CONSTANTS           from "../../constants";
+import styles from './RestorePassword.module.sass'
+import CONSTANTS from "../../constants";
 import RestorePasswordForm from "../../components/RestorePasswordForm/RestorePasswordForm";
-import queryString         from 'query-string';
+import queryString from 'query-string';
 import {
     createClearPasswordReecoverStateAction,
     createUpdatePasswordAction
-}                          from "../../actions/actionCreator";
-import Error               from "../../components/Error/Error";
-import RestorePageInfo     from "../../components/RestorePageInfo";
+} from "../../actions/actionCreator";
+import Error from "../../components/Error/Error";
+import RestorePageInfo from "../../components/RestorePageInfo";
 
 const RestorePassword = props => {
     const { history,clearState, passwordRecover: { isFetching, error, data,formResult } } = props;

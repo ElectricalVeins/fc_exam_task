@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux';
 import Header from '../../components/Header/Header';
 import {Link} from "react-router-dom";
 import CONSTANTS from '../../constants';
@@ -6,14 +7,12 @@ import SlideBar from '../../components/SlideBar/SlideBar';
 import Footer from '../../components/Footer/Footer';
 import styles from './Home.module.sass';
 import carouselConstants from '../../carouselConstants';
-import {connect} from 'react-redux';
 import Spinner from '../../components/Spinner/Spinner';
 import { createSetTextIndexAction } from "../../actions/actionCreator";
 
 
 const Home = (props) => {
-    const {textIndex} = props;
-    //const [index, setIndex] = useState(0);
+    const {textIndex, isFetching} = props;
     const [loaderStyle, setLoaderStyle] = useState(styles.headline__static);
 
     useEffect(() => {
@@ -27,7 +26,6 @@ const Home = (props) => {
         };
     });
 
-    const {isFetching} = props;
     const text = CONSTANTS.HEADER_ANIMATION_TEXT[textIndex % CONSTANTS.HEADER_ANIMATION_TEXT.length];
     return (
         <>
