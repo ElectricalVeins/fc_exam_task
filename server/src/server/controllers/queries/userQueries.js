@@ -1,7 +1,6 @@
 const db = require('../../models/index');
 const NotFound = require('../../errors/UserNotFoundError');
 const ServerError = require('../../errors/ServerError');
-const bcrypt = require('bcrypt');
 
 
 module.exports.updateUser = async (data, id, transaction) => {
