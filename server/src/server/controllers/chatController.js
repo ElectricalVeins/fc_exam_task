@@ -21,7 +21,7 @@ module.exports.addMessage = async (req, res, next) => {
       setDefaultsOnInsert: true,
       useFindAndModify: false,
     });
-    const message = chatQueries.createMessage({
+    const message = await chatQueries.createMessage({
       sender: userId,
       body: messageBody,
       conversation: newConversation._id,
