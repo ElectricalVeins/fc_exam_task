@@ -8,15 +8,17 @@ import styles from './Home.module.sass';
 import carouselConstants from '../../carouselConstants';
 import {connect} from 'react-redux';
 import Spinner from '../../components/Spinner/Spinner';
+import { createSetTextIndexAction } from "../../actions/actionCreator";
 
 
 const Home = (props) => {
-    const [index, setIndex] = useState(0);
+    const {textIndex} = props;
+    //const [index, setIndex] = useState(0);
     const [loaderStyle, setLoaderStyle] = useState(styles.headline__static);
 
     useEffect(() => {
         const timeout = setInterval(() => {
-            setIndex(index + 1);
+            props.setTextIndex(textIndex + 1);
             setLoaderStyle(styles.headline__isloading);
         }, 3000);
         return () => {
@@ -26,7 +28,7 @@ const Home = (props) => {
     });
 
     const {isFetching} = props;
-    const text = CONSTANTS.HEADER_ANIMATION_TEXT[index % CONSTANTS.HEADER_ANIMATION_TEXT.length];
+    const text = CONSTANTS.HEADER_ANIMATION_TEXT[textIndex % CONSTANTS.HEADER_ANIMATION_TEXT.length];
     return (
         <>
             <Header/>
@@ -192,8 +194,12 @@ const Home = (props) => {
 };
 
 const mapStateToProps = (state) => {
-    const {isFetching} = state.userStore;
-    return {isFetching};
+    const {isFetching, textIndex} = state.userStore;
+    return {isFetching, textIndex};
 };
 
-export default connect(mapStateToProps, null)(Home);
+const mapDispatchToProps = dispatch => ({
+    setTextIndex: index => dispatch(createSetTextIndexAction(index))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

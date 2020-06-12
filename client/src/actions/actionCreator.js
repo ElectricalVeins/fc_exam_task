@@ -464,4 +464,9 @@ export const createSetOfferErrorAction = data => ({
 export const createChangeModalViewAction = data => ({
     type: ACTION.CHANGE_MODERATOR_OFFERS_MODAL,
     data
-})
+});
+
+export const createSetTextIndexAction = data => ({
+    type: ACTION.SET_TEXT_INDEX,
+    data
+});

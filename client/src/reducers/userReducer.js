@@ -4,7 +4,9 @@ import ACTION from '../actions/actionTypes';
 const initialState = {
     isFetching: true,
     error: null,
-    data: null
+    data: null,
+    textIndex: 0,
+    //loaderStyle: null,
 };
 
 export default function (state = initialState, action) {
@@ -57,6 +59,12 @@ export default function (state = initialState, action) {
             return{
                 ...state,
                 error: null
+            }
+        }
+        case ACTION.SET_TEXT_INDEX: {
+            return {
+                ...state,
+                textIndex: action.data,
             }
         }
         default:
