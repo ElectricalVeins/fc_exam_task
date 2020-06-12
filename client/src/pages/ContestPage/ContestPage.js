@@ -1,4 +1,9 @@
 import React,{useEffect} from 'react';
+import {connect} from 'react-redux';
+import classNames from 'classnames';
+import isEqual from 'lodash/isEqual';
+import LightBox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 import {
     getContestById,
     goToExpandedDialog,
@@ -6,21 +11,17 @@ import {
     changeContestViewMode,
     changeShowImage, clearSetOfferStatusError
 } from '../../actions/actionCreator';
-import {connect} from 'react-redux';
 import Header from "../../components/Header/Header";
 import ContestSideBar from '../../components/ContestSideBar/ContestSideBar';
 import styles from './ContestPage.module.sass';
 import OfferForm from '../../components/OfferForm/OfferForm';
 import CONSTANTS from '../../constants';
 import Brief from '../../components/Brief/Brief';
-import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
-import LightBox from 'react-image-lightbox';
 import Spinner from '../../components/Spinner/Spinner';
 import TryAgain from '../../components/TryAgain/TryAgain';
-import 'react-image-lightbox/style.css';
 import Error from "../../components/Error/Error";
 import OfferList from "../../components/OfferList/OfferList";
+import {conversationInfo} from '../../utils'
 
 
 const ContestPage = props => {
@@ -42,18 +43,7 @@ const ContestPage = props => {
         const {messagesPreview} = props.chatStore;
         const {id} = props.userStore.data;
         const participants = [id, interlocutorId];
-        participants.sort((participant1, participant2) => participant1 - participant2);
-        for (let i = 0; i < messagesPreview.length; i++) {
-            if (isEqual(participants, messagesPreview[i].participants)) {
-                return {
-                    participants: messagesPreview[i].participants,
-                    _id: messagesPreview[i]._id,
-                    blackList: messagesPreview[i].blackList,
-                    favoriteList: messagesPreview[i].favoriteList
-                };
-            }
-        }
-        return null;
+        return conversationInfo(messagesPreview, participants)
     };
 
     const goChat = () => {

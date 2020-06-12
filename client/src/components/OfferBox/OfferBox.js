@@ -1,20 +1,20 @@
 import React from 'react';
-import styles from './OfferBox.module.sass';
-import CONSTANTS from '../../constants';
+import classNames from 'classnames';
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import {connect} from 'react-redux';
 import Rating from 'react-rating';
+import {withRouter} from 'react-router-dom';
+import styles from './OfferBox.module.sass';
+import CONSTANTS from '../../constants';
 import {
     changeMark,
     clearChangeMarkError,
     goToExpandedDialog,
     changeShowImage,
 } from '../../actions/actionCreator';
-import {withRouter} from 'react-router-dom';
-import isEqual from 'lodash/isEqual';
-import classNames from 'classnames';
-import {confirmAlert} from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css';
 import './confirmStyle.css';
+import { conversationInfo } from "../../utils";
 
 
 const OfferBox = (props) => {
@@ -23,17 +23,7 @@ const OfferBox = (props) => {
         const {messagesPreview, id} = props;
         const participants = [id, props.data.User.id];
         participants.sort((participant1, participant2) => participant1 - participant2);
-        for (let i = 0; i < messagesPreview.length; i++) {
-            if (isEqual(participants, messagesPreview[i].participants)) {
-                return {
-                    participants: messagesPreview[i].participants,
-                    _id: messagesPreview[i]._id,
-                    blackList: messagesPreview[i].blackList,
-                    favoriteList: messagesPreview[i].favoriteList
-                };
-            }
-        }
-        return null;
+        return conversationInfo(messagesPreview, participants)
     };
 
     const resolveOffer = () => {
