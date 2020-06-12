@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import propTypes           from 'prop-types';
 import Button              from "../Button/Button";
 import styles              from './ButtonGroup.module.sass'
 
@@ -30,7 +29,5 @@ const ButtonGroup = props => {
     </div>
   );
 };
-
-ButtonGroup.defaultProps = {};
 
 export default ButtonGroup;

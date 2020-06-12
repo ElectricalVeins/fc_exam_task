@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import moment                         from 'moment'
-import classNames                     from 'classnames'
-import { LinearProgress }             from '@material-ui/core';
-import styles                         from './Timer.module.sass'
+import moment from 'moment';
+import classNames from 'classnames';
+import { LinearProgress } from '@material-ui/core';
+import styles from './Timer.module.sass';
 
 
 const Timer = props => {
   const { name, date, createdAt, warningTime, itemClass, } = props;
 
-  const checkWarn = () => moment( warningTime ).isBefore( new Date() )
-  const checkProgress = () => setProgress( definePercent() )
+  const checkWarn = () => moment( warningTime ).isBefore( new Date() );
+  const checkProgress = () => setProgress( definePercent() );
 
-  const [ progress, setProgress ] = useState( 0 )
-  const [ isWarning, setWarning ] = useState( checkWarn() )
+  const [ progress, setProgress ] = useState( 0 );
+  const [ isWarning, setWarning ] = useState( checkWarn() );
 
   const intervalHandler = () => {
-    checkProgress()
+    checkProgress();
     checkWarn() && setWarning( true )  //можно вызвать toast для доп. уведомления
-  }
+  };
 
   useEffect( () => {
     checkProgress() // initial definition of the progress bar percentage
-    const interval = setInterval( intervalHandler, 5000 )
+    const interval = setInterval( intervalHandler, 5000 );
     return () => {clearInterval( interval )}
-  } )
+  } );
 
   const definePercent = () => {
     const createdTime = Date.parse( createdAt );
@@ -35,7 +35,7 @@ const Timer = props => {
                         : result
   };
 
-  const listStyles = classNames( styles.listItem, itemClass )
+  const listStyles = classNames( styles.listItem, itemClass );
 
   const renderWarning = () => <>{isWarning &&
   <span className={styles.warn} title={'Warning!'}> </span>}</>

@@ -2,7 +2,7 @@ import React,{useEffect} from 'react';
 import PropTypes from 'prop-types';
 import SpinnerLoader from "../Spinner/Spinner";
 import TryAgain from "../TryAgain/TryAgain";
-import CONSTANTS from '../../constants'
+import CONSTANTS from '../../constants';
 
 const ModeratorOfferContainer = props => {
   const{loadMore, isFetching, error}=props;
@@ -17,7 +17,7 @@ const ModeratorOfferContainer = props => {
   const scrollHandler = () => {
     if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - CONSTANTS.SCROLL_DELTA) {
       if (!isFetching) {
-        fetchAgain()
+        fetchAgain();
       }
     }
   };

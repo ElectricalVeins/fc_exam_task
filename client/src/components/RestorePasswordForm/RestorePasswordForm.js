@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Field, reduxForm} from 'redux-form';
 import { toast }                    from 'react-toastify';
@@ -63,8 +62,6 @@ const RestorePasswordForm = props => {
         </form>
     );
 };
-
-RestorePasswordForm.propTypes = {};
 
 const mapDispatchToProps = dispatch => ({
     restoreRequest: (data) => dispatch(createRestorePasswordAction(data))

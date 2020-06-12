@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link }                       from 'react-router-dom'
-import styles                         from './Events.module.sass'
-import Header                         from "../../components/Header/Header";
-import TimerList                      from "../../components/TimerList/TimerList";
-import TimerForm                      from "../../components/TimerForm/TimerForm";
-import Footer                         from "../../components/Footer/Footer";
+import { Link } from 'react-router-dom'
+import styles from './Events.module.sass'
+import Header from "../../components/Header/Header";
+import TimerList from "../../components/TimerList/TimerList";
+import TimerForm from "../../components/TimerForm/TimerForm";
+import Footer from "../../components/Footer/Footer";
 
 const Events = props => {
   //exam react task. use only react

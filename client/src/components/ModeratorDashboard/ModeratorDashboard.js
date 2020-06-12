@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import LightBox from 'react-image-lightbox';
 import { connect } from 'react-redux';
-import styles from './ModeratorDashboard.module.sass'
+import styles from './ModeratorDashboard.module.sass';
 import * as actionCreator from '../../actions/actionCreator';
 import ModeratorOfferBox from "../ModeratorOfferBox/ModeratorOfferBox";
 import ModeratorOfferContainer from "../ModeratorOfferContainer/ModeratorOfferContainer";

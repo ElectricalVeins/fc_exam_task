@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ModeratorOfferBox.module.sass'
+import styles from './ModeratorOfferBox.module.sass';
 import classNames from 'classnames'
 import { connect } from 'react-redux';
 import CONSTANTS from "../../constants";
@@ -14,15 +14,15 @@ const ModeratorOfferBox = props => {
   } = props;
 
   const banHandler = () => {
-    props.setOffer({contestId, offerId, creatorId, userEmail, command: CONSTANTS.OFFER_COMMAND_BAN})
+    props.setOffer({contestId, offerId, creatorId, userEmail, command: CONSTANTS.OFFER_COMMAND_BAN});
   }
 
   const approveHandler = () => {
-    props.setOffer({contestId, offerId, creatorId, userEmail, command: CONSTANTS.OFFER_COMMAND_APPROVE})
+    props.setOffer({contestId, offerId, creatorId, userEmail, command: CONSTANTS.OFFER_COMMAND_APPROVE});
   }
 
   const onImageHandler = () => {
-    props.changeModalView({filePath: fileName, isShowModal: true})
+    props.changeModalView({filePath: fileName, isShowModal: true});
   }
 
   const renderBody = () => {
@@ -34,7 +34,7 @@ const ModeratorOfferBox = props => {
              src={`${CONSTANTS.publicURL}${fileName}`}
              alt='logo'/>
       </div>
-  }
+  };
 
   return (
     <section className={styles.moderatorOfferBox}>

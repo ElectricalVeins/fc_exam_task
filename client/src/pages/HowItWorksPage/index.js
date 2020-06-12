@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link }                       from 'react-router-dom'
-import Header                         from "../../components/Header/Header";
-import styles                         from './HowItWorksPage.module.sass'
-import faq                            from './faq.json'
-import Footer                         from "../../components/Footer/Footer";
-import classNames                     from 'classnames'
+import { Link } from 'react-router-dom'
+import Header from "../../components/Header/Header";
+import styles from './HowItWorksPage.module.sass'
+import Footer from "../../components/Footer/Footer";
+import classNames from 'classnames'
 
 const HowItWorks = props => {
   const [ scrollY, setScrollY ] = useState( 0 )

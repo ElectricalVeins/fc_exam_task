@@ -1,8 +1,4 @@
 const db = require('../../models/index');
-const contestQueries = require('../../controllers/queries/contestQueries');
-const userQueries = require('../../controllers/queries/userQueries');
-const CONSTANTS = require('../../../constants');
-const controller = require('../../../socketInit');
 const ServerError = require('../../errors/ServerError');
 
 

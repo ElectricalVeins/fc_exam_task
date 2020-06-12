@@ -76,10 +76,6 @@ const resolveOffer = async (contestId, creatorId, orderId, offerId, priority, tr
   controller.getNotificationController().emitChangeOfferStatus(creatorId, 'Someone of your offers WIN', contestId);
   return updatedOffers[resolvedOfferIndex].dataValues;
 };
-/*
-  async function approveOffer (){}
-  async function banOffer (){}
-  */
 
 module.exports = {
   resolveOffer,

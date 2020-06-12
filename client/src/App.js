@@ -28,16 +28,15 @@ class App extends Component {
     render() {
         return (
             <Router history={browserHistory}>
-                <ToastContainer
-                    position="top-center"
-                    autoClose={5000}
-                    hideProgressBar={true}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnVisibilityChange
-                    draggable
-                    pauseOnHover
+                <ToastContainer position="top-center"
+                                autoClose={5000}
+                                hideProgressBar={true}
+                                newestOnTop={false}
+                                closeOnClick
+                                rtl={false}
+                                pauseOnVisibilityChange
+                                draggable
+                                pauseOnHover
                 />
                 <Switch>
                     <Route exact path='/' component={Home}/>

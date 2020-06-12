@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 const CreatorFilterItem = props => {
 
-  const {containerStyles, inputStyles, name, type, handler, description, value} = props
+  const {containerStyles, inputStyles, name, type, handler, description, value} = props;
 
   const onChangeHandler = (event) => {
     handler({name, value: event.target.value})
-  }
+  };
 
   return (
     <div className={containerStyles}>

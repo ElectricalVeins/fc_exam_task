@@ -1,7 +1,7 @@
 const CONSTANTS = require('../../constants');
 const bcrypt = require('bcrypt');
 
-const pass = bcrypt.hashSync('Test1234', CONSTANTS.SALT_ROUNDS)
+const pass = bcrypt.hashSync('Test1234', CONSTANTS.SALT_ROUNDS);
 
 module.exports={
   up: (queryInterface, Sequelize) => {
@@ -15,7 +15,7 @@ module.exports={
         role: CONSTANTS.MODERATOR,
         balance: 0,
         rating: 0,
-      }
+      },
     ], {});
   },
 };

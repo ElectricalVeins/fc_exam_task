@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import moment                         from 'moment'
-import Timer                          from "../Timer/Timer";
-import styles                         from './TimerList.module.sass'
+import moment from 'moment';
+import Timer from "../Timer/Timer";
+import styles from './TimerList.module.sass';
 
 const TimerList = ( { events, ...props } ) => {
 
-  const [ timers, setTimers ] = useState( null )
+  const [ timers, setTimers ] = useState( null );
 
   useEffect( () => {
-    setTimers( sortArrayByDate( events ) )
-  }, [ events ] )
+    setTimers( sortArrayByDate( events ) );
+  }, [ events ] );
 
   const sortArrayByDate = ( arr ) => {
     return arr.sort( ( a, b ) => {
@@ -18,8 +18,8 @@ const TimerList = ( { events, ...props } ) => {
 
       return moment( momentDate1 ).isBefore( momentDate2 ) ? -1
                                                            : 1
-    } )
-  }
+    } );
+  };
 
   return (
     <ul className={styles.list}>

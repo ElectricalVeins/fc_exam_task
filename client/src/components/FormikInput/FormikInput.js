@@ -1,5 +1,5 @@
 import React  from 'react';
-import styles from './FormikInput.module.sass'
+import styles from './FormikInput.module.sass';
 
 const FormikInput = ( { field, form, meta, ...rest } ) => {
 

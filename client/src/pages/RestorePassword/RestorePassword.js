@@ -10,7 +10,7 @@ import {
     createUpdatePasswordAction
 } from "../../actions/actionCreator";
 import Error from "../../components/Error/Error";
-import RestorePageInfo from "../../components/RestorePageInfo";
+import RestorePageInfo from "../../components/RestorePageInfo/RestorePageInfo";
 
 const RestorePassword = props => {
     const { history,clearState, passwordRecover: { isFetching, error, data,formResult } } = props;

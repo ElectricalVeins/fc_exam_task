@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import styles from './CreatorFilter.module.sass'
+import styles from './CreatorFilter.module.sass';
 import classNames from 'classnames';
 import queryString from 'query-string';
-import CONSTANTS from '../../constants'
+import CONSTANTS from '../../constants';
 import {
   clearContestList,
   getContestsForCreative,
@@ -16,12 +16,12 @@ const CreatorFilter = props => {
   const {search, dataForContest: {isFetching, data}, creatorFilter, dataForContest, creatorFilter: {types}} = props;
 
   useEffect(() => {
-    props.getDataForContest()
-  }, [])
+    props.getDataForContest();
+  }, []);
 
   useEffect(() => {
-    parseUrlForParams(search)
-  }, [search])
+    parseUrlForParams(search);
+  }, [search]);
 
   const changePredicate = ({name, value}) => {
     if (name === 'types') {
@@ -62,7 +62,7 @@ const CreatorFilter = props => {
     props.getContests(Object.assign({}, {
       limit: 8,
       offset: 0
-    }, filter))
+    }, filter));
   };
 
   const renderContestTypesFilter = () => {

@@ -1,7 +1,5 @@
 const Conversation = require('../../models/mongoModels/conversation');
 const Message = require('../../models/mongoModels/Message');
-const Catalog = require('../../models/mongoModels/Catalog');
-const db = require('../../models/index');
 const badRequestError = require('../../errors/BadRequestError');
 
 module.exports.createConversation = async (conditions, update, options) => {

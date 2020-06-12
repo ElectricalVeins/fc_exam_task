@@ -1,12 +1,12 @@
-import React                   from 'react';
-import moment                  from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { Formik, Form, Field } from 'formik';
-import * as yup                from 'yup';
-import DatePicker              from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css"
-import classNames              from 'classnames'
-import FormikInput             from "../FormikInput/FormikInput";
-import styles                  from './TimerForm.module.scss'
+import * as yup from 'yup';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import classNames from 'classnames';
+import FormikInput from "../FormikInput/FormikInput";
+import styles from './TimerForm.module.scss';
 
 const nameSchema = yup.string()
                       .min( 4, 'Minimum 4 symbols required' )
@@ -17,11 +17,11 @@ const dateSchema = yup.date( 'Please Enter a proper Date' )
                       .required( 'This area is required' );
 
 const TimerForm = props => {
-  const { submitHandler } = props
+  const { submitHandler } = props;
 
   const handleSubmit = ( event, { resetForm } ) => {
-    submitHandler( event )
-    resetForm()
+    submitHandler( event );
+    resetForm();
   };
 
   const nameValidate = async ( value ) => {
@@ -34,11 +34,11 @@ const TimerForm = props => {
 
   const dateValidate = async ( value ) => {
     try {
-      await dateSchema.validate( value )
+      await dateSchema.validate( value );
     } catch ( e ) {
       return e.message;
     }
-  }
+  };
 
   const validateForm = async ( { date, warningTime } ) => {
     const errors = {};
