@@ -1,7 +1,6 @@
 const express = require('express');
 const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const tokenMiddlewares = require('../middlewares/tokenMiddlewares');
-const offerController = require('../controllers/offerController');
 const contestController = require('../controllers/contestController');
 const upload = require('../utils/fileUpload');
 
@@ -40,22 +39,6 @@ contestRouter.post(
   upload.updateContestFile,
   basicMiddlewares.prepareOfferObjectToUpdate,
   contestController.updateContest
-);
-
-contestRouter.post(
-  '/setNewOffer',
-  tokenMiddlewares.verifyToken,
-  upload.uploadLogoFiles,
-  basicMiddlewares.canSendOffer,
-  basicMiddlewares.offerObjectCreator,
-  offerController.setNewOffer
-);
-
-contestRouter.post(
-  '/setOfferStatus',
-  tokenMiddlewares.verifyToken,
-  basicMiddlewares.onlyForCustomerWhoCreateContest,
-  offerController.setOfferStatus
 );
 
 contestRouter.get(

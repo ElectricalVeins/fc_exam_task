@@ -4,7 +4,8 @@ const authRouter = require('./authenticationRouter');
 const contestRouter = require('./contestRouter');
 const chatRouter = require('./chatRouter');
 const moderatorRouter = require('./moderatorRouter');
-const userRouter = require('./userRouter')
+const userRouter = require('./userRouter');
+const offerRouter = require('./offerRouter');
 const sequelizeErrorHandler = require('../middlewares/errorHandlers/sequelizeErrorHandler');
 const applicationErrorHandler = require('../middlewares/errorHandlers/applicationErrorHandler');
 const validationErrorHandler = require('../middlewares/errorHandlers/validationErrorHandler');
@@ -15,6 +16,7 @@ const router = express.Router();
 router.use(authRouter);
 router.use(userRouter);
 router.use(contestRouter);
+router.use(offerRouter);
 router.use(chatRouter);
 router.use(moderatorRouter);
 
