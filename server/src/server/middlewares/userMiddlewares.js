@@ -48,7 +48,7 @@ module.exports.createUser = async (req, res, next) => {
     req.user = await userQueries.userCreation(Object.assign(body, { password: hashPass }));
     next();
   }catch (err) {
-    next(err)
+    next(err);
   }
 };
 

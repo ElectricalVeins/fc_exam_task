@@ -4,27 +4,27 @@ const BadRequestError = require('../errors/BadRequestError');
 module.exports.validateRegistrationData = async (req, res, next) => {
   try {
     await schems.registrationSchem.validate(req.body);
-    next()
+    next();
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
 
 module.exports.validateLogin = async (req, res, next) => {
   try {
     await schems.loginSchem.validate(req.body);
-    next()
+    next();
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
 
 module.exports.validatePasswordRestore = async (req, res, next) => {
   try {
     await schems.restorePassword.validate(req.body);
-    next()
+    next();
   } catch (err) {
-    next(err)
+    next(err);
   }
 };
 

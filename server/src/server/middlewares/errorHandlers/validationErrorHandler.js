@@ -1,4 +1,4 @@
-const {ValidationError} = require('yup');
+const { ValidationError } = require('yup');
 
 module.exports = function (err, req, res, next) {
   if (err instanceof ValidationError) {

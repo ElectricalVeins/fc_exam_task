@@ -1,4 +1,4 @@
-const {DatabaseError, ValidationError, UniqueConstraintError, ConnectionError} = require('sequelize');
+const { DatabaseError, ValidationError, UniqueConstraintError, ConnectionError } = require('sequelize');
 
 module.exports = function (err, req, res, next) {
   if (err instanceof UniqueConstraintError) {
@@ -11,7 +11,6 @@ module.exports = function (err, req, res, next) {
     return res.status(408).send('Temporary unavaiable');
   }
   if (err instanceof DatabaseError) {
-    console.log(err)
     return res.status(400).send('transaction declined. check provided data');
   }
   next(err);
