@@ -202,11 +202,11 @@ export const goToExpandedDialog = (data) => {
     }
 };
 
-export const getDialogMessages = (data) => {
+export const getDialogMessages = (id) => {
     return {
 
         type: ACTION.GET_DIALOG_MESSAGES_ASYNC,
-        data: data
+        id
     }
 };
 
@@ -278,10 +278,9 @@ export const changeBlockStatusInStore=(data)=>{
     }
 };
 
-export const getCatalogList=(data)=>{
+export const getCatalogList=()=>{
     return{
         type: ACTION.GET_CATALOG_LIST_ASYNC,
-        data: data
     }
 };
 

@@ -10,8 +10,8 @@ const userQueries = require('../controllers/queries/userQueries');
 
 module.exports.findInterlocutorById = async (req, res, next) => {
   try {
-    const { body: { interlocutorId } } = req;
-    req.interlocutor = await userQueries.findUser({ id: interlocutorId });
+    const { query: { id } } = req;
+    req.interlocutor = await userQueries.findUser({ id });
     next();
   } catch (err) {
     next(new NotFound(err));

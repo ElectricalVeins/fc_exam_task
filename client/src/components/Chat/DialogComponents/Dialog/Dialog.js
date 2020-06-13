@@ -11,7 +11,7 @@ import ChatInput from '../../ChatComponents/ChatInut/ChatInput';
 class Dialog extends React.Component {
 
     componentDidMount() {
-        this.props.getDialog({interlocutorId: this.props.interlocutor.id});
+        this.props.getDialog(this.props.interlocutor.id);
         this.scrollToBottom();
     }
 
@@ -23,7 +23,7 @@ class Dialog extends React.Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         if (nextProps.interlocutor.id !== this.props.interlocutor.id)
-            this.props.getDialog({interlocutorId: nextProps.interlocutor.id});
+            this.props.getDialog(nextProps.interlocutor.id);
     }
 
     componentWillUnmount() {
@@ -98,7 +98,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getDialog: (data) => dispatch(getDialogMessages(data)),
+        getDialog: (id) => dispatch(getDialogMessages(id)),
         clearMessageList: () => dispatch(clearMessageList())
     }
 };

@@ -52,7 +52,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCatalogList: (data) => dispatch(getCatalogList(data)),
+        getCatalogList: () => dispatch(getCatalogList()),
         removeChatFromCatalog: (data) => dispatch(removeChatFromCatalog(data))
     }
 };

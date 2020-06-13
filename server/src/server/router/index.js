@@ -81,7 +81,7 @@ router.post(
   contestController.getContests
 );
 
-router.post(
+router.get(
   '/getUser',
   tokenMiddlewares.verifyToken,
   userMiddlewares.findUserByEmail,
@@ -146,14 +146,14 @@ router.post(
   chatController.addMessage
 );
 
-router.post(
+router.get(
   '/getChat',
   tokenMiddlewares.verifyToken,
   userMiddlewares.findInterlocutorById,
   chatController.getChat
 );
 
-router.post(
+router.get(
   '/getPreview',
   tokenMiddlewares.verifyToken,
   chatController.getPreview
@@ -204,7 +204,7 @@ router.post(
   chatController.deleteCatalog
 );
 
-router.post(
+router.get(
   '/getCatalogs',
   tokenMiddlewares.verifyToken,
   chatController.getCatalogs
