@@ -19,7 +19,7 @@ module.exports.dataForContest = async (req, res, next) => {
       },
     });
     if (!characteristics) {
-      return next(new ServerError(new Error('Can not get contest data')));
+      return next(new ServerError('Can not get contest data'));
     }
     for (const characteristic of characteristics) {
       const { type, ContestDescribes } = characteristic;
@@ -32,7 +32,7 @@ module.exports.dataForContest = async (req, res, next) => {
     }
     res.send(response);
   } catch (err) {
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -79,7 +79,7 @@ module.exports.getContestById = async (req, res, next) => {
     });
     res.send(contestInfo);
   } catch (err) {
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -121,7 +121,7 @@ module.exports.getCustomersContests = async (req, res, next) => {
     const haveMore = await isHaveMore(contests, req.body.limit);
     res.send({ contests, haveMore });
   }catch (err) {
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -151,6 +151,6 @@ module.exports.getContests = async (req, res, next) => {
     const haveMore = await isHaveMore(contests, limit);
     res.send({ contests, haveMore });
   }catch(err){
-    next(new ServerError(err));
+    next(err);
   }
 };

@@ -3,11 +3,6 @@ const uuid = require('uuid/v1');
 const _ = require('lodash');
 const CONSTANTS = require('../../constants');
 const db = require('../models/index');
-const NotFound = require('../errors/UserNotFoundError');
-const ServerError = require('../errors/ServerError');
-const BadRequestError = require('../errors/BadRequestError');
-const NotEnoughMoney = require('../errors/NotEnoughMoney');
-const NotUniqueEmail = require('../errors/NotUniqueEmail');
 const { sendRestorePasswordEmail } = require('../utils/sendEmail');
 const controller = require('../../socketInit');
 const userQueries = require('./queries/userQueries');
@@ -28,7 +23,7 @@ module.exports.sendUser = async (req, res, next) => {
       email: user.email,
     });
   } catch (err) {
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -42,7 +37,7 @@ module.exports.saveUserToken = async (req, res, next) => {
     transaction.commit();
   }catch(err){
     transaction.rollback();
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -50,10 +45,10 @@ module.exports.sendRestoreEmail = async (req, res, next) => {
   try{
     const { restorePassToken } = req;
     const restoreLink = `${CONSTANTS.BASE_URL}${CONSTANTS.PASSWORD_RESTORE_ROUTE}?token=${restorePassToken}`;
-    await sendRestorePasswordEmail(restoreLink, req.body.email);
+    sendRestorePasswordEmail(restoreLink, req.body.email);
     res.status(202).send('Check your email!');
   }catch (err) {
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -93,7 +88,7 @@ module.exports.changeMark = async (req, res, next) => {
     res.send({ userId: creatorId, rating: avg });
   } catch (err) {
     transaction.rollback();
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -134,7 +129,7 @@ module.exports.payment = async (req, res, next) => {
     res.status(200).send();
   } catch (err) {
     transaction.rollback();
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -148,7 +143,7 @@ module.exports.updateLostPassword = async (req, res, next) => {
     res.status(202).send('Your password have been successfully  changed');
   } catch (err) {
     transaction.rollback();
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -164,7 +159,7 @@ module.exports.updateUser = async (req, res, next) => {
     res.send({ firstName, lastName, displayName, avatar, email, balance, role, id });
   } catch (err) {
     transaction.rollback();
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -190,6 +185,6 @@ module.exports.cashout = async (req, res, next) => {
     res.send({ balance: updatedUser.balance });
   } catch (err) {
     transaction.rollback();
-    next(new ServerError(err));
+    next(err);
   }
 };

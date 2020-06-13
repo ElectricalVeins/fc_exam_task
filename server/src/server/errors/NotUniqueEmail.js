@@ -1,9 +1,9 @@
 const ApplicationError = require('./ApplicationError');
 
 class NotUniqueEmail extends ApplicationError {
-  constructor(error) {
-    error.message = 'This email already exists';
-    super(error, 409);
+  constructor(message) {
+    message = 'This email already exists';
+    super(message, 409);
   }
 }
 

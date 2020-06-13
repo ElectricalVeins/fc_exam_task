@@ -1,8 +1,8 @@
 const ApplicationError = require('./ApplicationError');
 
 class BadRequestError extends ApplicationError {
-  constructor(error) {
-    super(error.message || 'Bad request', 400);
+  constructor(message) {
+    super(message || 'The request could not be understood by the server due to malformed syntax.', 400);
   }
 }
 

@@ -8,7 +8,7 @@ const ServerError = require('../../errors/ServerError');
 const updateOffer = async (data, predicate, transaction) => {
   const [updatedCount, [updatedOffer]] = await db.Offers.update(data, { where: predicate, returning: true, transaction });
   if (updatedCount !==1){
-    throw new ServerError(new Error('cannot update offer!'));
+    throw new ServerError('cannot update offer!');
   }
   else {
     return updatedOffer.dataValues;
@@ -18,7 +18,7 @@ const updateOffer = async (data, predicate, transaction) => {
 const updateOfferStatus = async (data, predicate, transaction) => {
   const [updatedOffersCount, updatedOffers] = await db.Offers.update(data, { where: predicate, returning: true, transaction });
   if (updatedOffersCount < 1) {
-    throw new ServerError(new Error('can not update offer!'));
+    throw new ServerError('can not update offer!');
   } else {
     return updatedOffers;
   }
@@ -27,7 +27,7 @@ const updateOfferStatus = async (data, predicate, transaction) => {
 const createOffer = async (data) => {
   const result = await db.Offers.create(data);
   if (!result){
-    throw new ServerError(new Error('cannot create new Offer'));
+    throw new ServerError('cannot create new Offer');
   }
   else{
     return result.get({ plain: true });

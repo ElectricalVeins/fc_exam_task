@@ -1,5 +1,4 @@
 const db = require('../models/index');
-const ServerError = require('../errors/ServerError');
 const offerQueries = require('./queries/offerQueries');
 const controller = require('../../socketInit');
 const CONSTANTS = require('../../constants');
@@ -14,7 +13,7 @@ module.exports.setNewOffer = async (req, res, next) => {
     const User = Object.assign({}, req.tokenData, { id: tokenData.userId });
     res.send(Object.assign({}, result, { User }));
   } catch (err) {
-    return next(new ServerError(err));
+    return next(err);
   }
 };
 
@@ -62,7 +61,7 @@ module.exports.getAllUnModeratedOffers = async (req, res, next) => {
     });
     res.send(offers);
   } catch (err) {
-    next(new ServerError(err));
+    next(err);
   }
 };
 
@@ -88,6 +87,6 @@ module.exports.offerModeration = async (req, res, next) => {
     res.send(updatedOffer);
   }catch (err) {
     transaction.rollback();
-    next(new ServerError(err));
+    next(err);
   }
 };

@@ -22,7 +22,7 @@ module.exports.createAccessToken = async (req, res, next) => {
     }, CONSTANTS.JWT_SECRET, { expiresIn: CONSTANTS.ACCESS_TOKEN_TIME });
     next();
   }catch (err) {
-    next(new TokenError(err));
+    next(err);
   }
 };
 
@@ -39,22 +39,21 @@ module.exports.createRestorePassToken = async (req, res, next) => {
 
     next();
   } catch (err) {
-    next(new TokenError(err, 500));
+    next(err);
   }
 };
 
 module.exports.verifyToken = async (req, res, next) => {
   const accessToken = req.headers.authorization;
   if (!accessToken) {
-    return next(new TokenError(new Error('need token')));
+    return next(new TokenError('authentication failed'));
   }
   try {
     req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
     req.body.email=req.tokenData.email;
     next();
   } catch (err) {
-    console.log('verifyToken');
-    next(new TokenError(err));
+    next(err);
   }
 };
 
@@ -64,6 +63,6 @@ module.exports.verifyRestorePasswordToken = async (req, res, next) => {
     req.userData = await verifyJWT(token, CONSTANTS.JWT_SECRET);
     next();
   } catch (err) {
-    next(new TokenError(err, 400));
+    next(err);
   }
 };

@@ -4,7 +4,6 @@ const Catalog = require('../models/mongoModels/Catalog');
 const chatQueries = require('./queries/chatQueries');
 const db = require('../models/index');
 const controller = require('../../socketInit');
-const BadRequestError = require('../errors/BadRequestError');
 
 module.exports.addMessage = async (req, res, next) => {
   const participants = [req.tokenData.userId, req.body.recipient];
@@ -52,7 +51,7 @@ module.exports.addMessage = async (req, res, next) => {
     });
     res.send({ message, preview: Object.assign(preview, { interlocutor }) });
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -85,7 +84,7 @@ module.exports.getChat = async (req, res, next) => {
     const { firstName, lastName, displayName, id, avatar } = interlocutor;
     res.send({ messages, interlocutor: { firstName, lastName, displayName, id, avatar } });
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -144,7 +143,7 @@ module.exports.getPreview = async (req, res, next) => {
     });
     res.send(conversations);
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -157,7 +156,7 @@ module.exports.blackList = async (req, res, next) => {
     const interlocutorId = participants.filter((participant) => participant !== userId)[0];
     controller.getChatController().emitChangeBlockStatus(interlocutorId, chat);
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -168,7 +167,7 @@ module.exports.favoriteChat = async (req, res, next) => {
     const chat = await chatQueries.getConversation({ participants }, { $set: { [predicate]: favoriteFlag } }, { new: true });
     res.send(chat);
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -179,7 +178,7 @@ module.exports.createCatalog = async (req, res, next) => {
     await catalog.save();
     res.send(catalog);
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -189,7 +188,7 @@ module.exports.updateNameCatalog = async (req, res, next) => {
     const catalog = await Catalog.findOneAndUpdate({ _id: catalogId, userId }, { catalogName }, { new: true });
     res.send(catalog);
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -199,7 +198,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
     const catalog = await Catalog.findOneAndUpdate({ _id: catalogId, userId }, { $addToSet: { chats: chatId } }, { new: true });
     res.send(catalog);
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -209,7 +208,7 @@ module.exports.removeChatFromCatalog = async (req, res, next) => {
     const catalog = await Catalog.findOneAndUpdate({ _id: catalogId, userId }, { $pull: { chats: chatId } }, { new: true });
     res.send(catalog);
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -219,7 +218,7 @@ module.exports.deleteCatalog = async (req, res, next) => {
     await Catalog.remove({ _id: catalogId, userId });
     res.end();
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
 
@@ -229,6 +228,6 @@ module.exports.getCatalogs = async (req, res, next) => {
     const catalogs = await Catalog.aggregate([{ $match: { userId } }, { $project: { _id: 1, catalogName: 1, chats: 1 } }]);
     res.send(catalogs);
   } catch (err) {
-    next(new BadRequestError(err));
+    next(err);
   }
 };
