@@ -5,7 +5,7 @@ const pass = bcrypt.hashSync('Test1234', CONSTANTS.SALT_ROUNDS);
 
 module.exports={
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('User', [
+    return queryInterface.bulkInsert('Users', [
       {
         firstName: 'Moderator',
         lastName: 'Moderator',
