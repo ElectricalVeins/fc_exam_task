@@ -59,17 +59,23 @@ db.Users.belongsToMany(db.Users, {through: db.FavoriteList, as: 'favorite'});
 
 
 //Messages to Conversations 1:1
-db.Messages.hasOne(db.Conversations, {foreignKey: 'conversationId'});
-db.Messages.hasOne(db.Users, {foreignKey: 'senderId'});
+db.Messages.hasOne(db.Conversations, {foreignKey: 'id',constraints: false});
+db.Messages.hasOne(db.Users, {foreignKey: 'id', constraints: false});
+
+db.Users.hasMany(db.Messages);
+db.Users.hasMany(db.Conversations);
+
+db.Conversations.hasMany(db.Messages);
+db.Messages.belongsTo(db.Conversations);
 
 
-// sequelize.sync()
-//   .then(() => {
-//     console.log('sequelize soft sync has been done');
-//   })
-//   .catch(err =>
-//     console.log(err)
-//   );
+sequelize.sync()
+  .then(() => {
+    console.log('sequelie soft sync has been done');
+  })
+  .catch(err =>
+    console.log(err)
+  );
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
