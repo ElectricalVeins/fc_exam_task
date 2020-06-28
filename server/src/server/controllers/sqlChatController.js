@@ -85,3 +85,73 @@ module.exports.getSqlPreview = async (req, res, next) => {
   }
 };
 
+module.exports.sqlBlackList = async (req, res, next) => {
+  try {
+    const {body: {interlocutorId}, tokenData: {userId}} = req;
+    const blackList = await db.BlackList.create({UserId: userId, blockedId: interlocutorId});
+    controller.getChatController().emitChangeBlockStatus(interlocutorId, /*chat*/ blackList);
+    res.send(blackList);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+module.exports.sqlFavoriteList = async (req, res, next) => {
+  try {
+    const {body: {interlocutorId}, tokenData: {userId}} = req;
+    const favoriteList = await db.FavoriteList.create({UserId: userId, favoriteId: interlocutorId});
+    res.send(favoriteList);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+module.exports.sqlGetCatalogs = async (req, res, next) => {
+  try {
+    const {tokenData: {userId}} = req;
+    const catalogs = await db.Catalogs.findAll({
+      where: {
+        userId
+      },
+      include:[{
+        model:db.Conversations,
+        required:true,
+      }]
+    });
+    res.send(catalogs);
+  } catch (err) {
+    console.log(err);
+
+    next(err);
+  }
+};
+
+module.exports.sqlCreateCatalog = async (req, res, next) => {
+  try {
+    const {tokenData: {userId}, body: {catalogName, chatId}} = req;
+    const catalog = await db.Catalogs.create({
+      name: catalogName,
+      userId,
+    })
+    await db.CatalogToConversation.create({
+      CatalogId: catalog.id,
+      ConversationId: chatId,
+    })
+    const result = await db.Catalogs.findOne({
+      where: {
+        id: catalog.id,
+      },
+      include:[{
+        model: db.Conversations,
+        required:true,
+      }]
+
+    })
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
