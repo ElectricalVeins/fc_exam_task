@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const UserToConversation = sequelize.define('UserToConversation', {
     UserId: {
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Users',
         key: 'id',
       },
-    }
-  }, {timestamps: false});
+    },
+  }, { timestamps: false });
   return UserToConversation;
 };

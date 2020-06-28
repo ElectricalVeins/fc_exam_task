@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const BlackList = sequelize.define('BlackList', {
     UserId: {
@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'id',
-      }
+      },
     },
     blockedId: {
       type: DataTypes.INTEGER,
@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'id',
-      }
-    }
-  }, {timestamps: false});
+      },
+    },
+  }, { timestamps: false });
   return BlackList;
 };

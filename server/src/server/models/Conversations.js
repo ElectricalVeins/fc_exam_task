@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Conversations = sequelize.define('Conversations', {
     id: {
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       references:{
         model: 'Users',
         key: 'id',
-      }
+      },
     },
     UserId: {
       type: DataTypes.INTEGER,
@@ -21,9 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       references:{
         model: 'Users',
         key: 'id',
-      }
+      },
     },
-  }, {timestamps: true});
+  }, { timestamps: true });
   Conversations.associate = function (models) {
     // associations can be defined here
   };

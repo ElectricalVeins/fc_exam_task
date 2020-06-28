@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Messages = sequelize.define('Messages', {
     id: {
@@ -26,8 +26,8 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Conversations',
         key: 'id',
       },
-    }
-  }, {timestamps: true});
+    },
+  }, { timestamps: true });
   Messages.associate = function (models) {
     // associations can be defined here
   };

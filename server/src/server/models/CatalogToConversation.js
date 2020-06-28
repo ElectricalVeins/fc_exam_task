@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const CatalogToConversation = sequelize.define('CatalogToConversation', {
     CatalogId: {
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Conversations',
         key: 'id',
       },
-    }
-  }, {timestamps: false});
+    },
+  }, { timestamps: false });
   return CatalogToConversation;
 };

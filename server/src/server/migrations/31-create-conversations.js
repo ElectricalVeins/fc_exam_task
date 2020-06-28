@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Conversations', {
@@ -6,7 +6,15 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+      },
+      interlocutorId:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references:{
+          model: 'Users',
+          key: 'id',
+        },
       },
       ownerId: {
         type: Sequelize.INTEGER,
@@ -14,19 +22,19 @@ module.exports = {
         references:{
           model: 'Users',
           key: 'id',
-        }
+        },
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Conversations');
-  }
+  },
 };

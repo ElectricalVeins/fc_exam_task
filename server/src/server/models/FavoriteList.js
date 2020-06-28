@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const FavoriteList = sequelize.define('FavoriteList', {
     UserId: {
@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'id',
-      }
+      },
     },
     favoriteId: {
       type: DataTypes.INTEGER,
@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       references: {
         model: 'Users',
         key: 'id',
-      }
-    }
-  }, {timestamps: false});
+      },
+    },
+  }, { timestamps: false });
   return FavoriteList;
 };

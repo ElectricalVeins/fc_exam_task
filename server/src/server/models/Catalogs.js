@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const Catalogs = sequelize.define('Catalogs', {
     id: {
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    }
-  }, {timestamps: true});
+    },
+  }, { timestamps: true });
   return Catalogs;
 };
