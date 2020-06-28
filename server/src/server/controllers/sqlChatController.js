@@ -184,3 +184,14 @@ module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.sqlDeleteCatalog = async (req, res, next) => {
+  try {
+    const {tokenData: {userId}, body: {catalogId}} = req;
+    await db.Catalogs.destroy({where: {id: catalogId, userId}});
+    res.end();
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
