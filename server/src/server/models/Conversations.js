@@ -7,11 +7,19 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER,
     },
-    ownerId: {
+    interlocutorId:{
       type: DataTypes.INTEGER,
       allowNull: false,
       references:{
-        model: 'User',
+        model: 'Users',
+        key: 'id',
+      }
+    },
+    UserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references:{
+        model: 'Users',
         key: 'id',
       }
     },

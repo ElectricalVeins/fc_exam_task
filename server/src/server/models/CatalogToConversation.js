@@ -1,7 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const CatalogToConversation = sequelize.define('CatalogToConversation', {
-    catalogId: {
+    CatalogId: {
       allowNull: false,
       type: DataTypes.INTEGER,
       references: {
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id',
       },
     },
-    conversationId: {
+    ConversationId: {
       allowNull: false,
       type: DataTypes.INTEGER,
       references: {

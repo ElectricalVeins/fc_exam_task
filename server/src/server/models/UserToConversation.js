@@ -1,13 +1,21 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const UserToConversation = sequelize.define('UserToConversation', {
-    userId: {
+    UserId: {
       allowNull: false,
       type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
     },
-    conversationId: {
+    ConversationId: {
       allowNull: false,
       type: DataTypes.INTEGER,
+      references: {
+        model: 'Users',
+        key: 'id',
+      },
     }
   }, {timestamps: false});
   return UserToConversation;

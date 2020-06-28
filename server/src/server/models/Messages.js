@@ -11,15 +11,15 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.TEXT,
     },
-    senderId: {
+    UserId: {
       allowNull: false,
       type: DataTypes.INTEGER,
       references: {
-        model: 'User',
+        model: 'Users',
         key: 'id',
       },
     },
-    conversationId: {
+    ConversationId: {
       allowNull: false,
       type: DataTypes.INTEGER,
       references: {
