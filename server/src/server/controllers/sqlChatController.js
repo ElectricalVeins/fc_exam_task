@@ -155,3 +155,32 @@ module.exports.sqlCreateCatalog = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
+  try {
+    const {tokenData: {userId}, body: {catalogName, catalogId}} = req;
+
+    await db.Catalog.update({
+      name: catalogName,
+    }, {
+      where: {
+        id: catalogId
+      },
+    })
+
+    const catalog = await db.catalog.findOne({
+      where: {
+        id: catalogId
+      },
+      include: [{
+        model: db.Conversations,
+        required: true,
+      }]
+    })
+
+    res.send(catalog);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
