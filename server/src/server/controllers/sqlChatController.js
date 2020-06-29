@@ -195,3 +195,37 @@ module.exports.sqlDeleteCatalog = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.sqlAddNewChatToCatalog = async (req, res, next) => {
+  try {
+    //TODO:permissionCheck MW!
+    const { tokenData: { userId }, body: { catalogId, chatId } } = req;
+    await db.CatalogToConversation.create({
+      CatalogId: catalogId,
+      ConversationId: chatId,
+    });
+    const catalog = await sqlChatQueries.getCatalogById(catalogId);
+    res.send(catalog);
+  }catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+module.exports.sqlRemoveChatFromCatalog = async (req, res, next) => {
+  try {
+    //TODO:permissionCheck MW!
+    const { query: { id, catalogId } } = req; //chatId
+    await db.CatalogToConversation.destroy({
+      where: {
+        ConversationId: id,
+        catalogId,
+      },
+    });
+    const catalog = await sqlChatQueries.getCatalogById(catalogId);
+    res.send(catalog).status(200);
+  }catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
