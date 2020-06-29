@@ -1,25 +1,26 @@
 import ACTION from '../actions/actionTypes';
 import CONSTANTS from '../constants';
 
-
-
 const initialState = {
-    isFetching: true,
     addChatId: null,
-    isShowCatalogCreation: false,
     currentCatalog: null,
-    chatData: null,
+    chatId: null, //chatData было
     messages: [],
-    error: null,
-    isExpanded: false,
-    interlocutor: [],
-    messagesPreview: [],
-    isShow: false,
-    chatMode: CONSTANTS.NORMAL_PREVIEW_CHAT_MODE,
+    dialogsPreview: [],
     catalogList: [],
+    interlocutor: null,
+
+    isShow: false,
+    isExpanded: false,
+    isShowCatalogCreation: false,
     isRenameCatalog: false,
     isShowChatsInCatalog: false,
-    catalogCreationMode:    CONSTANTS.ADD_CHAT_TO_OLD_CATALOG
+
+    chatMode: CONSTANTS.NORMAL_PREVIEW_CHAT_MODE,
+    catalogCreationMode: CONSTANTS.ADD_CHAT_TO_OLD_CATALOG,
+
+    isFetching: true,
+    error: null,
 };
 
 export default function (state = initialState, action) {
@@ -27,7 +28,7 @@ export default function (state = initialState, action) {
         case ACTION.GET_PREVIEW_CHAT: {
             return {
                 ...state,
-                messagesPreview: action.data,
+                dialogsPreview: action.data,
                 error: null,
             }
         }
@@ -42,7 +43,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 error: action.error,
-                messagesPreview: []
+                dialogsPreview: []
             }
         }
         case ACTION.SET_CHAT_BLOCK_ERROR: {
@@ -73,8 +74,8 @@ export default function (state = initialState, action) {
         case ACTION.GO_TO_EXPANDED_DIALOG: {
             return {
                 ...state,
-                interlocutor: {...state.interlocutor,...action.data.interlocutor},
-                chatData: action.data.conversationData,
+                interlocutor: action.data.interlocutor,
+                chatId: action.data.id,
                 isShow: true,
                 isExpanded: true,
                 messages: []
@@ -98,8 +99,8 @@ export default function (state = initialState, action) {
         case ACTION.SEND_MESSAGE: {
             return {
                 ...state,
-                chatData: {...state.chatData,...action.data.chatData},
-                messagesPreview: action.data.messagesPreview,
+                //chatData: {...state.chatData,...action.data.chatData},
+                dialogsPreview: action.data.dialogsPreview,
                 messages: [...state.messages, action.data.message]
             }
         }
@@ -132,14 +133,14 @@ export default function (state = initialState, action) {
             return{
                 ...state,
                 chatData: action.data.changedPreview,
-                messagesPreview: action.data.messagesPreview
+                dialogsPreview: action.data.dialogsPreview
             }
         }
         case ACTION.CHANGE_CHAT_BLOCK:{
             return {
                 ...state,
                 chatData: action.data.chatData,
-                messagesPreview: action.data.messagesPreview
+                dialogsPreview: action.data.dialogsPreview
             }
         }
         case ACTION.RECEIVE_CATALOG_LIST: {

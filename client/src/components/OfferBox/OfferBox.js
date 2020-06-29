@@ -158,8 +158,8 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
     const {changeMarkError, isShowModal} = state.contestByIdStore;
     const {id, role} = state.userStore.data;
-    const {messagesPreview} = state.chatStore;
-    return {changeMarkError, id, role, messagesPreview, isShowModal};
+    const {dialogsPreview} = state.chatStore;
+    return {changeMarkError, id, role, dialogsPreview: dialogsPreview, isShowModal};
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(OfferBox));

@@ -204,7 +204,6 @@ export const goToExpandedDialog = (data) => {
 
 export const getDialogMessages = (id) => {
     return {
-
         type: ACTION.GET_DIALOG_MESSAGES_ASYNC,
         id
     }

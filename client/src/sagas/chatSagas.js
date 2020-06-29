@@ -27,30 +27,31 @@ export function* getDialog(action) {
 export function* sendMessage(action) {
     try {
         const {data} = yield restController.newMessage(action.data);
-        const {messagesPreview} = yield select(state => state.chatStore);
+        const {dialogsPreview} = yield select(state => state.chatStore);
         let isNew = true;
-        messagesPreview.forEach(preview => {
+        dialogsPreview.forEach(preview => {
             if (isEqual(preview.participants, data.message.participants)) {
-                preview.text = data.message.body;
-                preview.sender = data.message.sender;
-                preview.createAt = data.message.createdAt;
+                preview.Messages[0].body = data.message.body;
+                preview.Messages[0].id = data.message.id;
+                preview.Messages[0].UserId = data.message.userId;
+                preview.Messages[0].createdAt = data.message.createdAt;
                 isNew = false;
             }
         });
         if (isNew) {
-            messagesPreview.push(data.preview);
+            dialogsPreview.push(data.preview);
         }
         yield put({
             type: ACTION.SEND_MESSAGE,
             data: {
                 message: data.message,
-                messagesPreview,
-                chatData: {
+                dialogsPreview,
+               /* chatId: {
                     _id: data.preview._id,
                     participants: data.preview.participants,
                     favoriteList: data.preview.favoriteList,
                     blackList: data.preview.blackList
-                }
+                }*/
             }
         });
     } catch (err) {
@@ -61,12 +62,12 @@ export function* sendMessage(action) {
 export function* changeChatFavorite(action) {
     try {
         const {data} = yield restController.changeChatFavorite(action.data);
-        const {messagesPreview} = yield select(state => state.chatStore);
-        messagesPreview.forEach(preview => {
+        const {dialogsPreview} = yield select(state => state.chatStore);
+        dialogsPreview.forEach(preview => {
             if (isEqual(preview.participants, data.participants))
                 preview.favoriteList = data.favoriteList;
         });
-        yield put({type: ACTION.CHANGE_CHAT_FAVORITE, data: {changedPreview: data, messagesPreview}});
+        yield put({type: ACTION.CHANGE_CHAT_FAVORITE, data: {changedPreview: data, dialogsPreview: dialogsPreview}});
     } catch (err) {
         yield put({type: ACTION.SET_CHAT_FAVORITE_ERROR, error: err.response});
     }
@@ -75,12 +76,12 @@ export function* changeChatFavorite(action) {
 export function* changeChatBlock(action) {
     try {
         const {data} = yield restController.changeChatBlock(action.data);
-        const {messagesPreview} = yield select(state => state.chatStore);
-        messagesPreview.forEach(preview => {
+        const {dialogsPreview} = yield select(state => state.chatStore);
+        dialogsPreview.forEach(preview => {
             if (isEqual(preview.participants, data.participants))
                 preview.blackList = data.blackList
         });
-        yield put({type: ACTION.CHANGE_CHAT_BLOCK, data: {messagesPreview, chatData: data}});
+        yield put({type: ACTION.CHANGE_CHAT_BLOCK, data: {dialogsPreview: dialogsPreview, chatData: data}});
     } catch (err) {
         yield put({type: ACTION.SET_CHAT_BLOCK_ERROR, error: err.response})
     }
@@ -154,12 +155,18 @@ export function* changeCatalogName(action) {
     try {
         const {data} = yield restController.changeCatalogName(action.data);
         const {catalogList} = yield select(state => state.chatStore);
-        for (let i = 0; i < catalogList.length; i++) {
-            if (catalogList[i]._id === data._id) {
-                catalogList[i].catalogName = data.catalogName;
+        for(const catalog of catalogList) {
+            if (catalog.id === data.id) {
+                catalog.name = data.name;
                 break;
             }
         }
+      /*  for (let i = 0; i < catalogList.length; i++) {
+            if (catalogList[i].id === data.id) {
+                catalogList[i].name = data.catalogName;
+                break;
+            }
+        }*/
         yield put({type: ACTION.CHANGE_CATALOG_NAME_SUCCESS, data: {catalogList, currentCatalog: data}});
     } catch (err) {
         yield put({type: ACTION.CHANGE_CATALOG_NAME_ERROR, error: err.response});
