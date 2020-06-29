@@ -2,6 +2,7 @@ const _ = require('lodash');
 const db = require('../models');
 const controller = require('../../socketInit');
 const sqlChatQueries = require('./queries/sqlChatQueries');
+const NotFoundError = require('../errors/UserNotFoundError');
 
 module.exports.addSqlMessage = async (req, res, next) => {
   try {
@@ -9,10 +10,11 @@ module.exports.addSqlMessage = async (req, res, next) => {
     const { tokenData: { userId }, body: { messageBody, interlocutor, conversationId } } = req; //TODO: front-> add 'conversationId' in axios request
     const message = await db.Messages.create({ body: messageBody, UserId: userId, ConversationId: conversationId });
     const preview = {
-      _id: message.ConversationId,
-      sender: userId,
-      text: messageBody,
-      createAt: message.createdAt,
+      id: message.id,
+      conversationId: message.ConversationId,
+      userId,
+      body: messageBody,
+      createdAt: message.createdAt,
       interlocutor,
       //participants, // скорее всгео не надо, т.к. есть теперь conversationId
     };
@@ -30,6 +32,7 @@ module.exports.addSqlMessage = async (req, res, next) => {
 
 module.exports.getSqlChat = async (req, res, next) => {
   try {
+    //TODO: MW проверяющий при getChat находится ли юзер в black list. //Если да - отправлять ошибку и отображать её как ошибку в чате
     const { query: { id } } = req; //conversationId
     const chat = await db.Conversations.findOne({
       where: {
@@ -43,9 +46,21 @@ module.exports.getSqlChat = async (req, res, next) => {
         ],
       }],
     });
+    if (!chat) {
+      next(new NotFoundError('Chat not found'));
+    }
+    let interlocutorId;
+    [chat.interlocutorId, chat.UserId].forEach((userId) => {
+      if (userId !== req.tokenData.userId) {
+        interlocutorId = userId;
+      }
+    });
+    if (!interlocutorId) {
+      next(new NotFoundError('Interlocutor not found'));
+    }
     const interlocutor = await db.Users.findOne({
       where: {
-        id: chat.interlocutorId,
+        id: interlocutorId,
       },
       attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
     });
@@ -58,25 +73,27 @@ module.exports.getSqlChat = async (req, res, next) => {
 
 module.exports.getSqlPreview = async (req, res, next) => {
   try {
-    //TODO: MW проверяющий при getChat находится ли юзер в black list. //Если да - отправлять ошибку и отображать её как ошибку в чате.
     const { conversationList } = req;
     const conversations = await db.Conversations.findAll({
       where: {
         id: conversationList,
       },
       order: [
-        ['createdAt', 'ASC'],
+        ['createdAt', 'DESC'],
       ], include: [{
         model: db.Messages,
         required: true,
         order: [
-          ['createdAt', 'ASC'],
+          ['createdAt', 'DESC'],
         ],
         limit: 1,
       }, {
         model: db.Users,
         required: true,
         attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+        where:{
+          [db.Sequelize.Op.not]: [{ id: req.tokenData.userId }],
+        },
       }],
     });
     res.send(conversations);
@@ -169,7 +186,6 @@ module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
 
 module.exports.sqlDeleteCatalog = async (req, res, next) => {
   try {
-    // TODO: MW проверяющий право на CRUD
     const { tokenData: { userId }, query: { id } } = req; // catalogId
     await db.Catalogs.destroy({ where: { id, userId } });
     res.end();
