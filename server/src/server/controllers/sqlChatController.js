@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const db = require('../models');
 const controller = require('../../socketInit');
+const sqlChatQueries = require('./queries/sqlChatQueries');
 
 module.exports.addSqlMessage = async (req, res, next) => {
   try {
@@ -87,8 +88,8 @@ module.exports.getSqlPreview = async (req, res, next) => {
 
 module.exports.sqlBlackList = async (req, res, next) => {
   try {
-    const {body: {interlocutorId}, tokenData: {userId}} = req;
-    const blackList = await db.BlackList.create({UserId: userId, blockedId: interlocutorId});
+    const { body: { interlocutorId }, tokenData: { userId } } = req;
+    const blackList = await db.BlackList.create({ UserId: userId, blockedId: interlocutorId });
     controller.getChatController().emitChangeBlockStatus(interlocutorId, /*chat*/ blackList);
     res.send(blackList);
   } catch (err) {
@@ -99,8 +100,8 @@ module.exports.sqlBlackList = async (req, res, next) => {
 
 module.exports.sqlFavoriteList = async (req, res, next) => {
   try {
-    const {body: {interlocutorId}, tokenData: {userId}} = req;
-    const favoriteList = await db.FavoriteList.create({UserId: userId, favoriteId: interlocutorId});
+    const { body: { interlocutorId }, tokenData: { userId } } = req;
+    const favoriteList = await db.FavoriteList.create({ UserId: userId, favoriteId: interlocutorId });
     res.send(favoriteList);
   } catch (err) {
     console.log(err);
@@ -110,15 +111,15 @@ module.exports.sqlFavoriteList = async (req, res, next) => {
 
 module.exports.sqlGetCatalogs = async (req, res, next) => {
   try {
-    const {tokenData: {userId}} = req;
+    const { tokenData: { userId } } = req;
     const catalogs = await db.Catalogs.findAll({
       where: {
-        userId
+        userId,
       },
       include:[{
         model:db.Conversations,
         required:true,
-      }]
+      }],
     });
     res.send(catalogs);
   } catch (err) {
@@ -130,25 +131,16 @@ module.exports.sqlGetCatalogs = async (req, res, next) => {
 
 module.exports.sqlCreateCatalog = async (req, res, next) => {
   try {
-    const {tokenData: {userId}, body: {catalogName, chatId}} = req;
+    const { tokenData: { userId }, body: { catalogName, chatId } } = req;
     const catalog = await db.Catalogs.create({
       name: catalogName,
       userId,
-    })
+    });
     await db.CatalogToConversation.create({
       CatalogId: catalog.id,
       ConversationId: chatId,
-    })
-    const result = await db.Catalogs.findOne({
-      where: {
-        id: catalog.id,
-      },
-      include:[{
-        model: db.Conversations,
-        required:true,
-      }]
-
-    })
+    });
+    const result = await sqlChatQueries.getCatalogById(catalog.id);
     res.send(result);
   } catch (err) {
     console.log(err);
@@ -158,26 +150,16 @@ module.exports.sqlCreateCatalog = async (req, res, next) => {
 
 module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
   try {
-    const {tokenData: {userId}, body: {catalogName, catalogId}} = req;
+    const { tokenData: { userId }, body: { catalogName, catalogId } } = req;
 
-    await db.Catalog.update({
+    await db.Catalogs.update({
       name: catalogName,
     }, {
       where: {
-        id: catalogId
+        id: catalogId,
       },
-    })
-
-    const catalog = await db.catalog.findOne({
-      where: {
-        id: catalogId
-      },
-      include: [{
-        model: db.Conversations,
-        required: true,
-      }]
-    })
-
+    });
+    const catalog = await sqlChatQueries.getCatalogById(catalogId);
     res.send(catalog);
   } catch (err) {
     console.log(err);
@@ -187,8 +169,9 @@ module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
 
 module.exports.sqlDeleteCatalog = async (req, res, next) => {
   try {
-    const {tokenData: {userId}, body: {catalogId}} = req;
-    await db.Catalogs.destroy({where: {id: catalogId, userId}});
+    // TODO: MW проверяющий право на CRUD
+    const { tokenData: { userId }, query: { id } } = req; // catalogId
+    await db.Catalogs.destroy({ where: { id, userId } });
     res.end();
   } catch (err) {
     console.log(err);
