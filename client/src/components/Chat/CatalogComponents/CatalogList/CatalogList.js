@@ -20,7 +20,7 @@ const CatalogList = (props) => {
         const {catalogList} = props;
         const elementList = [];
         catalogList.forEach((catalog) => {
-            elementList.push(<Catalog catalog={catalog} key={catalog._id} deleteCatalog={deleteCatalog}
+            elementList.push(<Catalog catalog={catalog} key={catalog.id} deleteCatalog={deleteCatalog}
                                       goToCatalog={goToCatalog}/>)
         });
         return elementList.length? elementList : <span className={styles.notFound}>Not found</span>;

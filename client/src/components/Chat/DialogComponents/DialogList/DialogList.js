@@ -53,12 +53,16 @@ const DialogList = (props) => {
         const arrayList = [];
         const {userId, preview, goToExpandedDialog, chatMode, removeChat, interlocutor} = props;
         preview.forEach((chatPreview, index) => {
-            const dialogNode = <DialogBox
-                interlocutor={chatPreview.interlocutor}
-                chatPreview={chatPreview} userId={userId} key={index} getTimeStr={getTimeStr}
-                changeFavorite={changeFavorite} changeBlackList={changeBlackList} chatMode={chatMode}
-                catalogOperation={chatMode === CONSTANTS.CATALOG_PREVIEW_CHAT_MODE ? removeChat : changeShowCatalogCreation}
-                goToExpandedDialog={goToExpandedDialog}/>;
+            const dialogNode = <DialogBox collocutors={chatPreview.Users}
+                                          chatPreview={chatPreview}
+                                          userId={userId}
+                                          key={index}
+                                          getTimeStr={getTimeStr}
+                                          changeFavorite={changeFavorite}
+                                          changeBlackList={changeBlackList}
+                                          chatMode={chatMode}
+                                          catalogOperation={chatMode === CONSTANTS.CATALOG_PREVIEW_CHAT_MODE ? removeChat : changeShowCatalogCreation}
+                                          goToExpandedDialog={goToExpandedDialog}/>;
             if (filterFunc && filterFunc(chatPreview, userId)) {
                 arrayList.push(dialogNode);
             } else if (!filterFunc) {

@@ -11,23 +11,21 @@ class CatalogListContainer extends React.Component {
     }
 
     removeChatFromCatalog = (event, chatId) => {
-        const {_id} = this.props.chatStore.currentCatalog;
-        this.props.removeChatFromCatalog({chatId, catalogId: _id});
+        const {id} = this.props.chatStore.currentCatalog;
+        this.props.removeChatFromCatalog({chatId, catalogId: id});
         event.stopPropagation();
     };
 
     getDialogsPreview = () => {
-        const {messagesPreview, currentCatalog} = this.props.chatStore;
-        const {chats} = currentCatalog;
+        const {dialogsPreview, currentCatalog:{Conversations}} = this.props.chatStore;
         const dialogsInCatalog = [];
-        messagesPreview.forEach(preview => {
-            for (const chat of chats) {
-                if (chat === preview._id) {
+        dialogsPreview.forEach(preview => {
+            for (const chat of Conversations) {
+                if (chat.id === preview.id) {
                     dialogsInCatalog.push(preview)
                 }
             }
         })
-        console.log('dialogsInCatalog',dialogsInCatalog)
         return dialogsInCatalog;
     };
 
@@ -36,7 +34,8 @@ class CatalogListContainer extends React.Component {
         const {id} = this.props.userStore.data;
         return (
             <>
-                {isShowChatsInCatalog ? <DialogList userId={id} preview={this.getDialogsPreview()}
+                {isShowChatsInCatalog ? <DialogList userId={id}
+                                                    preview={this.getDialogsPreview()}
                                                     removeChat={this.removeChatFromCatalog}/> :
                     <CatalogList catalogList={catalogList}/>}
             </>

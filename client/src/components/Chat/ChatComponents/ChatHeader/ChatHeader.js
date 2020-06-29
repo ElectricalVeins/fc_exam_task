@@ -6,6 +6,8 @@ import CONSTANTS from '../../../../constants';
 import classNames from 'classnames';
 
 const ChatHeader = (props) => {
+    const {backToDialogList, chatData, userId, interlocutor:{avatar, firstName}} = props;
+
     const changeFavorite = (data, event) => {
         props.changeChatFavorite(data);
         event.stopPropagation();
@@ -16,7 +18,7 @@ const ChatHeader = (props) => {
         event.stopPropagation();
     };
 
-    const isFavorite = (chatData, userId) => {
+/*    const isFavorite = (chatData, userId) => {
         const {favoriteList, participants} = chatData;
         return favoriteList[participants.indexOf(userId)];
     };
@@ -24,37 +26,37 @@ const ChatHeader = (props) => {
     const isBlocked = (chatData, userId) => {
         const {participants, blackList} = chatData;
         return blackList[participants.indexOf(userId)];
-    };
+    };*/
 
-    const {avatar, firstName} = props.interlocutor;
-    const {backToDialogList, chatData, userId} = props;
     return (
         <div className={styles.chatHeader}>
-            <div className={styles.buttonContainer} onClick={() => backToDialogList()}>
+            <div className={styles.buttonContainer}
+                 onClick={() => backToDialogList()}>
                 <img src={`${CONSTANTS.STATIC_IMAGES_PATH}arrow-left-thick.png`} alt='back'/>
             </div>
             <div className={styles.infoContainer}>
                 <div>
-                    <img src={avatar ? `${CONSTANTS.publicURL}${avatar}` : CONSTANTS.ANONYM_IMAGE_PATH} alt='user'/>
+                    <img src={avatar ? `${CONSTANTS.publicURL}${avatar}` : CONSTANTS.ANONYM_IMAGE_PATH}
+                         alt='user'/>
                     <span>{firstName}</span>
                 </div>
                 {chatData &&
                 <div>
                     <i onClick={(event) => changeFavorite({
-                        participants: chatData.participants,
-                        favoriteFlag: !isFavorite(chatData, userId)
+                        participants: chatData, //TODO: переделать нужно что бы был interlocutorId
+                        //favoriteFlag: !isFavorite(chatData, userId)
                     }, event)}
                        className={classNames({
-                           ['far fa-heart']: !isFavorite(chatData, userId),
-                           ['fas fa-heart']: isFavorite(chatData, userId)
+                          // ['far fa-heart']: !isFavorite(chatData, userId),
+                          // ['fas fa-heart']: isFavorite(chatData, userId)
                        })}/>
                     <i onClick={(event) => changeBlackList({
-                        participants: chatData.participants,
-                        blackListFlag: !isBlocked(chatData, userId)
+                        participants: chatData, //TODO: переделать нужно что бы был interlocutorId
+                        //blackListFlag: !isBlocked(chatData, userId)
                     }, event)}
                        className={classNames({
-                           ['fas fa-user-lock']: !isBlocked(chatData, userId),
-                           ['fas fa-unlock']: isBlocked(chatData, userId)
+                           //['fas fa-user-lock']: !isBlocked(chatData, userId),
+                           //['fas fa-unlock']: isBlocked(chatData, userId)
                        })}/>
                 </div>
                 }

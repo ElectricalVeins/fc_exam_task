@@ -25,9 +25,7 @@ class Chat extends React.Component {
     }
 
     renderDialogList = () => {
-        const {setChatPreviewMode} = this.props;
-        const {chatMode, isShowChatsInCatalog} = this.props.chatStore;
-        const {id} = this.props.userStore.data;
+        const {setChatPreviewMode, chatStore:{chatMode, isShowChatsInCatalog}, userStore:{data:{id}}} = this.props;
         const {NORMAL_PREVIEW_CHAT_MODE, FAVORITE_PREVIEW_CHAT_MODE, BLOCKED_PREVIEW_CHAT_MODE, CATALOG_PREVIEW_CHAT_MODE} = CONSTANTS;
         return (
             <div>
@@ -51,16 +49,24 @@ class Chat extends React.Component {
     };
 
     render() {
-        const {isExpanded, isShow, isShowCatalogCreation,error} = this.props.chatStore;
-        const {id} = this.props.userStore.data;
-        const {changeShow,getPreviewChat} = this.props;
+        const {changeShow,getPreviewChat,chatStore:{isExpanded, isShow, isShowCatalogCreation,error},userStore:{data:{id}}} = this.props;
         return (
             <div className={classNames(styles.chatContainer, {[styles.showChat]: isShow})}>
-                {error && <ChatError getData={getPreviewChat}/>}
-                {isShowCatalogCreation && <CatalogCreation/>}
-                {isExpanded ? <Dialog userId={id}/> : this.renderDialogList()}
+                {
+                    error && <ChatError getData={getPreviewChat}/>
+                }
+                {
+                    isShowCatalogCreation && <CatalogCreation/>
+                }
+                {
+                    isExpanded ? <Dialog userId={id}/> : this.renderDialogList()
+                }
                 <div className={styles.toggleChat}
-                     onClick={() => changeShow()}>{isShow ? 'Hide Chat' : 'Show Chat'}</div>
+                     onClick={() => changeShow()}>
+                    {
+                        isShow ? 'Hide Chat' : 'Show Chat'
+                    }
+                </div>
             </div>
         )
     }

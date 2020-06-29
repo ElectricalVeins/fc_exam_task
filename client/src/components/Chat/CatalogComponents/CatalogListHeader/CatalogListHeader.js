@@ -5,33 +5,31 @@ import {Field, reduxForm} from 'redux-form';
 import styles from './CatalogHeader.module.sass';
 import FormInput from '../../../FormInput/FormInput';
 
-
 const validate = (values) => {
     const errors = {};
-    if (!values.catalogName || !values.catalogName.trim().length) {
-        errors.catalogName = 'Cannot be empty';
+    if (!values.name || !values.name.trim().length) {
+        errors.name = 'Cannot be empty';
     }
     return errors;
 };
 
-
 const CatalogListHeader = (props) => {
+    const {handleSubmit, name, changeShowModeCatalog, changeRenameCatalogMode, isRenameCatalog, valid} = props;
     const changeCatalogName = (values) => {
-        const {changeCatalogName, _id} = props;
-        changeCatalogName({catalogName: values.catalogName, catalogId: _id});
+        const {changeCatalogName, id} = props;
+        changeCatalogName({catalogName: values.name, catalogId: id});
     };
-    const {handleSubmit, catalogName, changeShowModeCatalog, changeRenameCatalogMode, isRenameCatalog, valid} = props;
     return (
         <div className={styles.headerContainer}>
             <i className='fas fa-long-arrow-alt-left' onClick={() => changeShowModeCatalog()}/>
             {!isRenameCatalog && <div className={styles.infoContainer}>
-                <span title={catalogName}>{catalogName}</span>
+                <span title={name}>{name}</span>
                 <i className='fas fa-edit' onClick={() => changeRenameCatalogMode()}/>
             </div>}
             {isRenameCatalog && <div className={styles.changeContainer}>
                 <form onSubmit={handleSubmit(changeCatalogName)}>
                     <Field
-                        name='catalogName'
+                        name='name'
                         classes={{
                             container: styles.inputContainer,
                             input: styles.input,
@@ -52,13 +50,13 @@ const CatalogListHeader = (props) => {
 
 const mapStateToProps = (state) => {
     const {isRenameCatalog} = state.chatStore;
-    const {catalogName, _id} = state.chatStore.currentCatalog;
+    const {name, id} = state.chatStore.currentCatalog;
     return {
-        _id,
-        catalogName,
+        id,
+        name,
         isRenameCatalog,
         initialValues: {
-            catalogName: catalogName
+            name
         }
     }
 };

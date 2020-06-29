@@ -10,8 +10,8 @@ class DialogListContainer extends React.Component {
     }
 
     render() {
-        const {messagesPreview, userId} = this.props;
-        return <DialogList preview={messagesPreview} userId={userId}/>
+        const {dialogsPreview, userId} = this.props;
+        return <DialogList preview={dialogsPreview} userId={userId}/>
     }
 }
 

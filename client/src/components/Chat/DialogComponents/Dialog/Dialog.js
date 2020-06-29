@@ -11,7 +11,7 @@ import ChatInput from '../../ChatComponents/ChatInut/ChatInput';
 class Dialog extends React.Component {
 
     componentDidMount() {
-        this.props.getDialog(this.props.interlocutor.id);
+        this.props.getDialog(this.props.chatId); // <----------------- conversationID
         this.scrollToBottom();
     }
 
@@ -21,10 +21,12 @@ class Dialog extends React.Component {
         this.messagesEnd.current.scrollIntoView({behavior: 'smooth'})
     };
 
-    componentWillReceiveProps(nextProps, nextContext) {
+/*    componentWillReceiveProps(nextProps, nextContext) {
+        console.log(this.props)
+        console.log(nextProps)
         if (nextProps.interlocutor.id !== this.props.interlocutor.id)
             this.props.getDialog(nextProps.interlocutor.id);
-    }
+    }*/
 
     componentWillUnmount() {
         this.props.clearMessageList();
@@ -50,7 +52,7 @@ class Dialog extends React.Component {
             }
             messagesArray.push(
                 <div key={i}
-                     className={className(userId === message.sender ? styles.ownMessage : styles.message)}>
+                     className={className(userId === message.UserId ? styles.ownMessage : styles.message)}>
                     <span>{message.body}</span>
                     <span className={styles.messageTime}>{moment(message.createdAt).format('HH:mm')}</span>
                     <div ref={this.messagesEnd}/>
@@ -64,20 +66,20 @@ class Dialog extends React.Component {
         )
     };
 
-    blockMessage = () => {
+    /*blockMessage = () => {
         const {userId, chatData} = this.props;
         const {blackList, participants} = chatData;
         const userIndex = participants.indexOf(userId);
         let message;
-        if (chatData && blackList[userIndex]) {
+        if (chatData /!*&& blackList[userIndex]*!/) {
             message = 'You block him';
-        } else if (chatData && blackList.includes(true)) {
+        } else if (chatData /!*&& blackList.includes(true)*!/) {
             message = 'He block you';
         }
         return (
             <span className={styles.messageBlock}>{message}</span>
         )
-    };
+    };*/
 
     render() {
         const {chatData, userId} = this.props;
@@ -86,7 +88,7 @@ class Dialog extends React.Component {
                 <ChatHeader userId={userId}/>
                 {this.renderMainDialog()}
                 <div ref={this.messagesEnd}/>
-                {(chatData && chatData.blackList.includes(true)) ? this.blockMessage() : <ChatInput/>}
+                {/*(chatData && chatData.blackList.includes(true)) ? this.blockMessage() : */<ChatInput/>}
             </>
         )
     }
