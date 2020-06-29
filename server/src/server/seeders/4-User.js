@@ -16,6 +16,26 @@ module.exports={
         balance: 0,
         rating: 0,
       },
+      {
+        firstName: 'test',
+        lastName: 'test',
+        displayName: 'buyer',
+        password: pass,
+        email: 'buyer@gmail.com',
+        role: 'customer',
+        balance: 0,
+        rating: 0,
+      },
+      {
+        firstName: 'creative',
+        lastName: 'creative',
+        displayName: 'creative',
+        password: pass,
+        email: 'creative@gmail.com',
+        role: 'creator',
+        balance: 0,
+        rating: 0,
+      },
     ], {});
   },
 };
