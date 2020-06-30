@@ -20,8 +20,8 @@ export const changeChatBlock = (data) => http.post('blackList', data);
 export const getCatalogList = () => http.get('getCatalogs');
 export const addChatToCatalog = (data) => http.post('addNewChatToCatalog', data);
 export const createCatalog = (data) => http.post('createCatalog', data);
-export const deleteCatalog = (data) => http.post('deleteCatalog', data);
-export const removeChatFromCatalog = (data) => http.post('removeChatFromCatalog', data);
+export const deleteCatalog = (data) => http.delete(`deleteCatalog?id=${data}`);
+export const removeChatFromCatalog = ({chatId,catalogId}) => http.delete(`removeChatFromCatalog?id=${chatId}&catalogId=${catalogId}`);
 export const changeCatalogName = (data) => http.post('updateNameCatalog', data);
 export const getCustomersContests = (data) => {
     return http.post('getCustomersContests', {limit: data.limit, offset: data.offset}, {

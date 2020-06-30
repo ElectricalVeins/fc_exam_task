@@ -67,14 +67,14 @@ chatRouter.post(
   //chatController.addNewChatToCatalog
 );
 
-chatRouter.post(
+chatRouter.delete(
   '/removeChatFromCatalog',
   tokenMiddlewares.verifyToken,
   sqlChatController.sqlRemoveChatFromCatalog
   //chatController.removeChatFromCatalog
 );
 
-chatRouter.post(
+chatRouter.delete(
   '/deleteCatalog',
   tokenMiddlewares.verifyToken,
   sqlChatController.sqlDeleteCatalog
