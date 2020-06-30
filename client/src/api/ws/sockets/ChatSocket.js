@@ -24,11 +24,12 @@ class ChatSocket extends WebSocket {
         this.socket.on(CONTANTS.CHANGE_BLOCK_STATUS, (data) => {
             const {message} = data;
             const {dialogsPreview} = this.getState().chatStore;
-            dialogsPreview.forEach(preview => {
+            //TODO: переделать логику под новую
+           /* dialogsPreview.forEach(preview => {
                 if (isEqual(preview.participants, message.participants))
                     preview.blackList = message.blackList
-            });
-            this.dispatch(changeBlockStatusInStore({chatData: message, dialogsPreview: dialogsPreview}));
+            });*/
+            this.dispatch(changeBlockStatusInStore({chatData: message, dialogsPreview: dialogsPreview})); //<- chatData
         })
     };
 
@@ -38,10 +39,8 @@ class ChatSocket extends WebSocket {
             const {dialogsPreview} = this.getState().chatStore;
             let isNew = true;
             dialogsPreview.forEach(preview => {
-                if (isEqual(preview.participants, message.participants)) {
-                    preview.text = message.body;
-                    preview.sender = message.sender;
-                    preview.createAt = message.createdAt;
+                if (preview.id === message.ConversationId) {
+                    preview.Messages[0] = message;
                     isNew = false;
                 }
             });
