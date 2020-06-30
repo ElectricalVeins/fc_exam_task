@@ -12,12 +12,13 @@ module.exports.addSqlMessage = async (req, res, next) => {
     const preview = {
       id: message.id,
       conversationId: message.ConversationId,
-      userId,
+      UserId: userId,
       body: messageBody,
       createdAt: message.createdAt,
       interlocutor,
       //participants, // скорее всгео не надо, т.к. есть теперь conversationId
     };
+    console.log(interlocutor)
     controller.getChatController().emitNewMessage(interlocutor.id, {
       message,
       preview,
@@ -28,7 +29,7 @@ module.exports.addSqlMessage = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-};
+}; // ok
 
 module.exports.getSqlChat = async (req, res, next) => {
   try {
@@ -69,7 +70,8 @@ module.exports.getSqlChat = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-};
+}; // ok
+                                                                        // чтото с временем
 
 module.exports.getSqlPreview = async (req, res, next) => {
   try {
@@ -101,7 +103,7 @@ module.exports.getSqlPreview = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-};
+}; // ok
 
 module.exports.sqlBlackList = async (req, res, next) => {
   try {
@@ -135,7 +137,7 @@ module.exports.sqlGetCatalogs = async (req, res, next) => {
       },
       include:[{
         model:db.Conversations,
-        required:true,
+        //required:true,
       }],
     });
     res.send(catalogs);
@@ -144,7 +146,7 @@ module.exports.sqlGetCatalogs = async (req, res, next) => {
 
     next(err);
   }
-};
+}; // ok
 
 module.exports.sqlCreateCatalog = async (req, res, next) => {
   try {
@@ -163,7 +165,7 @@ module.exports.sqlCreateCatalog = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-};
+}; // ok
 
 module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
   try {
@@ -182,7 +184,7 @@ module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-};
+}; // ok
 
 module.exports.sqlDeleteCatalog = async (req, res, next) => {
   try {
@@ -209,7 +211,7 @@ module.exports.sqlAddNewChatToCatalog = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-};
+}; // ok
 
 module.exports.sqlRemoveChatFromCatalog = async (req, res, next) => {
   try {
@@ -218,7 +220,7 @@ module.exports.sqlRemoveChatFromCatalog = async (req, res, next) => {
     await db.CatalogToConversation.destroy({
       where: {
         ConversationId: id,
-        catalogId,
+        CatalogId: catalogId,
       },
     });
     const catalog = await sqlChatQueries.getCatalogById(catalogId);
@@ -227,4 +229,6 @@ module.exports.sqlRemoveChatFromCatalog = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-};
+}; // ok
+
+// TODO: создание чатов, blackList, favoriteList,
