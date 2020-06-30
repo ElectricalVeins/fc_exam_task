@@ -6,6 +6,7 @@ export default {
     CREATOR: 'creator',
     MODERATOR: 'moderator',
     SCROLL_DELTA: 10,
+    FIRST_ITEM: 0,
     CONTEST_STATUS_ACTIVE: 'active',
     CONTEST_STATUS_FINISHED: 'finished',
     CONTEST_STATUS_PENDING: 'pending',

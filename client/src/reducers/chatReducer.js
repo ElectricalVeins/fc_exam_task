@@ -68,6 +68,7 @@ export default function (state = initialState, action) {
         case ACTION.BACK_TO_DIALOG_LIST: {
             return {
                 ...state,
+                interlocutor: null,
                 isExpanded: false
             }
         }
