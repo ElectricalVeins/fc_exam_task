@@ -6,8 +6,8 @@ import classNames from 'classnames';
 
 const DialogBox = (props) => {
     console.log('DIALOG BOX ->',props)
-    const {chatPreview, userId, getTimeStr, changeFavorite, changeBlackList, catalogOperation, goToExpandedDialog, chatMode, collocutors} = props;
-    const {favoriteList, participants, blackList, id, Messages:messages, createAt} = chatPreview;
+    const {chatPreview, UserId:userId, getTimeStr, changeFavorite, changeBlackList, catalogOperation, goToExpandedDialog, chatMode, collocutors} = props;
+    const {favoriteList, participants, blackList, id, Messages:messages} = chatPreview;
     const interlocutor = collocutors.find(interlocutor => interlocutor.id !== userId);
     //const isFavorite = favoriteList[participants.indexOf(userId)];
     const isFavorite = false;
@@ -21,16 +21,16 @@ const DialogBox = (props) => {
             <div className={styles.infoContainer}>
                 <div className={styles.interlocutorInfo}>
                     <span className={styles.interlocutorName}>{interlocutor.firstName}</span>
-                    <span className={styles.interlocutorMessage}>{messages[0].body}</span>
+                    <span className={styles.interlocutorMessage}>{messages[CONSTANTS.FIRST_ITEM].body}</span>
                 </div>
                 <div className={styles.buttonsContainer}>
-                    <span className={styles.time}>{getTimeStr(createAt)}</span>
+                    <span className={styles.time}>{getTimeStr(messages[CONSTANTS.FIRST_ITEM].createdAt)}</span>
                     <i onClick={(event) => changeFavorite({
-                        participants,
+                        participants, //id <- chat id
                         favoriteFlag: !isFavorite
                     }, event)} className={classNames({['far fa-heart']: !isFavorite, ['fas fa-heart']: isFavorite})}/>
                     <i onClick={(event) => changeBlackList({
-                        participants,
+                        participants, //id <- chat id
                         blackListFlag: !isBlocked
                     }, event)}
                        className={classNames({['fas fa-user-lock']: !isBlocked, ['fas fa-unlock']: isBlocked})}/>

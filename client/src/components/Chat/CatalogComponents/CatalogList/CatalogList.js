@@ -12,7 +12,7 @@ const CatalogList = (props) => {
     };
 
     const deleteCatalog = (event, catalogId) => {
-        props.deleteCatalog({catalogId});
+        props.deleteCatalog(catalogId);
         event.stopPropagation();
     };
 
