@@ -12,7 +12,8 @@
   "babel": {
     "presets": [
       "latest"
-    ]
+    ],
+    "plugins": [["transform-object-rest-spread", { "useBuiltIns": true }]]
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -57,6 +58,7 @@
     "yup": "^0.26.6"
   },
   "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "eslint": "^5.3.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0"
