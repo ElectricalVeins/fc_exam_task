@@ -69,7 +69,7 @@ module.exports.getChat = async (req, res, next) => {
 module.exports.createChat = async (req,res,next) => {
   try {
     const {body: {interlocutor}, tokenData: {userId}} = req;
-    const conversation = chatQueries.createConversation(userId, interlocutor.id);
+    const conversation = await chatQueries.createConversation(userId, interlocutor.id);
     const result = conversation.dataValues;
     result.blackList = false;
     result.favoriteList = false;
