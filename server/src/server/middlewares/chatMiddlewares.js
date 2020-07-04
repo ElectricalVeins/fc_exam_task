@@ -39,3 +39,27 @@ module.exports.checkPermissionToEditCatalog = async (req, res, next) => {
     next(err);
   }
 };
+
+module.exports.checkChatCreation = async (req, res, next) => {
+  try {
+    const { body: { interlocutor }, tokenData: { userId } } = req;
+    const conversation = await db.Conversations.findOne({
+      where: {
+        [db.Sequelize.Op.or]: [{
+          UserId: interlocutor.id,
+          interlocutorId: userId,
+        }, {
+          UserId: userId,
+          interlocutorId: interlocutor.id,
+        }],
+      },
+    });
+    if (!conversation) {
+      return next();
+    }
+    next(new RightsError('already exists'));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
