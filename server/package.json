@@ -13,7 +13,14 @@
     "presets": [
       "latest"
     ],
-    "plugins": [["transform-object-rest-spread", { "useBuiltIns": true }]]
+    "plugins": [
+      [
+        "transform-object-rest-spread",
+        {
+          "useBuiltIns": true
+        }
+      ]
+    ]
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -42,7 +49,6 @@
     "lodash": "^4.17.11",
     "merge-graphql-schemas": "^1.5.7",
     "moment": "^2.24.0",
-    "mongoose": "^5.5.3",
     "morgan": "~1.9.0",
     "multer": "^1.4.1",
     "node-uuid": "^1.4.8",

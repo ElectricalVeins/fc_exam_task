@@ -1,5 +1,4 @@
 require('babel-polyfill');
-require('./server/dbMongo/mongoose');
 const controller = require('./socketInit');
 const server = require('./boot/startHttpServer');
 const CONSTANTS =require('./constants');
