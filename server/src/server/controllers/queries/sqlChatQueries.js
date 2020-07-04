@@ -21,3 +21,26 @@ module.exports.getCatalogById = async (id) => {
     }],
   });
 };
+
+module.exports.getConversationsPreview = async (conversationIds, userPredicate) => {
+  return db.Conversations.findAll({
+    where: {
+      id: conversationIds,
+    },
+    order: [
+      ['createdAt', 'DESC'],
+    ], include: [{
+      model: db.Users,
+      required: true,
+      attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
+      where: userPredicate,
+    }, {
+      model: db.Messages,
+      //required: true,
+      order: [
+        ['createdAt', 'DESC'],
+      ],
+      limit: 1,
+    }],
+  }).map(item => item.get({ plain: true }));
+};
