@@ -12,6 +12,7 @@
   top: 80px
   cursor: pointer
   left: 80px
+  z-index: 10
   .container
     align-self: center
     display: flex
@@ -20,20 +21,16 @@
     align-items: center
     border-radius: 26px
     width: 120px
-    background-color: red
+    background-color: crimson
     position: relative
     span
       font-size: 16px
       color: white
-    i
-      color: blue
-      font-size: 26px
-      position: absolute
-      cursor: pointer
-      top: -4px
-      right: -4px
-      transition: font-size 0.2s
-      &:hover
-        color: white
-        font-size: 30px
-        transition: font-size 0.2s
+  i
+    color: #4E618D
+    font-size: 26px
+    cursor: pointer
+    top: -4px
+    right: -4px
+    &:hover
+      color: white
