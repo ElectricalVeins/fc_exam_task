@@ -1,6 +1,28 @@
 const _ = require('lodash');
 const db = require('../models');
 const RightsError = require('../errors/RightsError');
+const NotFound = require('../errors/UserNotFoundError');
+const sqlChatQueries = require('../controllers/queries/sqlChatQueries');
+
+module.exports.checkSendMessagePermission = async (req, res, next) => {
+  try {
+    const { body: { interlocutor }, tokenData: { userId } } = req;
+    const list = await db.BlackList.findAll({ //массив пользователей, которые забанили user'a
+      where: {
+        blockedId: userId,
+      },
+    });
+    list.forEach(item => {
+      if(item.UserId === interlocutor.id){
+        return next(new RightsError('You was banned by this user'));
+      }
+    });
+    next();
+  }catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
 
 module.exports.getUserConversationIds = async (req, res, next) => {
   req.conversationList = [];
