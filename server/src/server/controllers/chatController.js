@@ -29,7 +29,6 @@ module.exports.addMessage = async (req, res, next) => {
 
 module.exports.getChat = async (req, res, next) => {
   try {
-    //TODO: MW проверяющий при getChat находится ли юзер в black list. //Если да - отправлять ошибку и отображать её как ошибку в чате
     const { query: { id } } = req; //conversationId
     const chat = await db.Conversations.findOne({
       where: {
@@ -37,7 +36,6 @@ module.exports.getChat = async (req, res, next) => {
       },
       include: [{
         model: db.Messages,
-        //required: true,
         order: [
           ['createdAt', 'ASC'],
         ],
@@ -199,7 +197,6 @@ module.exports.getCatalogs = async (req, res, next) => {
       },
       include: [{
         model: db.Conversations,
-        //required:true,
       }],
     });
     res.send(catalogs);
@@ -250,7 +247,7 @@ module.exports.updateNameCatalog = async (req, res, next) => {
 
 module.exports.deleteCatalog = async (req, res, next) => {
   try {
-    const { tokenData: { userId }, query: { id } } = req; // catalogId
+    const { tokenData: { userId }, query: { id } } = req; // id->catalogId
     await db.Catalogs.destroy({ where: { id, userId } });
     res.end();
   } catch (err) {
@@ -276,7 +273,7 @@ module.exports.addNewChatToCatalog = async (req, res, next) => {
 
 module.exports.removeChatFromCatalog = async (req, res, next) => {
   try {
-    const { query: { id, catalogId } } = req; //chatId
+    const { query: { id, catalogId } } = req; //id->chatId
     await db.CatalogToConversation.destroy({
       where: {
         ConversationId: id,

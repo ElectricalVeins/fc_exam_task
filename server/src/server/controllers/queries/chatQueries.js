@@ -15,7 +15,6 @@ module.exports.getCatalogById = async (id) => {
     },
     include: [{
       model: db.Conversations,
-      //required: true,
       attributes: ['id'],
     }],
   });
@@ -35,7 +34,6 @@ module.exports.getConversationsPreview = async (conversationIds, userPredicate) 
       where: userPredicate,
     }, {
       model: db.Messages,
-      //required: true,
       order: [
         ['createdAt', 'DESC'],
       ],
