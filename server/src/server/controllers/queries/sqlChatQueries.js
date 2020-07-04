@@ -44,3 +44,19 @@ module.exports.getConversationsPreview = async (conversationIds, userPredicate) 
     }],
   }).map(item => item.get({ plain: true }));
 };
+
+module.exports.createConversation = async (userId, interlocutorId) => {
+  const conversation = await db.Conversations.create({
+    interlocutorId,
+    UserId: userId,
+  });
+  await db.UserToConversation.create({
+    UserId: userId,
+    ConversationId: conversation.id,
+  });
+  await db.UserToConversation.create({
+    UserId: interlocutorId,
+    ConversationId: conversation.id,
+  });
+  return conversation;
+};
