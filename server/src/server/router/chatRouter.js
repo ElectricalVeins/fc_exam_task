@@ -1,8 +1,6 @@
 const express = require('express');
-//const userMiddlewares = require('../middlewares/userMiddlewares');
 const tokenMiddlewares = require('../middlewares/tokenMiddlewares');
 const chatController = require('../controllers/chatController');
-const sqlChatController = require('../controllers/sqlChatController');
 const chatMiddlewares = require('../middlewares/chatMiddlewares');
 
 const chatRouter = express.Router();
@@ -10,33 +8,27 @@ const chatRouter = express.Router();
 chatRouter.post('/createChat',
   tokenMiddlewares.verifyToken,
   chatMiddlewares.checkChatCreation,
-  sqlChatController.createChat
+  chatController.createChat
 );
 
 chatRouter.post(
   '/newMessage',
   tokenMiddlewares.verifyToken,
-  sqlChatController.addSqlMessage
-  /*tokenMiddlewares.verifyToken,
-  chatController.addMessage*/
+  chatMiddlewares.checkSendMessagePermission,
+  chatController.addMessage
 );
 
 chatRouter.get(
   '/getChat',
   tokenMiddlewares.verifyToken,
-  sqlChatController.getSqlChat
-/*  tokenMiddlewares.verifyToken,
-  userMiddlewares.findInterlocutorById,
-  chatController.getChat*/
+  chatController.getChat
 );
 
 chatRouter.get(
   '/getPreview',
   tokenMiddlewares.verifyToken,
   chatMiddlewares.getUserConversationIds,
-  sqlChatController.getSqlPreview
-  /*tokenMiddlewares.verifyToken,
-  chatController.getPreview*/
+  chatController.getPreview
 );
 
 chatRouter.post(
@@ -48,50 +40,44 @@ chatRouter.post(
 chatRouter.post(
   '/favorite',
   tokenMiddlewares.verifyToken,
-  chatController.favoriteChat
+  chatController.favoriteList
 );
 
 chatRouter.post(
   '/createCatalog',
   tokenMiddlewares.verifyToken,
-  sqlChatController.sqlCreateCatalog
-  /*tokenMiddlewares.verifyToken,
-  chatController.createCatalog*/
+  chatController.createCatalog
 );
 
 chatRouter.post(
   '/updateNameCatalog',
   tokenMiddlewares.verifyToken,
-  sqlChatController.sqlUpdateNameCatalog
-  //chatController.updateNameCatalog
+  chatMiddlewares.checkEditCatalogPermission,
+  chatController.updateNameCatalog
 );
 
 chatRouter.post(
   '/addNewChatToCatalog',
   tokenMiddlewares.verifyToken,
-  sqlChatController.sqlAddNewChatToCatalog
-  //chatController.addNewChatToCatalog
+  chatController.addNewChatToCatalog
 );
 
 chatRouter.delete(
   '/removeChatFromCatalog',
   tokenMiddlewares.verifyToken,
-  sqlChatController.sqlRemoveChatFromCatalog
-  //chatController.removeChatFromCatalog
+  chatController.removeChatFromCatalog
 );
 
 chatRouter.delete(
   '/deleteCatalog',
   tokenMiddlewares.verifyToken,
-  sqlChatController.sqlDeleteCatalog
-  //chatController.deleteCatalog
+  chatController.deleteCatalog
 );
 
 chatRouter.get(
   '/getCatalogs',
   tokenMiddlewares.verifyToken,
-  sqlChatController.sqlGetCatalogs,
-/*chatController.getCatalogs*/
+  chatController.getCatalogs
 );
 
 module.exports = chatRouter;

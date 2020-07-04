@@ -1,5 +1,4 @@
 const db = require('../../models');
-const badRequestError = require('../../errors/BadRequestError');
 
 module.exports.getUserConversation = async (userPredicate) => {
   return await db.Conversations.findOne({

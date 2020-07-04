@@ -1,8 +1,6 @@
-const _ = require('lodash');
 const db = require('../models');
 const RightsError = require('../errors/RightsError');
 const NotFound = require('../errors/UserNotFoundError');
-const sqlChatQueries = require('../controllers/queries/sqlChatQueries');
 
 module.exports.checkSendMessagePermission = async (req, res, next) => {
   try {

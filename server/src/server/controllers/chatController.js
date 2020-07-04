@@ -1,10 +1,9 @@
-const _ = require('lodash');
 const db = require('../models');
 const controller = require('../../socketInit');
-const sqlChatQueries = require('./queries/sqlChatQueries');
+const chatQueries = require('./queries/chatQueries');
 const NotFoundError = require('../errors/UserNotFoundError');
 
-module.exports.addSqlMessage = async (req, res, next) => {
+module.exports.addMessage = async (req, res, next) => {
   try {
     const { tokenData: { userId }, body: { messageBody, interlocutor, conversationId } } = req;
     const message = await db.Messages.create({ body: messageBody, UserId: userId, ConversationId: conversationId });
@@ -28,7 +27,7 @@ module.exports.addSqlMessage = async (req, res, next) => {
   }
 };
 
-module.exports.getSqlChat = async (req, res, next) => {
+module.exports.getChat = async (req, res, next) => {
   try {
     //TODO: MW проверяющий при getChat находится ли юзер в black list. //Если да - отправлять ошибку и отображать её как ошибку в чате
     const { query: { id } } = req; //conversationId
@@ -72,7 +71,7 @@ module.exports.getSqlChat = async (req, res, next) => {
 module.exports.createChat = async (req,res,next) => {
   try {
     const {body: {interlocutor}, tokenData: {userId}} = req;
-    const conversation = sqlChatQueries.createConversation(userId, interlocutor.id);
+    const conversation = chatQueries.createConversation(userId, interlocutor.id);
     const result = conversation.dataValues;
     result.blackList = false;
     result.favoriteList = false;
@@ -91,7 +90,7 @@ module.exports.createChat = async (req,res,next) => {
 };
 
 
-module.exports.getSqlPreview = async (req, res, next) => {
+module.exports.getPreview = async (req, res, next) => {
   const blockedUsersArray = [];
   const favoriteUsersArray = [];
   try {
@@ -111,7 +110,7 @@ module.exports.getSqlPreview = async (req, res, next) => {
     });
     favoriteUsers.forEach(user => favoriteUsersArray.push(user.favoriteId));
 
-    const conversations = await sqlChatQueries.getConversationsPreview(conversationList, {
+    const conversations = await chatQueries.getConversationsPreview(conversationList, {
       [db.Sequelize.Op.not]: [{id: req.tokenData.userId}],
     });
     const result = conversations.map(conversation => {
@@ -128,7 +127,7 @@ module.exports.getSqlPreview = async (req, res, next) => {
   }
 };
 
-module.exports.sqlBlackList = async (req, res, next) => {
+module.exports.blackList = async (req, res, next) => {
   let result;
   let blackListRecord;
   try {
@@ -143,7 +142,7 @@ module.exports.sqlBlackList = async (req, res, next) => {
       blackListRecord = await db.BlackList.findOne({where: predicate});
       await db.BlackList.destroy({where: predicate});
     }
-    result = await sqlChatQueries.getUserConversation( {
+    result = await chatQueries.getUserConversation( {
       [db.Sequelize.Op.or]: [{
         UserId: blackListRecord.blockedId,
         interlocutorId: userId,
@@ -160,7 +159,7 @@ module.exports.sqlBlackList = async (req, res, next) => {
   }
 };
 
-module.exports.sqlFavoriteList = async (req, res, next) => {
+module.exports.favoriteList = async (req, res, next) => {
   let result;
   let favoriteListRecord;
   try {
@@ -175,7 +174,7 @@ module.exports.sqlFavoriteList = async (req, res, next) => {
       favoriteListRecord = await db.FavoriteList.findOne({where: predicate});
       await db.FavoriteList.destroy({where: predicate});
     }
-    result = await sqlChatQueries.getUserConversation({
+    result = await chatQueries.getUserConversation({
       [db.Sequelize.Op.or]: [{
         UserId: favoriteListRecord.favoriteId,
         interlocutorId: userId,
@@ -191,7 +190,7 @@ module.exports.sqlFavoriteList = async (req, res, next) => {
   }
 };
 
-module.exports.sqlGetCatalogs = async (req, res, next) => {
+module.exports.getCatalogs = async (req, res, next) => {
   try {
     const { tokenData: { userId } } = req;
     const catalogs = await db.Catalogs.findAll({
@@ -211,7 +210,7 @@ module.exports.sqlGetCatalogs = async (req, res, next) => {
   }
 };
 
-module.exports.sqlCreateCatalog = async (req, res, next) => {
+module.exports.createCatalog = async (req, res, next) => {
   try {
     const { tokenData: { userId }, body: { catalogName, chatId } } = req;
     const catalog = await db.Catalogs.create({
@@ -222,7 +221,7 @@ module.exports.sqlCreateCatalog = async (req, res, next) => {
       CatalogId: catalog.id,
       ConversationId: chatId,
     });
-    const result = await sqlChatQueries.getCatalogById(catalog.id);
+    const result = await chatQueries.getCatalogById(catalog.id);
     res.send(result);
   } catch (err) {
     console.log(err);
@@ -230,7 +229,7 @@ module.exports.sqlCreateCatalog = async (req, res, next) => {
   }
 };
 
-module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
+module.exports.updateNameCatalog = async (req, res, next) => {
   try {
     const { body: { catalogName, catalogId } } = req;
 
@@ -241,7 +240,7 @@ module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
         id: catalogId,
       },
     });
-    const catalog = await sqlChatQueries.getCatalogById(catalogId);
+    const catalog = await chatQueries.getCatalogById(catalogId);
     res.send(catalog);
   } catch (err) {
     console.log(err);
@@ -249,7 +248,7 @@ module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
   }
 };
 
-module.exports.sqlDeleteCatalog = async (req, res, next) => {
+module.exports.deleteCatalog = async (req, res, next) => {
   try {
     const { tokenData: { userId }, query: { id } } = req; // catalogId
     await db.Catalogs.destroy({ where: { id, userId } });
@@ -260,14 +259,14 @@ module.exports.sqlDeleteCatalog = async (req, res, next) => {
   }
 };
 
-module.exports.sqlAddNewChatToCatalog = async (req, res, next) => {
+module.exports.addNewChatToCatalog = async (req, res, next) => {
   try {
     const { body: { catalogId, chatId } } = req;
     await db.CatalogToConversation.create({
       CatalogId: catalogId,
       ConversationId: chatId,
     });
-    const catalog = await sqlChatQueries.getCatalogById(catalogId);
+    const catalog = await chatQueries.getCatalogById(catalogId);
     res.send(catalog);
   } catch (err) {
     console.log(err);
@@ -275,7 +274,7 @@ module.exports.sqlAddNewChatToCatalog = async (req, res, next) => {
   }
 };
 
-module.exports.sqlRemoveChatFromCatalog = async (req, res, next) => {
+module.exports.removeChatFromCatalog = async (req, res, next) => {
   try {
     const { query: { id, catalogId } } = req; //chatId
     await db.CatalogToConversation.destroy({
@@ -284,7 +283,7 @@ module.exports.sqlRemoveChatFromCatalog = async (req, res, next) => {
         CatalogId: catalogId,
       },
     });
-    const catalog = await sqlChatQueries.getCatalogById(catalogId);
+    const catalog = await chatQueries.getCatalogById(catalogId);
     res.send(catalog).status(200);
   } catch (err) {
     console.log(err);
