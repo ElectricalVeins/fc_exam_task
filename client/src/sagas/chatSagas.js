@@ -2,12 +2,12 @@ import {put, select} from 'redux-saga/effects';
 import ACTION from '../actions/actionTypes';
 import * as restController from '../api/rest/restController';
 import remove from 'lodash/remove';
-import isEqual from 'lodash/isEqual';
 
 
 export function* previewSaga() {
     try {
         const {data} = yield  restController.getPreviewChat();
+        data.sort((a,b)=> a.Messages[0].createdAt > b.Messages[0].createdAt ? -1 : 1)
         yield  put({type: ACTION.GET_PREVIEW_CHAT, data: data});
     } catch (err) {
         yield  put({type: ACTION.GET_PREVIEW_CHAT_ERROR, error: err.response});
@@ -55,10 +55,10 @@ export function* changeChatFavorite(action) {
         const {data} = yield restController.changeChatFavorite(action.data);
         const {dialogsPreview} = yield select(state => state.chatStore);
         dialogsPreview.forEach(preview => {
-            if (isEqual(preview.participants, data.participants))
-                preview.favoriteList = data.favoriteList;
+            if (preview.id === data.id)
+                preview.favoriteList = data.isCreate;
         });
-        yield put({type: ACTION.CHANGE_CHAT_FAVORITE, data: {changedPreview: data, dialogsPreview: dialogsPreview}});
+        yield put({type: ACTION.CHANGE_CHAT_FAVORITE, data: {dialogsPreview}});
     } catch (err) {
         yield put({type: ACTION.SET_CHAT_FAVORITE_ERROR, error: err.response});
     }
@@ -68,12 +68,11 @@ export function* changeChatBlock(action) {
     try {
         const {data} = yield restController.changeChatBlock(action.data);
         const {dialogsPreview} = yield select(state => state.chatStore);
-        //TODO: переделать логику под новую
-       /* dialogsPreview.forEach(preview => {
-            if (isEqual(preview.participants, data.participants))
-                preview.blackList = data.blackList
-        });*/
-        yield put({type: ACTION.CHANGE_CHAT_BLOCK, data: {dialogsPreview: dialogsPreview, chatData: data}}); //<- chatdata
+        dialogsPreview.forEach(preview => {
+            if (preview.id === data.id)
+                preview.blackList = data.isCreate;
+        });
+        yield put({type: ACTION.CHANGE_CHAT_BLOCK, data: {dialogsPreview}});
     } catch (err) {
         yield put({type: ACTION.SET_CHAT_BLOCK_ERROR, error: err.response})
     }
@@ -152,12 +151,6 @@ export function* changeCatalogName(action) {
                 break;
             }
         }
-      /*  for (let i = 0; i < catalogList.length; i++) {
-            if (catalogList[i].id === data.id) {
-                catalogList[i].name = data.catalogName;
-                break;
-            }
-        }*/
         yield put({type: ACTION.CHANGE_CATALOG_NAME_SUCCESS, data: {catalogList, currentCatalog: data}});
     } catch (err) {
         yield put({type: ACTION.CHANGE_CATALOG_NAME_ERROR, error: err.response});

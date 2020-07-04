@@ -19,7 +19,7 @@ const initialState = {
     chatMode: CONSTANTS.NORMAL_PREVIEW_CHAT_MODE,
     catalogCreationMode: CONSTANTS.ADD_CHAT_TO_OLD_CATALOG,
 
-    isFetching: true,
+    //isFetching: true,
     error: null,
 };
 
@@ -69,6 +69,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 interlocutor: null,
+                chatId: null,
                 isExpanded: false
             }
         }
@@ -84,13 +85,14 @@ export default function (state = initialState, action) {
             }
         }
         case ACTION.GO_TO_EXPANDED_DIALOG: {
+            const {data: {chatId, interlocutor}} = action;
             return {
                 ...state,
-                interlocutor: action.data.interlocutor,
-                chatId: action.data.id,
+                interlocutor,
+                chatId,
                 isShow: true,
                 isExpanded: true,
-                messages: []
+                messages: [...state.messages]
             }
         }
         case ACTION.GET_DIALOG_MESSAGES: {
@@ -117,7 +119,6 @@ export default function (state = initialState, action) {
         case ACTION.SEND_MESSAGE: {
             return {
                 ...state,
-                //chatData: {...state.chatData,...action.data.chatData},
                 dialogsPreview: action.data.dialogsPreview,
                 messages: [...state.messages, action.data.message]
             }
@@ -150,15 +151,13 @@ export default function (state = initialState, action) {
         case ACTION.CHANGE_CHAT_FAVORITE:{
             return{
                 ...state,
-                chatData: action.data.changedPreview,
-                dialogsPreview: action.data.dialogsPreview
+                dialogsPreview: [...action.data.dialogsPreview]
             }
         }
         case ACTION.CHANGE_CHAT_BLOCK:{
             return {
                 ...state,
-                chatData: action.data.chatData,
-                dialogsPreview: action.data.dialogsPreview
+                dialogsPreview: [...action.data.dialogsPreview]
             }
         }
         case ACTION.RECEIVE_CATALOG_LIST: {
