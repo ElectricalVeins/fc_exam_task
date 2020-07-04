@@ -468,3 +468,8 @@ export const createSetTextIndexAction = data => ({
     type: ACTION.SET_TEXT_INDEX,
     data
 });
+
+export const createDialogAction = data => ({
+    type: ACTION.CREATE_DIALOG,
+    data
+})

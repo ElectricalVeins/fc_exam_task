@@ -23,7 +23,7 @@ import {
     createCatalog,
     deleteCatalog,
     removeChatFromCatalogSaga,
-    changeCatalogName
+    changeCatalogName, createChat,
 } from './chatSagas';
 
 function* rootSaga() {
@@ -59,6 +59,7 @@ function* rootSaga() {
     yield  takeLatest(ACTION.CHANGE_CATALOG_NAME_REQUEST,changeCatalogName);
     yield  takeLatest(ACTION.GET_UN_MODERATED_OFFERS,getUnModeratedOffers);
     yield  takeLatest(ACTION.MODERATOR_SET_OFFER,setOffer);
+    yield  takeLatest(ACTION.CREATE_DIALOG,createChat);
 }
 
 export default rootSaga;

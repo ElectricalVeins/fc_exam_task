@@ -4,7 +4,7 @@ import CONSTANTS from '../constants';
 const initialState = {
     addChatId: null,
     currentCatalog: null,
-    chatId: null, //chatData было
+    chatId: null,
     messages: [],
     dialogsPreview: [],
     catalogList: [],
@@ -72,6 +72,17 @@ export default function (state = initialState, action) {
                 isExpanded: false
             }
         }
+        case ACTION.CREATE_DIALOG_SUCCESS: {
+            return {
+                ...state,
+                dialogsPreview: [action.data.preview,...state.dialogsPreview],
+                interlocutor: {...action.data.interlocutor},
+                chatId: action.data.result.id,
+                isShow: true,
+                isExpanded: true,
+                messages: []
+            }
+        }
         case ACTION.GO_TO_EXPANDED_DIALOG: {
             return {
                 ...state,
@@ -87,6 +98,12 @@ export default function (state = initialState, action) {
                 ...state,
                 messages: action.data.messages,
                 interlocutor: action.data.interlocutor
+            }
+        }
+        case ACTION.CREATE_DIALOG_ERROR:{
+            return {
+                ...state,
+                error: action.error
             }
         }
         case ACTION.GET_DIALOG_MESSAGES_ERROR: {

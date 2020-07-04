@@ -163,3 +163,13 @@ export function* changeCatalogName(action) {
         yield put({type: ACTION.CHANGE_CATALOG_NAME_ERROR, error: err.response});
     }
 }
+
+export function* createChat(action) {
+    try{
+        const {data} = yield restController.createChat(action.data);
+        yield put({type:ACTION.CREATE_DIALOG_SUCCESS, data});
+    }catch (err) {
+        yield put({type:ACTION.CREATE_DIALOG_ERROR, error: err.response});
+
+    }
+}
