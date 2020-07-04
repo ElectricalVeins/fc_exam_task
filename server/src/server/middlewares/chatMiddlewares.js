@@ -42,20 +42,22 @@ module.exports.getUserConversationIds = async (req, res, next) => {
   }
 };
 
-module.exports.checkPermissionToEditCatalog = async (req, res, next) => {
+module.exports.checkEditCatalogPermission = async (req, res, next) => {
   try {
     const { tokenData: { userId }, body: { catalogId } } = req;
-    const catalogs = db.Catalogs.findAll({
+    const catalog = db.Catalogs.findOne({
       where: {
         userId,
         id: catalogId,
       },
     });
-    console.log(catalogs);
-    if (catalogs && catalogs.length !== 1) {
-      next();
+    if (!catalog) {
+      return next(new NotFound('Catalog not found'));
     }
-    next(new RightsError('You dont have rights to edit this catalog'));
+    if (catalog && catalog.userId === userId) {
+      return next();
+    }
+    next(new RightsError('You dont have permissions to edit this catalog'));
   } catch (err) {
     console.log(err);
     next(err);
@@ -79,7 +81,7 @@ module.exports.checkChatCreation = async (req, res, next) => {
     if (!conversation) {
       return next();
     }
-    next(new RightsError('already exists'));
+    next(new RightsError('This chat has been already created'));
   } catch (err) {
     console.log(err);
     next(err);
