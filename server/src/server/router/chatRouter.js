@@ -7,6 +7,12 @@ const chatMiddlewares = require('../middlewares/chatMiddlewares');
 
 const chatRouter = express.Router();
 
+chatRouter.post('/createChat',
+  tokenMiddlewares.verifyToken,
+  chatMiddlewares.checkChatCreation,
+  sqlChatController.createChat
+);
+
 chatRouter.post(
   '/newMessage',
   tokenMiddlewares.verifyToken,
