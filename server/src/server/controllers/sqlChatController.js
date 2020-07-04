@@ -6,8 +6,7 @@ const NotFoundError = require('../errors/UserNotFoundError');
 
 module.exports.addSqlMessage = async (req, res, next) => {
   try {
-    //TODO:MW проверяющий находится ли юзер в blackList при каждой отправке смс
-    const { tokenData: { userId }, body: { messageBody, interlocutor, conversationId } } = req; //TODO: front-> add 'conversationId' in axios request
+    const { tokenData: { userId }, body: { messageBody, interlocutor, conversationId } } = req;
     const message = await db.Messages.create({ body: messageBody, UserId: userId, ConversationId: conversationId });
     const preview = {
       id: message.id,
@@ -16,20 +15,18 @@ module.exports.addSqlMessage = async (req, res, next) => {
       body: messageBody,
       createdAt: message.createdAt,
       interlocutor,
-      //participants, // скорее всгео не надо, т.к. есть теперь conversationId
     };
-    console.log(interlocutor)
     controller.getChatController().emitNewMessage(interlocutor.id, {
       message,
       preview,
-    }); // TODO: check this websocket
+    });
 
     res.send({ message, preview });
   } catch (err) {
     console.log(err);
     next(err);
   }
-}; // ok
+};
 
 module.exports.getSqlChat = async (req, res, next) => {
   try {
@@ -41,7 +38,7 @@ module.exports.getSqlChat = async (req, res, next) => {
       },
       include: [{
         model: db.Messages,
-        required: true,
+        //required: true,
         order: [
           ['createdAt', 'ASC'],
         ],
@@ -70,47 +67,93 @@ module.exports.getSqlChat = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-}; // ok
-                                                                        // чтото с временем
+};
+
+module.exports.createChat = async (req,res,next) => {
+  try {
+    const {body: {interlocutor}, tokenData: {userId}} = req;
+    const conversation = sqlChatQueries.createConversation(userId, interlocutor.id);
+    const result = conversation.dataValues;
+    result.blackList = false;
+    result.favoriteList = false;
+
+    const preview = {
+      ...result,
+      Users:[{...interlocutor}],
+      Messages:[],
+    };
+
+    res.send({result, preview, interlocutor});
+  }catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 
 module.exports.getSqlPreview = async (req, res, next) => {
+  const blockedUsersArray = [];
+  const favoriteUsersArray = [];
   try {
-    const { conversationList } = req;
-    const conversations = await db.Conversations.findAll({
+    const { conversationList, tokenData: { userId } } = req;
+
+    const blockedUsers = await db.BlackList.findAll({
       where: {
-        id: conversationList,
+        UserId: userId,
       },
-      order: [
-        ['createdAt', 'DESC'],
-      ], include: [{
-        model: db.Messages,
-        required: true,
-        order: [
-          ['createdAt', 'DESC'],
-        ],
-        limit: 1,
-      }, {
-        model: db.Users,
-        required: true,
-        attributes: ['id', 'firstName', 'lastName', 'displayName', 'avatar'],
-        where:{
-          [db.Sequelize.Op.not]: [{ id: req.tokenData.userId }],
-        },
-      }],
     });
-    res.send(conversations);
+    blockedUsers.forEach(user => blockedUsersArray.push(user.blockedId));
+
+    const favoriteUsers = await db.FavoriteList.findAll({
+      where: {
+        UserId: userId,
+      },
+    });
+    favoriteUsers.forEach(user => favoriteUsersArray.push(user.favoriteId));
+
+    const conversations = await sqlChatQueries.getConversationsPreview(conversationList, {
+      [db.Sequelize.Op.not]: [{id: req.tokenData.userId}],
+    });
+    const result = conversations.map(conversation => {
+      return {
+        ...conversation,
+        blackList:blockedUsersArray.includes(conversation.interlocutorId) || blockedUsersArray.includes(conversation.UserId),
+        favoriteList:favoriteUsersArray.includes(conversation.interlocutorId) || favoriteUsersArray.includes(conversation.UserId),
+      };
+    });
+    res.send(result);
   } catch (err) {
     console.log(err);
     next(err);
   }
-}; // ok
+};
 
 module.exports.sqlBlackList = async (req, res, next) => {
+  let result;
+  let blackListRecord;
   try {
-    const { body: { interlocutorId }, tokenData: { userId } } = req;
-    const blackList = await db.BlackList.create({ UserId: userId, blockedId: interlocutorId });
-    controller.getChatController().emitChangeBlockStatus(interlocutorId, /*chat*/ blackList);
-    res.send(blackList);
+    const {body: {interlocutorId, isCreate}, tokenData: {userId}} = req;
+    const predicate = {
+      UserId: userId,
+      blockedId: interlocutorId,
+    };
+    if (isCreate) {
+      blackListRecord = await db.BlackList.create(predicate);
+    } else {
+      blackListRecord = await db.BlackList.findOne({where: predicate});
+      await db.BlackList.destroy({where: predicate});
+    }
+    result = await sqlChatQueries.getUserConversation( {
+      [db.Sequelize.Op.or]: [{
+        UserId: blackListRecord.blockedId,
+        interlocutorId: userId,
+      }, {
+        interlocutorId: blackListRecord.blockedId,
+        UserId:userId,
+      }],
+    });
+    controller.getChatController().emitChangeBlockStatus(interlocutorId, /*chat*/ result);
+    res.status(200).send({...result,isCreate});
   } catch (err) {
     console.log(err);
     next(err);
@@ -118,10 +161,30 @@ module.exports.sqlBlackList = async (req, res, next) => {
 };
 
 module.exports.sqlFavoriteList = async (req, res, next) => {
+  let result;
+  let favoriteListRecord;
   try {
-    const { body: { interlocutorId }, tokenData: { userId } } = req;
-    const favoriteList = await db.FavoriteList.create({ UserId: userId, favoriteId: interlocutorId });
-    res.send(favoriteList);
+    const {body: {interlocutorId, isCreate}, tokenData: {userId}} = req;
+    const predicate = {
+      UserId: userId,
+      favoriteId: interlocutorId,
+    };
+    if (isCreate) {
+      favoriteListRecord = await db.FavoriteList.create(predicate);
+    } else {
+      favoriteListRecord = await db.FavoriteList.findOne({where: predicate});
+      await db.FavoriteList.destroy({where: predicate});
+    }
+    result = await sqlChatQueries.getUserConversation({
+      [db.Sequelize.Op.or]: [{
+        UserId: favoriteListRecord.favoriteId,
+        interlocutorId: userId,
+      }, {
+        interlocutorId: favoriteListRecord.favoriteId,
+        UserId: userId,
+      }],
+    });
+    res.status(200).send({...result,isCreate});
   } catch (err) {
     console.log(err);
     next(err);
@@ -135,8 +198,8 @@ module.exports.sqlGetCatalogs = async (req, res, next) => {
       where: {
         userId,
       },
-      include:[{
-        model:db.Conversations,
+      include: [{
+        model: db.Conversations,
         //required:true,
       }],
     });
@@ -146,7 +209,7 @@ module.exports.sqlGetCatalogs = async (req, res, next) => {
 
     next(err);
   }
-}; // ok
+};
 
 module.exports.sqlCreateCatalog = async (req, res, next) => {
   try {
@@ -165,11 +228,11 @@ module.exports.sqlCreateCatalog = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-}; // ok
+};
 
 module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
   try {
-    const { tokenData: { userId }, body: { catalogName, catalogId } } = req;
+    const { body: { catalogName, catalogId } } = req;
 
     await db.Catalogs.update({
       name: catalogName,
@@ -184,7 +247,7 @@ module.exports.sqlUpdateNameCatalog = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-}; // ok
+};
 
 module.exports.sqlDeleteCatalog = async (req, res, next) => {
   try {
@@ -199,23 +262,21 @@ module.exports.sqlDeleteCatalog = async (req, res, next) => {
 
 module.exports.sqlAddNewChatToCatalog = async (req, res, next) => {
   try {
-    //TODO:permissionCheck MW!
-    const { tokenData: { userId }, body: { catalogId, chatId } } = req;
+    const { body: { catalogId, chatId } } = req;
     await db.CatalogToConversation.create({
       CatalogId: catalogId,
       ConversationId: chatId,
     });
     const catalog = await sqlChatQueries.getCatalogById(catalogId);
     res.send(catalog);
-  }catch (err) {
+  } catch (err) {
     console.log(err);
     next(err);
   }
-}; // ok
+};
 
 module.exports.sqlRemoveChatFromCatalog = async (req, res, next) => {
   try {
-    //TODO:permissionCheck MW!
     const { query: { id, catalogId } } = req; //chatId
     await db.CatalogToConversation.destroy({
       where: {
@@ -225,10 +286,8 @@ module.exports.sqlRemoveChatFromCatalog = async (req, res, next) => {
     });
     const catalog = await sqlChatQueries.getCatalogById(catalogId);
     res.send(catalog).status(200);
-  }catch (err) {
+  } catch (err) {
     console.log(err);
     next(err);
   }
-}; // ok
-
-// TODO: создание чатов, blackList, favoriteList,
+};
