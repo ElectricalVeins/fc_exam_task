@@ -6,27 +6,26 @@ import CONSTANTS from '../../../../constants';
 import classNames from 'classnames';
 
 const ChatHeader = (props) => {
-    const {backToDialogList, chatData, userId, interlocutor:{avatar, firstName}} = props;
+    const {backToDialogList, dialogsPreview, chatId, interlocutor: {avatar, firstName, id}, switchChatBlock, switchChatFavorite} = props;
+    const chatIndex = dialogsPreview.findIndex(item => item.id === chatId);
+    const isFavorite = dialogsPreview[chatIndex].favoriteList;
+    const isBlocked = dialogsPreview[chatIndex].blackList;
 
-    const changeFavorite = (data, event) => {
-        props.changeChatFavorite(data);
+    const changeBlockStatus = event => {
+        switchChatBlock({
+            interlocutorId: id,
+            isCreate: !isBlocked,
+        });
         event.stopPropagation();
     };
 
-    const changeBlackList = (data, event) => {
-        props.changeChatBlock(data);
+    const changeFavoriteStatus = event => {
+        switchChatFavorite({
+            interlocutorId: id,
+            isCreate: !isFavorite,
+        });
         event.stopPropagation();
     };
-
-/*    const isFavorite = (chatData, userId) => {
-        const {favoriteList, participants} = chatData;
-        return favoriteList[participants.indexOf(userId)];
-    };
-
-    const isBlocked = (chatData, userId) => {
-        const {participants, blackList} = chatData;
-        return blackList[participants.indexOf(userId)];
-    };*/
 
     return (
         <div className={styles.chatHeader}>
@@ -40,23 +39,17 @@ const ChatHeader = (props) => {
                          alt='user'/>
                     <span>{firstName}</span>
                 </div>
-                {chatData &&
+                {chatId &&
                 <div>
-                    <i onClick={(event) => changeFavorite({
-                        participants: chatData, //TODO: переделать нужно что бы был interlocutorId
-                        //favoriteFlag: !isFavorite(chatData, userId)
-                    }, event)}
+                    <i onClick={changeFavoriteStatus}
                        className={classNames({
-                          // ['far fa-heart']: !isFavorite(chatData, userId),
-                          // ['fas fa-heart']: isFavorite(chatData, userId)
+                          ['far fa-heart']: !isFavorite,
+                          ['fas fa-heart']: isFavorite
                        })}/>
-                    <i onClick={(event) => changeBlackList({
-                        participants: chatData, //TODO: переделать нужно что бы был interlocutorId
-                        //blackListFlag: !isBlocked(chatData, userId)
-                    }, event)}
+                    <i onClick={changeBlockStatus}
                        className={classNames({
-                           //['fas fa-user-lock']: !isBlocked(chatData, userId),
-                           //['fas fa-unlock']: isBlocked(chatData, userId)
+                           ['fas fa-user-lock']: !isBlocked,
+                           ['fas fa-unlock']: isBlocked
                        })}/>
                 </div>
                 }
@@ -66,15 +59,15 @@ const ChatHeader = (props) => {
 };
 
 const mapStateToProps = (state) => {
-    const {interlocutor, chatData} = state.chatStore;
-    return {interlocutor, chatData};
+    const {interlocutor, chatId, dialogsPreview} = state.chatStore;
+    return {interlocutor, chatId, dialogsPreview};
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         backToDialogList: () => dispatch(backToDialogList()),
-        changeChatFavorite: (data) => dispatch(changeChatFavorite(data)),
-        changeChatBlock: (data) => dispatch(changeChatBlock(data))
+        switchChatFavorite: (data) => dispatch(changeChatFavorite(data)),
+        switchChatBlock: (data) => dispatch(changeChatBlock(data))
     }
 };
 
