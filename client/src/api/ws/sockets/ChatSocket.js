@@ -1,7 +1,6 @@
 import WebSocket from './WebSocket';
 import CONTANTS from "../../../constants";
 import {addMessage, changeBlockStatusInStore} from "../../../actions/actionCreator";
-import isEqual from 'lodash/isEqual';
 
 class ChatSocket extends WebSocket {
     constructor(dispatch, getState, room) {
@@ -24,12 +23,13 @@ class ChatSocket extends WebSocket {
         this.socket.on(CONTANTS.CHANGE_BLOCK_STATUS, (data) => {
             const {message} = data;
             const {dialogsPreview} = this.getState().chatStore;
-            //TODO: переделать логику под новую
-           /* dialogsPreview.forEach(preview => {
-                if (isEqual(preview.participants, message.participants))
-                    preview.blackList = message.blackList
-            });*/
-            this.dispatch(changeBlockStatusInStore({chatData: message, dialogsPreview: dialogsPreview})); //<- chatData
+            dialogsPreview.forEach(preview => {
+                if (preview.id === data.id)
+                    preview.favoriteList = message.isCreate;
+                    console.log('ok')
+            });
+
+            this.dispatch(changeBlockStatusInStore({dialogsPreview}));
         })
     };
 
@@ -40,14 +40,14 @@ class ChatSocket extends WebSocket {
             let isNew = true;
             dialogsPreview.forEach(preview => {
                 if (preview.id === message.ConversationId) {
-                    preview.Messages[0] = message;
+                    preview.Messages[CONTANTS.FIRST_ITEM] = message;
                     isNew = false;
                 }
             });
             if (isNew) {
                 dialogsPreview.push(preview);
             }
-            this.dispatch(addMessage({message, dialogsPreview: dialogsPreview}));
+            this.dispatch(addMessage({message, dialogsPreview}));
         })
     };
 
