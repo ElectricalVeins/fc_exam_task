@@ -13,11 +13,6 @@ echo ""
 
 web=$(docker-compose --file docker-compose-dev.yaml ps | grep squadhelp-master_server-dev_1 | awk '{print $1}')
 
-# Run Sequalize's migrations.
-echo "-----> Running application migrations"
-docker exec -it "$web" sequelize db:migrate
-echo ""
-
 # Run Sequalize's seeds.
 echo "-----> Running application seeds"
 docker exec -it "$web" sequelize db:seed:all
