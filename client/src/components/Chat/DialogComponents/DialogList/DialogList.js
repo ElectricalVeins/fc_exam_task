@@ -29,12 +29,12 @@ const DialogList = (props) => {
         event.stopPropagation();
     };
 
-    const onlyFavoriteDialogs = (chatPreview, userId) => {
-        return chatPreview.favoriteList[chatPreview.participants.indexOf(userId)];
+    const onlyFavoriteDialogs = (chatPreview) => {
+        return chatPreview.favoriteList;
     };
 
-    const onlyBlockDialogs = (chatPreview, userId) => {
-        return chatPreview.blackList[chatPreview.participants.indexOf(userId)];
+    const onlyBlockDialogs = (chatPreview) => {
+        return chatPreview.blackList;
     };
 
     const getTimeStr = (time) => {
@@ -50,13 +50,13 @@ const DialogList = (props) => {
     };
 
     const renderPreview = (filterFunc) => {
-        const arrayList = [];
-        const {userId, preview, goToExpandedDialog, chatMode, removeChat, interlocutor} = props;
-        preview.forEach((chatPreview, index) => {
+        const dialogs = [];
+        const {userId, preview, goToExpandedDialog, chatMode, removeChat} = props;
+        preview.forEach((chatPreview) => {
             const dialogNode = <DialogBox collocutors={chatPreview.Users}
                                           chatPreview={chatPreview}
                                           userId={userId}
-                                          key={index}
+                                          key={chatPreview.id}
                                           getTimeStr={getTimeStr}
                                           changeFavorite={changeFavorite}
                                           changeBlackList={changeBlackList}
@@ -64,12 +64,12 @@ const DialogList = (props) => {
                                           catalogOperation={chatMode === CONSTANTS.CATALOG_PREVIEW_CHAT_MODE ? removeChat : changeShowCatalogCreation}
                                           goToExpandedDialog={goToExpandedDialog}/>;
             if (filterFunc && filterFunc(chatPreview, userId)) {
-                arrayList.push(dialogNode);
+                dialogs.push(dialogNode);
             } else if (!filterFunc) {
-                arrayList.push(dialogNode);
+                dialogs.push(dialogNode);
             }
         });
-        return arrayList.length ? arrayList : <span className={styles.notFound}>Not found</span>;
+        return dialogs.length > 0 ? dialogs : <span className={styles.notFound}>Not found</span>;
     };
 
     const renderChatPreview = () => {
