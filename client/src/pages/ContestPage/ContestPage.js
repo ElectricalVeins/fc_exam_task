@@ -5,7 +5,6 @@ import LightBox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import {
     getContestById,
-    goToExpandedDialog,
     changeEditContest,
     changeContestViewMode,
     changeShowImage, clearSetOfferStatusError
@@ -20,12 +19,10 @@ import Spinner from '../../components/Spinner/Spinner';
 import TryAgain from '../../components/TryAgain/TryAgain';
 import Error from "../../components/Error/Error";
 import OfferList from "../../components/OfferList/OfferList";
-import {conversationInfo} from '../../utils'
 
 
 const ContestPage = props => {
-    const {data:{role}} = props.userStore;
-    const {contestByIdStore, changeShowImage, changeContestViewMode, getData, clearSetOfferStatusError} = props;
+    const {userStore: {data: {role}}, contestByIdStore, changeShowImage, changeContestViewMode, getData, clearSetOfferStatusError} = props;
     const {isShowOnFull, imagePath, error, isFetching, isBrief, contestData, offers, setOfferStatusError} = contestByIdStore;
 
     useEffect(()=>{
@@ -36,21 +33,6 @@ const ContestPage = props => {
     const fetchData = () => {
         const {params} = props.match;
         props.getData({contestId: params.id});
-    };
-
-    const findConversationInfo = (interlocutorId) => {
-        const {messagesPreview} = props.chatStore;
-        const {id} = props.userStore.data;
-        const participants = [id, interlocutorId];
-        return conversationInfo(messagesPreview, participants)
-    };
-
-    const goChat = () => {
-        const {User} = props.contestByIdStore.contestData;
-        props.goToExpandedDialog({
-            interlocutor: User,
-            conversationData: findConversationInfo(User.id)
-        });
     };
 
         return (
@@ -80,7 +62,7 @@ const ContestPage = props => {
                                     </div>
                                     {
                                         isBrief ?
-                                            <Brief contestData={contestData} role={role} goChat={goChat}/>
+                                            <Brief contestData={contestData} role={role}/>
                                             :
                                             <div className={styles.offersContainer}>
                                                 {(role === CONSTANTS.CREATOR && contestData.status === CONSTANTS.CONTEST_STATUS_ACTIVE) &&
@@ -112,7 +94,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getData: (data) => dispatch(getContestById(data)),
-        goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
         changeEditContest: (data) => dispatch(changeEditContest(data)),
         changeContestViewMode: (data) => dispatch(changeContestViewMode(data)),
         changeShowImage: data => dispatch(changeShowImage(data)),

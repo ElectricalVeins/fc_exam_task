@@ -4,10 +4,11 @@ import CONSTANTS from "../../../constants";
 import LogoContestSpecialInfo from './LogoContestSpecialInfo';
 import NameContestSpecialInfo from './NameContestSpecialInfo';
 import TaglineContestSpecialInfo from './TaglineContestSpecialInfo';
+import OpenDialogButton from '../../OpenDialogButton/OpenDialogButton';
 
 
 const ContestInfo = (props) => {
-    const {changeEditContest, userId, contestData, role, goChat} = props;
+    const {changeEditContest, userId, contestData, role, dialogsPreview} = props;
     const {
         typeOfTagline, brandStyle, typeOfName, styleName, contestType,
         title, focusOfWork, targetCustomer, industry, originalFileName,
@@ -27,9 +28,8 @@ const ContestInfo = (props) => {
                         <div onClick={() => changeEditContest(true)} className={styles.editBtn}>Edit</div>
                     }
                     {
-                        role !== CONSTANTS.CUSTOMER
-                        &&
-                        <i onClick={goChat} className='fas fa-comments'/>
+                        role !== CONSTANTS.CUSTOMER && <OpenDialogButton interlocutor={User}
+                                                                         dialogsPreview={dialogsPreview}/>
                     }
                 </div>
                 <div className={styles.dataContainer}>

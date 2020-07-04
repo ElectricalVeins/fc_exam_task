@@ -50,9 +50,9 @@ const Brief = (props) => {
         return defaultData;
     };
 
-    const {isEditContest, contestData, changeEditContest, updateContest, role, goChat, clearUpdateContestStore,updateContestStore:{error}, userStore:{data:{id}}} = props;
+    const {isEditContest, contestData, dialogsPreview, changeEditContest, updateContest, role, goChat, clearUpdateContestStore,updateContestStore:{error}, userStore:{data:{id}}} = props;
     if (!isEditContest) {
-        return <ContestInfo userId={id} contestData={contestData} changeEditContest={changeEditContest} role={role}
+        return <ContestInfo userId={id} contestData={contestData} dialogsPreview={dialogsPreview} changeEditContest={changeEditContest} role={role}
                             goChat={goChat}/>
     } else {
         return (
@@ -71,7 +71,8 @@ const Brief = (props) => {
 const mapStateToProps = (state) => {
     const {isEditContest} = state.contestByIdStore;
     const {updateContestStore, userStore} = state;
-    return {updateContestStore, userStore, isEditContest};
+    const {dialogsPreview} = state.chatStore;
+    return {updateContestStore, userStore, isEditContest, dialogsPreview};
 };
 
 const mapDispatchToProps = (dispatch) => {

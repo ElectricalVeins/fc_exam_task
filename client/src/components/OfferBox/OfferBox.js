@@ -10,21 +10,15 @@ import CONSTANTS from '../../constants';
 import {
     changeMark,
     clearChangeMarkError,
-    goToExpandedDialog,
     changeShowImage,
 } from '../../actions/actionCreator';
 import './confirmStyle.css';
-import { conversationInfo } from "../../utils";
+import OpenDialogButton from '../OpenDialogButton/OpenDialogButton';
 
 
 const OfferBox = (props) => {
-
-    const findConversationInfo = () => {
-        const {messagesPreview, id} = props;
-        const participants = [id, props.data.User.id];
-        participants.sort((participant1, participant2) => participant1 - participant2);
-        return conversationInfo(messagesPreview, participants)
-    };
+    const {data, role, id, contestType} = props;
+    const {avatar, firstName, lastName, email, rating} = props.data.User;
 
     const resolveOffer = () => {
         confirmAlert({
@@ -78,12 +72,6 @@ const OfferBox = (props) => {
         return null;
     };
 
-    const goChat = () => {
-        props.goToExpandedDialog({interlocutor: props.data.User, conversationData: findConversationInfo()});
-    };
-
-    const {data, role, id, contestType} = props;
-    const {avatar, firstName, lastName, email, rating} = props.data.User;
     return (
         <div className={styles.offerContainer}>
             {offerStatus()}
@@ -133,8 +121,8 @@ const OfferBox = (props) => {
                     }
                 </div>
                 {
-                    role !== CONSTANTS.CREATOR
-                  && <i onClick={goChat} className="fas fa-comments"/>
+                    role !== CONSTANTS.CREATOR && <OpenDialogButton interlocutor={props.data.User}
+                                                                    dialogsPreview={props.dialogsPreview}/>
                 }
             </div>
             {props.needButtons(data.status) && <div className={styles.btnsContainer}>
@@ -150,7 +138,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         changeMark: (data) => dispatch(changeMark(data)),
         clearError: () => dispatch(clearChangeMarkError()),
-        goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
         changeShowImage: (data) => dispatch(changeShowImage(data))
     }
 };
@@ -159,7 +146,7 @@ const mapStateToProps = (state) => {
     const {changeMarkError, isShowModal} = state.contestByIdStore;
     const {id, role} = state.userStore.data;
     const {dialogsPreview} = state.chatStore;
-    return {changeMarkError, id, role, dialogsPreview: dialogsPreview, isShowModal};
+    return {changeMarkError, id, role, dialogsPreview, isShowModal};
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(OfferBox));
