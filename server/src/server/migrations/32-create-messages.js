@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      senderId: {
+      UserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -20,7 +20,7 @@ module.exports = {
           key: 'id',
         },
       },
-      conversationId: {
+      ConversationId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

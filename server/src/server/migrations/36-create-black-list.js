@@ -19,7 +19,7 @@ module.exports = {
         },
       },
     }).then(value => {
-      return queryInterface.addConstraint('BlackList', ['userId', 'blockedId'], {
+      return queryInterface.addConstraint('BlackList', ['UserId', 'blockedId'], {
         type: 'primary key',
       });
     });

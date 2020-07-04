@@ -9,14 +9,14 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       interlocutorId:{
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         references:{
           model: 'Users',
           key: 'id',
         },
       },
-      ownerId: {
+      UserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references:{

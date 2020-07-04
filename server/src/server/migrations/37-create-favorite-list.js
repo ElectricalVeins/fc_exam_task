@@ -19,7 +19,7 @@ module.exports = {
         },
       },
     }).then(value => {
-      return queryInterface.addConstraint('FavoriteList', ['userId', 'favoriteId'], { type: 'primary key' });
+      return queryInterface.addConstraint('FavoriteList', ['UserId', 'favoriteId'], { type: 'primary key' });
     });
   },
   down: (queryInterface, Sequelize) => {

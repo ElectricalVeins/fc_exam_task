@@ -2,7 +2,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('CatalogToConversation', {
-      catalogId: {
+      CatalogId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
@@ -10,7 +10,7 @@ module.exports = {
           key: 'id',
         },
       },
-      conversationId: {
+      ConversationId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
@@ -19,7 +19,7 @@ module.exports = {
         },
       },
     }).then(value => {
-      return queryInterface.addConstraint('CatalogToConversation', ['catalogId', 'conversationId'], {
+      return queryInterface.addConstraint('CatalogToConversation', ['CatalogId', 'ConversationId'], {
         type: 'primary key',
       });
     });
