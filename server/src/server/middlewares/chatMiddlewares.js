@@ -43,7 +43,7 @@ module.exports.getUserConversationIds = async (req, res, next) => {
 module.exports.checkEditCatalogPermission = async (req, res, next) => {
   try {
     const { tokenData: { userId }, body: { catalogId } } = req;
-    const catalog = db.Catalogs.findOne({
+    const catalog = await db.Catalogs.findOne({
       where: {
         userId,
         id: catalogId,
