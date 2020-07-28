@@ -2,6 +2,7 @@ import {put, select} from 'redux-saga/effects';
 import ACTION from '../actions/actionTypes';
 import * as restController from '../api/rest/restController';
 import remove from 'lodash/remove';
+import CONSTANTS from '../constants';
 
 
 export function* previewSaga() {
@@ -31,7 +32,7 @@ export function* sendMessage(action) {
         let isNew = true;
         dialogsPreview.forEach(preview => {
             if (preview.id === data.message.ConversationId) {
-                preview.Messages[0] = data.message;
+                preview.Messages[CONSTANTS.FIRST_ITEM] = data.message;
                 isNew = false;
             }
         });
