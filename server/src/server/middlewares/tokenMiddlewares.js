@@ -28,9 +28,10 @@ module.exports.createAccessToken = async (req, res, next) => {
 
 module.exports.createRestorePassToken = async (req, res, next) => {
   try {
-    const { body: { email }, hashPass } = req;
+    const { body: { email, id }, hashPass } = req;
 
     req.restorePassToken = await signJWT({
+      id,
       email,
       hashPass,
     }, CONSTANTS.JWT_SECRET, {
@@ -44,11 +45,11 @@ module.exports.createRestorePassToken = async (req, res, next) => {
 };
 
 module.exports.verifyToken = async (req, res, next) => {
-  const accessToken = req.headers.authorization;
-  if (!accessToken) {
-    return next(new TokenError('authentication failed'));
-  }
   try {
+    const accessToken = req.headers.authorization;
+    if (!accessToken) {
+      throw new TokenError('authentication failed');
+    }
     req.tokenData = jwt.verify(accessToken, CONSTANTS.JWT_SECRET);
     req.body.email=req.tokenData.email;
     next();
@@ -61,6 +62,7 @@ module.exports.verifyRestorePasswordToken = async (req, res, next) => {
   try {
     const { body: { token } } = req;
     req.userData = await verifyJWT(token, CONSTANTS.JWT_SECRET);
+    console.log(req.userData);
     next();
   } catch (err) {
     next(err);

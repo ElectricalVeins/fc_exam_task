@@ -71,11 +71,9 @@ db.Messages.belongsTo(db.Conversations);
 
 sequelize.sync()
   .then(() => {
-    console.log('sequelie soft sync has been done');
+    console.log('sequelize soft sync has been done');
   })
-  .catch(err =>
-    console.log(err)
-  );
+  .catch(err => console.log(err));
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

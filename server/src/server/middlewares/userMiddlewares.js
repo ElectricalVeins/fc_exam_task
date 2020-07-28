@@ -33,7 +33,7 @@ module.exports.findUserIdByContestId = async (req, res, next) => {
       attributes: ['userId'],
     });
     if (!userId) {
-      next(new ServerError('Owner of contest not found'));
+      next(new ServerError('Owner of contest not found')); // <=========================================================
     }
     req.customerId = userId;
     next();
@@ -57,7 +57,7 @@ module.exports.passwordCompare = async (req, res, next) => {
     const { body: { password: pass1 }, user: { password: pass2 } } = req;
     const passwordCompare = await bcrypt.compare(pass1, pass2);
     if (!passwordCompare) {
-      next(new UncorrectPassword('Incorrect password or email'));
+      throw new UncorrectPassword('Incorrect password or email');
     }
     next();
   } catch (err) {
