@@ -62,7 +62,6 @@ module.exports.verifyRestorePasswordToken = async (req, res, next) => {
   try {
     const { body: { token } } = req;
     req.userData = await verifyJWT(token, CONSTANTS.JWT_SECRET);
-    console.log(req.userData);
     next();
   } catch (err) {
     next(err);

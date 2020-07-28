@@ -43,11 +43,11 @@ module.exports.findUserIdByContestId = async (req, res, next) => {
 };
 
 module.exports.createUser = async (req, res, next) => {
-  try{
+  try {
     const { body, hashPass } = req;
     req.user = await userQueries.userCreation(Object.assign(body, { password: hashPass }));
     next();
-  }catch (err) {
+  } catch (err) {
     next(err);
   }
 };
@@ -66,11 +66,25 @@ module.exports.passwordCompare = async (req, res, next) => {
 };
 
 module.exports.hashPass = async (req, res, next) => {
-  try{
-    req.hashPass=await bcrypt.hash(req.body.password, CONSTANTS.SALT_ROUNDS);
+  try {
+    req.hashPass = await bcrypt.hash(req.body.password, CONSTANTS.SALT_ROUNDS);
     next();
   }
-  catch(err){
+  catch (err) {
+    next(err);
+  }
+};
+
+module.exports.makePayment = async (req, res, next) => {
+  let transaction;
+  try {
+    const { body: { number, cvc, expiry, price, name } } = req;
+    transaction = await db.sequelize.transaction();
+    await userQueries.makePayment(number, cvc, expiry, price, name, transaction);
+    req.transaction = transaction;
+    next();
+  } catch (err) {
+    transaction.rollback();
     next(err);
   }
 };

@@ -28,7 +28,7 @@ authRouter.post(
 authRouter.post(
   '/restorePassword',
   validators.validatePasswordRestore,
-  basicMiddlewares.checkUser,
+  basicMiddlewares.checkUser,  // CHeck logic. unnec email
   userMiddlewares.hashPass,
   tokenMiddlewares.createRestorePassToken,
   userController.sendRestoreEmail

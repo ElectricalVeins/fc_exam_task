@@ -12,7 +12,7 @@ async function checkFileExistence(filePath) {
     const result = await open(filePath, 'r');
     return typeof result === 'number';
   } catch (err) {
-    if(err && (err.code === 'EEXIST' || err.code === 'ENOENT')) {
+    if (err && (err.code === 'EEXIST' || err.code === 'ENOENT')) {
       return false;
     }
     throw err;
@@ -20,12 +20,8 @@ async function checkFileExistence(filePath) {
 }
 
 async function getFileSize(filePath) {
-  try {
-    const stats = await stat(filePath);
-    return stats.size;
-  } catch (e) {
-    throw e;
-  }
+  const stats = await stat(filePath);
+  return stats.size;
 }
 
 function createLogObject(object, start, props) {
@@ -33,7 +29,7 @@ function createLogObject(object, start, props) {
   const properties = _.pick(object, props);
   const logInfo = _.assign(time, properties);
   const jsonStr = JSON.stringify(logInfo);
-  if(start === 1) {
+  if (start === 1) {
     return jsonStr + ']';
   }
   return ',' + jsonStr + ']';
@@ -44,13 +40,13 @@ module.exports.logToFile = async (data) => {
     await ensureExists(DUMPS_PATH);
     const isFileExist = await checkFileExistence(LOG_FILE_PATH);
 
-    if(!isFileExist) {
+    if (!isFileExist) {
       await appendToFile(LOG_FILE_PATH, '[]', 0, 'w');
     }
 
     let start = await getFileSize(LOG_FILE_PATH) - LAST_CHARS_TO_DELETE;
 
-    if(start === -1) {
+    if (start === -1) {
       start = await getFileSize(LOG_FILE_PATH) - LAST_CHARS_TO_DELETE;
     }
 

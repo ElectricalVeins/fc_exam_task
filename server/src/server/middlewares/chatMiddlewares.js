@@ -17,7 +17,6 @@ module.exports.checkSendMessagePermission = async (req, res, next) => {
     });
     next();
   }catch (err) {
-    console.log(err);
     next(err);
   }
 };
@@ -35,7 +34,6 @@ module.exports.getUserConversationIds = async (req, res, next) => {
     });
     next();
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
@@ -57,7 +55,6 @@ module.exports.checkEditCatalogPermission = async (req, res, next) => {
     }
     next(new RightsError('You dont have permissions to edit this catalog'));
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
@@ -81,7 +78,6 @@ module.exports.checkChatCreation = async (req, res, next) => {
     }
     next(new RightsError('This chat has been already created'));
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };

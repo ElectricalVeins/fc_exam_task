@@ -1,6 +1,7 @@
 const express = require('express');
 const basicMiddlewares = require('../middlewares/basicMiddlewares');
 const tokenMiddlewares = require ('../middlewares/tokenMiddlewares');
+const userMiddlewares = require('../middlewares/userMiddlewares');
 const validators = require('../middlewares/validators');
 const userController = require('../controllers/userController');
 const upload = require('../utils/fileUpload');
@@ -28,7 +29,8 @@ userRouter.post(
   upload.uploadContestFiles,
   basicMiddlewares.parseBody,
   validators.validateContestCreation,
-  userController.payment
+  userMiddlewares.makePayment,
+  userController.createContests
 );
 
 userRouter.post(
