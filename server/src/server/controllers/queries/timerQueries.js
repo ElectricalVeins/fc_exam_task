@@ -1,6 +1,15 @@
 const db = require('../../models/index');
 const ServerError = require('../../errors/ServerError');
 
+module.exports.getAllTimers = async () => {
+    return await db.Timers.findAll({
+        where: {
+            [db.Sequelize.Op.gt]: [{
+                finalDate: new Date(),
+            }],
+        }
+    });
+};
 
 module.exports.findAllUserTimers = async (userId) => {
     return await db.Timers.findAll({ where: { userId } });

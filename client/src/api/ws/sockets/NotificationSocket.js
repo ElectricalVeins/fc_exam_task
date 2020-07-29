@@ -45,7 +45,14 @@ class NotificationSocket extends WebSocket {
 
     unsubsctibe = (id) => {
         this.socket.emit('unsubscribe', id);
-    }
+    };
+
+    timerWarning = () => {
+        this.socket.on('NOTIFICATION_TIMER', (timer) => {
+            toast(<Notification message={`Warning! Timer '${timer.name}' is coming soon!`} />)
+        })
+    };
+
 }
 
 export default NotificationSocket;

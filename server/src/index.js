@@ -12,3 +12,7 @@ setInterval(() => {
   createLogHistory(CONSTANTS.LOG_FILE_PATH,
     `${CONSTANTS.DUMPS_PATH}${Date.parse(new Date())}.json`);
 }, CONSTANTS.DAY_LENGTH);
+
+startTimers(); // запустить только существующие таймеры.
+// новые нужно как то добавлять 
+//как вариант - в контроллере
