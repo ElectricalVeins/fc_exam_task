@@ -13,6 +13,7 @@ import chatReducer from './chatReducer';
 import userProfileReducer from './userProfileReducer';
 import passwordRecoverReducer from "./passwordRecoverReducer";
 import offerReducer from "./offerReducer";
+import timerReducer from './timerReducer';
 
 const appReducer=combineReducers({
    form: formReducer,
@@ -29,6 +30,7 @@ const appReducer=combineReducers({
    chatStore: chatReducer,
    userProfile: userProfileReducer,
    offerStore: offerReducer,
+   timerStore: timerReducer,
 });
 
 export default appReducer;
