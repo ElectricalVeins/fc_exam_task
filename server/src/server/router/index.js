@@ -6,6 +6,7 @@ const chatRouter = require('./chatRouter');
 const moderatorRouter = require('./moderatorRouter');
 const userRouter = require('./userRouter');
 const offerRouter = require('./offerRouter');
+const timerRouter = require('./timerRouter');
 const sequelizeErrorHandler = require('../middlewares/errorHandlers/sequelizeErrorHandler');
 const applicationErrorHandler = require('../middlewares/errorHandlers/applicationErrorHandler');
 const validationErrorHandler = require('../middlewares/errorHandlers/validationErrorHandler');
@@ -18,6 +19,7 @@ router.use(userRouter);
 router.use(contestRouter);
 router.use(offerRouter);
 router.use(chatRouter);
+router.use(timerRouter);
 router.use(moderatorRouter);
 
 //ERROR HANDLING
