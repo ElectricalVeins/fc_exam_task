@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom'
+import {connect} from 'react-redux';
+import * as actionCreator from '../../actions/actionCreator';
 import styles from './Events.module.sass'
 import Header from "../../components/Header/Header";
 import TimerList from "../../components/TimerList/TimerList";
@@ -8,45 +10,17 @@ import Footer from "../../components/Footer/Footer";
 
 const Events = props => {
   //exam react task. use only react
-  const [ events, setEvents ] = useState( [
-      {
-    id: '1',
-    name: 'TimerList name1',
-    date: '2020-06-30 9:00',
-    createdAt: '2019-03-30 9:00',
-    warningTime: '2019-03-30 10:00'
-  }, {
-    id: '2',
-    name: 'TimerList name2',
-    date: '2020-06-01 9:00',
-    createdAt: '2020-04-30 9:00',
-    warningTime: '2020-04-30 8:00'
-  }, {
-    id: '3',
-    name: 'TimerList name3',
-    date: '2020-06-28 9:00',
-    createdAt: '2020-04-30 9:00',
-    warningTime: '2020-04-30 8:00'
-  }, {
-    id: '4',
-    name: 'TimerList name4',
-    date: '2020-06-28 9:00',
-    createdAt: '2020-04-27 9:00',
-    warningTime: '2020-04-27 8:00'
-  }, {
-    id: '5',
-    name: 'Close Timer',
-    date: '2020-05-11 19:46',
-    createdAt: '2020-05-07 9:00',
-    warningTime: '2020-05-10 8:00'
-  }
-  ] )
+  const {timers,createTimer,getTimers,updateTimer,deleteTimer} = props;
+
+  useEffect(() => {
+    getTimers();
+    return () => {
+      //cleanup
+    };
+  }, []);
 
   const handleSubmit = ( newEvent ) => {
-    newEvent.id = Math.floor( Math.random() * 1000 )
-    newEvent.createdAt = new Date();
-
-    setEvents( [ ...events, newEvent ] )
+    createTimer( newEvent );
   }
 
   return (
@@ -57,7 +31,9 @@ const Events = props => {
           <Link to='/dashboard'
                 className={styles.infoElem}>Back to Dashboard</Link>
           <p>Live Upcoming Checks</p>
-          <TimerList events={events}
+          <TimerList events={timers}
+                     deleteTimer={deleteTimer}
+                     updateTimer={updateTimer}
                      itemClass={styles.timerItem}/>
         </div>
         <div className={styles.createTimerContainer}>
@@ -70,5 +46,15 @@ const Events = props => {
   );
 };
 
+const mapStateToProps = (state) => {
+  return state.timerStore
+};
 
-export default Events;
+const mapDispatchToProps = dispatch => ({
+  getTimers: () => dispatch(actionCreator.createGetTimersAction()),
+  createTimer: data => dispatch(actionCreator.createCreateTimerAction(data)),
+  deleteTimer: data => dispatch(actionCreator.createDeleteTimerAction(data)),
+  updateTimer: data => dispatch(actionCreator.createUpdateTimerAction(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Events);
