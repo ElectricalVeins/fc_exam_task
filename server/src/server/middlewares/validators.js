@@ -46,3 +46,12 @@ module.exports.validateContestCreation = (req, res, next) => {
       next(err);
     });
 };
+
+module.exports.validateTimer = async (req, res, next) => {
+  try {
+    await schems.timer.validate(req.body);
+    next();
+  } catch (err) {
+    next(err);
+  }
+};

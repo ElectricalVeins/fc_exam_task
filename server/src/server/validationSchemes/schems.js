@@ -36,3 +36,9 @@ module.exports.restorePassword=yup.object().shape({
   email: emailScheme,
   password: passwordScheme,
 });
+
+module.exports.timer=yup.object().shape({
+  name: yup.string().required().min(4).max(255),
+  finalDate: yup.date().min(new Date()).required(),
+  warnDate: yup.date().min(new Date()).max(yup.ref('finalDate')).required(),
+})
