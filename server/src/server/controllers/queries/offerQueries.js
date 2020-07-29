@@ -6,7 +6,7 @@ const controller = require('../../../socketInit');
 const ServerError = require('../../errors/ServerError');
 
 const updateOffer = async (data, predicate, transaction) => {
-  const [updatedCount, [updatedOffer]] = await db.Offers.update(data, { where: predicate, returning: true }, transaction);
+  const [updatedCount, [updatedOffer]] = await db.Offers.update(data, { where: predicate, returning: true, transaction });
   if (updatedCount !== 1){
     throw new ServerError('cannot update offer!');
   }
@@ -16,7 +16,7 @@ const updateOffer = async (data, predicate, transaction) => {
 };
 
 const updateOfferStatus = async (data, predicate, transaction) => {
-  const [updatedOffersCount, updatedOffers] = await db.Offers.update(data, { where: predicate, returning: true }, transaction);
+  const [updatedOffersCount, updatedOffers] = await db.Offers.update(data, { where: predicate, returning: true, transaction });
   if (updatedOffersCount < 1) {
     throw new ServerError('can not update offer!');
   } else {

@@ -134,7 +134,7 @@ module.exports.createCatalog = async (name, userId, chatId) => {
 };
 
 module.exports.updateCatalogName = async (name, id, transaction) => {
-  const [count, records] = await db.Catalogs.update({ name }, { where: { id } }, transaction);
+  const [count, records] = await db.Catalogs.update({ name }, { where: { id }, transaction });
   if (count !== 1) {
     throw new ServerError('can not update catalog name!');
   }
