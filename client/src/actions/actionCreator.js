@@ -472,4 +472,23 @@ export const createSetTextIndexAction = data => ({
 export const createDialogAction = data => ({
     type: ACTION.CREATE_DIALOG,
     data
+});
+
+export const createGetTimersAction = () => ({
+    type: ACTION.GET_TIMERS
+});
+
+export const createCreateTimerAction = data => ({
+    type: ACTION.CREATE_TIMER,
+    data
+});
+
+export const createDeleteTimerAction = data => ({
+    type: ACTION.DELETE_TIMER,
+    data
+})
+
+export const createUpdateTimerAction = data => ({
+    type: ACTION.UPDATE_TIMER,
+    data
 })
