@@ -6,9 +6,9 @@ import styles from './Timer.module.sass';
 
 
 const Timer = props => {
-  const { name, date, createdAt, warningTime, itemClass, } = props;
+  const { id, name, finalDate, createdAt, warnDate, itemClass, } = props;
 
-  const checkWarn = () => moment( warningTime ).isBefore( new Date() );
+  const checkWarn = () => moment( warnDate ).isBefore( new Date() );
   const checkProgress = () => setProgress( definePercent() );
 
   const [ progress, setProgress ] = useState( 0 );
@@ -27,7 +27,7 @@ const Timer = props => {
 
   const definePercent = () => {
     const createdTime = Date.parse( createdAt );
-    const total = Date.parse( date ) - createdTime;
+    const total = Date.parse( finalDate ) - createdTime;
     const current = Date.parse( new Date() ) - createdTime;
     const result = 100 / ( total / current );
 
@@ -40,14 +40,18 @@ const Timer = props => {
   const renderWarning = () => <>{isWarning &&
   <span className={styles.warn} title={'Warning!'}> </span>}</>
 
+  const deleteHandler = () => {
+    props.deleteTimer({name, finalDate, warnDate, id});
+  };
+
   return (
-    <li className={listStyles} title={date}>
+    <li className={listStyles} title={finalDate} onClick={deleteHandler}>
       <div className={styles.info}>
         {
           renderWarning()
         }
         <span className={styles.name}>{name}</span>
-        <span className={styles.time}>{moment().to( date, true )}</span>
+        <span className={styles.time}>{moment().to( finalDate, true )}</span>
       </div>
       <LinearProgress value={+progress}
                       variant='determinate'

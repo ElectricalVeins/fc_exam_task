@@ -40,10 +40,10 @@ const TimerForm = props => {
     }
   };
 
-  const validateForm = async ( { date, warningTime } ) => {
+  const validateForm = async ( { finalDate, warnDate } ) => {
     const errors = {};
-    if( moment( warningTime ).isAfter( date ) ) {
-      errors.warningTime = 'Warning time must be before selected date';
+    if( moment( warnDate ).isAfter( finalDate ) ) {
+      errors.warnDate = 'Warning time must be before selected date';
     }
     return errors;
   };
@@ -52,8 +52,8 @@ const TimerForm = props => {
     <Formik validate={validateForm}
             initialValues={{
               name: '',
-              date: new Date(),
-              warningTime: new Date(),
+              finalDate: new Date(),
+              warnDate: new Date(),
             }}
             onSubmit={handleSubmit}>
       {
@@ -78,7 +78,7 @@ const TimerForm = props => {
             }
           </Field>
 
-          <Field name="date" validate={dateValidate}>
+          <Field name="finalDate" validate={dateValidate}>
             {
               fieldProps => {
                 const { field: { value, name }, form, meta, ...rest } = fieldProps
@@ -107,7 +107,7 @@ const TimerForm = props => {
             }
           </Field>
 
-          <Field name="warningTime" validate={dateValidate}>
+          <Field name="warnDate" validate={dateValidate}>
             {
               fieldProps => {
                 const { field: { value, name }, form, meta, ...rest } = fieldProps

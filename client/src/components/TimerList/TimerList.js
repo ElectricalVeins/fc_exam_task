@@ -5,10 +5,9 @@ import styles from './TimerList.module.sass';
 
 const TimerList = ( { events, ...props } ) => {
 
-  const [ timers, setTimers ] = useState( null );
 
-  useEffect( () => {
-    setTimers( sortArrayByDate( events ) );
+/*    useEffect( () => {
+    sortArrayByDate( events );
   }, [ events ] );
 
   const sortArrayByDate = ( arr ) => {
@@ -19,12 +18,12 @@ const TimerList = ( { events, ...props } ) => {
       return moment( momentDate1 ).isBefore( momentDate2 ) ? -1
                                                            : 1
     } );
-  };
+  };  */
 
   return (
     <ul className={styles.list}>
       {
-        timers && timers.map( ( item ) => <Timer key={item.id} {...item} {...props} /> )
+        events && events.length > 0 && events.map( ( item ) => <Timer key={item.id} {...item} {...props} /> )
       }
     </ul>
   );
