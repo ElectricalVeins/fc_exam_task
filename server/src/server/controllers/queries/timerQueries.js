@@ -1,14 +1,17 @@
 const db = require('../../models/index');
+const { Op } = require("sequelize");
 const ServerError = require('../../errors/ServerError');
 
 module.exports.getAllTimers = async () => {
-    return await db.Timers.findAll({
+    return await db.Timers.findAll(
+  /*       {
         where: {
-            [db.Sequelize.Op.gt]: [{
-                finalDate: new Date(),
-            }],
+            [Op.gt]: {
+                finalDate: new Date()
+            },
         }
-    });
+    } */{raw: true}
+    );
 };
 
 module.exports.findAllUserTimers = async (userId) => {
@@ -16,7 +19,7 @@ module.exports.findAllUserTimers = async (userId) => {
 };
 
 module.exports.createTimer = async (timer) => {
-    return await db.Timers.create({ ...timer });
+    return await db.Timers.create({ ...timer }, {raw: true});
 };
 
 module.exports.softDeleteTimer = async (id, userId, transaction) => {

@@ -19,6 +19,7 @@ class NotificationSocket extends WebSocket {
         this.onEntryCreated();
         this.onChangeMark();
         this.onChangeOfferStatus();
+        this.timerWarning();
     };
 
     onChangeMark = () => {
@@ -49,7 +50,7 @@ class NotificationSocket extends WebSocket {
 
     timerWarning = () => {
         this.socket.on('NOTIFICATION_TIMER', (timer) => {
-            toast(<Notification message={`Warning! Timer '${timer.name}' is coming soon!`} />)
+            toast(<Notification message={`Warning! Your timer ${timer.name} is about to commit!`}/>);
         })
     };
 

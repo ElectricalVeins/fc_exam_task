@@ -4,6 +4,7 @@ import styles from './Notification.module.sass';
 
 
 const Notification = (props) => {
+    console.log(props)
     return (
         <div>
             <br/>
