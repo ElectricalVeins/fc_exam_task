@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "babel-node": "babel-node --presets=latest",
-    "start": "nodemon --exec npm run babel-node -- ./src/index.js",
+    "start": "nodemon --inspect=0.0.0.0 ./src/index.js",
     "test": "jest",
     "build": "babel src -d dist",
     "lint": "npx eslint --fix ./src"
