@@ -4,7 +4,7 @@ const server = require('./boot/startHttpServer');
 
 controller.createConnection(server);
 
-const CONSTANTS =require('./constants');
+const CONSTANTS = require('./constants');
 const createLogHistory = require('./server/utils/logger/copier');
 
 const PORT = process.env.PORT || 3000;
@@ -17,7 +17,3 @@ setInterval(() => {
 
 const { timerNotificator } = require('./server/utils/timers');
 timerNotificator.initializeExistingTimers();
-
-//startTimers(); // запустить только существующие таймеры.
-// новые нужно как то добавлять
-//как вариант - в контроллере

@@ -2,15 +2,14 @@ const db = require('../../models/index');
 const { Op } = require("sequelize");
 const ServerError = require('../../errors/ServerError');
 
-module.exports.getAllTimers = async () => {
-    return await db.Timers.findAll(
-  /*       {
+module.exports.getWorkingTimers = async () => {
+    return await db.Timers.findAll({
         where: {
-            [Op.gt]: {
-                finalDate: new Date()
+            finalDate: {
+                [Op.gte]: new Date()
             },
         }
-    } */{ raw: true }
+    }, { raw: true }
     );
 };
 

@@ -46,7 +46,7 @@ class TimerNotificator {
 
   async initializeExistingTimers() {
     try {
-      const timers = await timerQueries.getAllTimers();
+      const timers = await timerQueries.getWorkingTimers();
       if (timers.length > 0) {
         for (const timer of timers) {
           this.appendTimerToList(timer, timer.finalDate);
