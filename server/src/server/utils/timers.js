@@ -2,6 +2,7 @@ const moment = require('moment');
 const _ = require('lodash');
 const timerQueries = require('../controllers/queries/timerQueries');
 const controller = require('../../socketInit');
+const { sendTimerEmail } = require('./sendEmail');
 
 class TimerNotificator {
     constructor() {
@@ -12,38 +13,35 @@ class TimerNotificator {
         return this._timers;
     }
 
-    appendTimerToList(timer) {
-        this.timers.set(this.formKey(timer.id, timer.warnDate), timer);   // может ставить флаги warned & final ?
-        this.timers.set(this.formKey(timer.id, timer.finalDate), timer);
-    }
-
-    removeTimerFromList(timer, date) {
-        this.timers.delete(this.formKey(timer.id, date));
+    //class internal functions
+    formKey(timer) {
+        return `${timer.id}_${moment(timer.createdAt).format('x')}`;
     }
 
     sendNotification(userId, timer) {
         controller.getNotificationController().emitTimerWarning(userId, timer);
     }
 
-    formKey(id, date) {
-        return `${id}_${date}`;
+    appendTimerToList(timer, date) {
+        const dateDiffMs = moment(date).diff(moment(new Date()));
+        const identifier = this.formKey(timer);
+
+        this.timers.set(identifier, setTimeout(() => {
+            this.sendNotification(timer.userId, timer);
+            sendTimerEmail(timer);
+            this.timers.delete(identifier);
+        }, dateDiffMs));
     }
 
-    async checkDate(timer) {
-        console.log('start check');
+    removeTimerFromList(timer) {
+        const timerToDelete = this.timers.get(this.formKey(timer));
+        clearTimeout(timerToDelete);
+        this.timers.delete(this.formKey(timer));
+    }
 
-        if (moment(timer.warnDate).isBefore(moment(new Date))) {
-            console.log('====================sending_warn===========================')
-            this.sendNotification(timer.userId, timer);
-            this.removeTimerFromList(timer, timer.warnDate);
-        }
-
-        if (moment(timer.finalDate).isBefore(moment(new Date))) {
-            console.log('====================sending_final===========================')
-            this.sendNotification(timer.userId, timer);
-            this.removeTimerFromList(timer, timer.finalDate);
-        }
-
+    updateTimerToList(timer, date) {
+        this.removeTimerFromList(timer);
+        this.appendTimerToList(timer, date);
     }
 
     async initializeExistingTimers() {
@@ -51,35 +49,36 @@ class TimerNotificator {
             const timers = await timerQueries.getAllTimers();
             if (timers.length > 0) {
                 for (const timer of timers) {
-                    this.appendTimerToList(timer);
+                    this.appendTimerToList(timer, timer.finalDate);
                 }
             }
-            this.startInterval();
-            console.log('initial List===>', this.timers);
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 
-    startInterval() {
-
-        setInterval(() => {
-            this.timers.forEach(async (timer) => {
-                await this.checkDate(timer);
-            });
-
-            console.log('List===>', this.timers)
-
-        }, 30000)
-
+    //public interfaces situated below
+    updateTimer(timer) {
+        try {
+            this.updateTimerToList(timer, timer.finalDate);
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     initializeNewTimer(timer) {
         try {
-            this.appendTimerToList(timer);
-            console.log('List===>', this.timers);
+            this.appendTimerToList(timer, timer.finalDate);
         } catch (err) {
-            console.log(err);
+            console.error(err);
+        }
+    }
+
+    deleteTimer(timer) {
+        try {
+            this.removeTimerFromList(timer);
+        } catch (err) {
+            console.error(err);
         }
     }
 }
