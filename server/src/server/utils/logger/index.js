@@ -53,6 +53,6 @@ module.exports.logToFile = async (data) => {
     const appendData = await createLogObject(data, start, LOG_PROPS);
     await appendToFile(LOG_FILE_PATH, appendData, start, 'r+');
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };

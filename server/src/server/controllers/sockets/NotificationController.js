@@ -16,8 +16,8 @@ class NotificationController extends WebSocket {
   }
 
   emitTimerWarning(target, timer) {
-    this.io.to(target).emit(CONSTANTS.NOTIFICATION_TIMER,timer);
-  };
+    this.io.to(target).emit(CONSTANTS.NOTIFICATION_TIMER, timer);
+  }
 }
 
 module.exports = NotificationController;

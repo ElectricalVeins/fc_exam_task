@@ -26,9 +26,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
-  },{
+  }, {
     paranoid: true,
   });
-  
+
   return Timers;
 };

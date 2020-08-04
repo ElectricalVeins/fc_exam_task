@@ -73,7 +73,7 @@ sequelize.sync()
   .then(() => {
     console.log('sequelize soft sync has been done');
   })
-  .catch(err => console.log(err));
+  .catch(err => console.error(err));
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
