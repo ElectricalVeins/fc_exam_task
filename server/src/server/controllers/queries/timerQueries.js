@@ -10,8 +10,12 @@ module.exports.getAllTimers = async () => {
                 finalDate: new Date()
             },
         }
-    } */{raw: true}
+    } */{ raw: true }
     );
+};
+
+module.exports.findTimerById = async (id) => {
+    return await db.Timers.findByPk(id);
 };
 
 module.exports.findAllUserTimers = async (userId) => {
@@ -19,12 +23,11 @@ module.exports.findAllUserTimers = async (userId) => {
 };
 
 module.exports.createTimer = async (timer) => {
-    return await db.Timers.create({ ...timer }, {raw: true});
+    return await db.Timers.create({ ...timer }, { raw: true });
 };
 
 module.exports.softDeleteTimer = async (id, userId, transaction) => {
     const result = await db.Timers.destroy({ where: { id, userId }/* , transaction */ });
-    console.log(result);
     if (result !== 1) {
         throw new ServerError('cannot delete timer');
     }
