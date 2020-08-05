@@ -45,10 +45,11 @@ module.exports.deleteTimer = async (req, res, next) => {
   }
 };
 
-module.exports.updateTimer = async () => {
+module.exports.updateTimer = async (req, res, next) => {
   try {
     const { tokenData: { userId }, body: { id, name, warnDate, finalDate } } = req;
-    const updatedTimer = await timerQueries.updateTimer({ id, name, warnDate, finalDate }, userId);
+    const updatedTimer = await timerQueries.updateTimer({ name, warnDate, finalDate }, id, userId);
+    timerNotificator.updateTimer(updatedTimer);
     res.send(updatedTimer);
   } catch (err) {
     console.log(err);

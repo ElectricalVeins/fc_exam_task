@@ -33,8 +33,8 @@ module.exports.softDeleteTimer = async (id, userId, transaction) => {
     return result;
 };
 
-module.exports.updateTimer = async (data, id, transaction) => {
-    const [updatedCount, [updatedTimer]] = await db.Timers.update(data, { where: { id }, returning: true, transaction });
+module.exports.updateTimer = async (data, id, userId, transaction) => {
+    const [updatedCount, [updatedTimer]] = await db.Timers.update(data, { where: { id, userId }, returning: true, transaction });
     if (updatedCount !== 1) {
         throw new ServerError('cannot update timer');
     }
