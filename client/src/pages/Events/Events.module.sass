@@ -1,11 +1,5 @@
 $accent-color: #455a89
 
-@mixin flex($direction, $justify, $align)
-  display: flex
-  flex-direction: $direction
-  justify-content: $justify
-  align-items: $align
-
 .pageContainer
   max-width: 1200px
   margin: 50px auto
@@ -21,8 +15,11 @@ $accent-color: #455a89
   box-sizing: border-box
   width: 480px
   padding: 10px
-  @include flex(column, unset, center)
   box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
+  display: flex
+  flex-direction: column
+  align-items: center
+
   @media screen and (max-width: 900px)
     margin: 0 auto
     width: 100%
@@ -56,15 +53,18 @@ $accent-color: #455a89
     text-align: center
 
 .createTimerContainer
-  @include flex(column, unset, center)
   width: 100%
+  display: flex
+  flex-direction: column
+  align-items: center
 
   form
-    @include flex(column, unset, unset)
     box-sizing: border-box
     flex-wrap: wrap
     box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
     padding: 10px
+    display: flex
+    flex-direction: column
     @media screen and (max-width: 900px)
       padding: 0
       padding-bottom: 15px
@@ -98,3 +98,10 @@ $accent-color: #455a89
 .timerItem
   span
     font-size: 12px
+
+.headerAction
+  border-bottom: 1px solid $accent-color
+  cursor: pointer
+
+  &:hover
+    color: red

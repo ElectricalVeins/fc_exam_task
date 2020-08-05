@@ -1,5 +1,5 @@
 const env = process.env.NODE_ENV || 'development';
-const serverIP='localhost';
+const serverIP = 'localhost';
 
 export default {
     CUSTOMER: 'customer',
@@ -15,7 +15,7 @@ export default {
     TAGLINE_CONTEST: 'tagline',
     CONTEST_TYPES: ['name', 'tagline', 'logo'],
     OFFER_STATUS_MODERATING: 'moderating',
-    OFFER_COMMAND_BAN:'ban',
+    OFFER_COMMAND_BAN: 'ban',
     OFFER_COMMAND_APPROVE: 'approve',
     OFFER_COMMAND_RESOLVE: 'resolve',
     OFFER_COMMAND_REJECT: 'reject',
@@ -36,6 +36,8 @@ export default {
     CREATE_NEW_CATALOG_AND_ADD_CHAT: 'CREATE_NEW_CATALOG_AND_ADD_CHAT',
     USER_INFO_MODE: 'USER_INFO_MODE',
     CASHOUT_MODE: 'CASHOUT_MODE',
+    CREATE_TIMER_MODE: 'CREATE_TIMER_MODE',
+    UPDATE_TIMER_MODE: 'UPDATE_TIMER_MODE',
     HEADER_ANIMATION_TEXT: [
         "a Company",
         "a Brand",
@@ -47,7 +49,7 @@ export default {
         "a Product",
         "a Startup"
     ],
-    FooterItems : [
+    FooterItems: [
         {
             title: 'SQUADHELP',
             items: [

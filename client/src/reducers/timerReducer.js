@@ -1,10 +1,12 @@
 import ACTION from '../actions/actionTypes';
-import actions from 'redux-form/lib/actions';
+import CONSTANTS from '../constants';
 
 const initialState = {
+    formMode: CONSTANTS.CREATE_TIMER_MODE,
     isFetching: true,
     error: null,
-    timers: null
+    timers: null,
+    currentTimer: null,
 };
 
 export default function (state = initialState, action) {
@@ -78,10 +80,10 @@ export default function (state = initialState, action) {
             const newTimerArray = [];
             const { timers } = state;
             const { data } = action;
-
             for (const timer of timers) {
                 if (timer.id === data.id) {
                     newTimerArray.push(data);
+                    continue;
                 }
                 newTimerArray.push(timer);
             }
@@ -99,6 +101,21 @@ export default function (state = initialState, action) {
         }
         case ACTION.CLEAR_TIMER_STORE: {
             return initialState;
+        }
+        case ACTION.OPEN_EDIT_TIMER_FORM: {
+            const currentTimer = { ...action.data }
+            return {
+                ...state,
+                currentTimer,
+                formMode: CONSTANTS.UPDATE_TIMER_MODE,
+            }
+        }
+        case ACTION.OPEN_CREATE_TIMER_FORM: {
+            return {
+                ...state,
+                currentTimer: null,
+                formMode: CONSTANTS.CREATE_TIMER_MODE,
+            }
         }
         default:
             return state;
