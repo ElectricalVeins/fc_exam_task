@@ -1,19 +1,18 @@
-import ACTION from '../actions/actionTypes';
-
+import ACTION from "../actions/actionTypes"
 
 const initialState = {
   isFetching: false,
   error: null,
   formResult: null,
   data: null,
-};
+}
 
-export default function ( state = initialState, action ) {
-  switch ( action.type ) {
+export default function (state = initialState, action) {
+  switch (action.type) {
     case ACTION.RESTORE_PASSWORD_ACTION: {
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
       }
     }
     case ACTION.RESTORE_PASSWORD_SUCCESS: {
@@ -28,7 +27,7 @@ export default function ( state = initialState, action ) {
       return {
         ...state,
         error,
-        isFetching: false
+        isFetching: false,
       }
     }
     case ACTION.UPDATE_PASSWORD_SUCCESS: {
@@ -36,19 +35,19 @@ export default function ( state = initialState, action ) {
       return {
         ...state,
         data,
-        isFetching: false
+        isFetching: false,
       }
     }
     case ACTION.UPDATE_LOST_PASSWORD: {
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
       }
     }
     case ACTION.CLEAR_PASSWORD_RECOVER_STATE: {
       return initialState
     }
     default:
-      return state;
+      return state
   }
 }

@@ -1,36 +1,36 @@
-import React from 'react';
-import {Field} from 'redux-form';
-import CONSTANTS from "../../constants";
-import SelectInput from "../SelectInput/SelectInput";
-import FormInput from "../FormInput/FormInput";
+import React from "react"
+import { Field } from "redux-form"
+import CONSTANTS from "../../constants"
+import SelectInput from "../SelectInput/SelectInput"
+import FormInput from "../FormInput/FormInput"
 
 const ContestSpecialInputs = (props) => {
-  const{dataForContest, classes, contestType}=props
+  const { dataForContest, classes, contestType } = props
 
   switch (contestType) {
     case CONSTANTS.NAME_CONTEST: {
       return (
         <>
           <Field
-            name='styleName'
+            name="styleName"
             component={SelectInput}
-            header='Style name'
+            header="Style name"
             classes={{
               inputContainer: classes.selectInputContainer,
               inputHeader: classes.selectHeader,
-              selectInput: classes.select
+              selectInput: classes.select,
             }}
             optionsArray={dataForContest.data.nameStyle}
           />
           <Field
-            name='typeOfName'
+            name="typeOfName"
             component={SelectInput}
             classes={{
               inputContainer: classes.selectInputContainer,
               inputHeader: classes.selectHeader,
-              selectInput: classes.select
+              selectInput: classes.select,
             }}
-            header='type of company'
+            header="type of company"
             optionsArray={dataForContest.data.typeOfName}
           />
         </>
@@ -40,28 +40,30 @@ const ContestSpecialInputs = (props) => {
       return (
         <>
           <div className={classes.inputContainer}>
-            <span className={classes.inputHeader}>What name of your venture?</span>
+            <span className={classes.inputHeader}>
+              What name of your venture?
+            </span>
             <Field
-              name='nameVenture'
+              name="nameVenture"
               component={FormInput}
-              type='text'
-              label='name of venture'
+              type="text"
+              label="name of venture"
               classes={{
                 container: classes.componentInputContainer,
                 input: classes.input,
-                warning: classes.warning
+                warning: classes.warning,
               }}
             />
           </div>
           <Field
-            name='brandStyle'
+            name="brandStyle"
             component={SelectInput}
             classes={{
               inputContainer: classes.selectInputContainer,
               inputHeader: classes.selectHeader,
-              selectInput: classes.select
+              selectInput: classes.select,
             }}
-            header='Brand Style'
+            header="Brand Style"
             optionsArray={dataForContest.data.brandStyle}
           />
         </>
@@ -71,34 +73,36 @@ const ContestSpecialInputs = (props) => {
       return (
         <>
           <div className={classes.inputContainer}>
-            <span className={classes.inputHeader}>What name of your venture?</span>
+            <span className={classes.inputHeader}>
+              What name of your venture?
+            </span>
             <Field
-              name='nameVenture'
+              name="nameVenture"
               component={FormInput}
-              type='text'
-              label='name of venture'
+              type="text"
+              label="name of venture"
               classes={{
                 container: classes.componentInputContainer,
                 input: classes.input,
-                warning: classes.warning
+                warning: classes.warning,
               }}
             />
           </div>
           <Field
-            name='typeOfTagline'
+            name="typeOfTagline"
             component={SelectInput}
             classes={{
               inputContainer: classes.selectInputContainer,
               inputHeader: classes.selectHeader,
-              selectInput: classes.select
+              selectInput: classes.select,
             }}
-            header='Type tagline'
+            header="Type tagline"
             optionsArray={dataForContest.data.typeOfTagline}
           />
         </>
       )
     }
   }
-};
+}
 
-export default ContestSpecialInputs;
+export default ContestSpecialInputs

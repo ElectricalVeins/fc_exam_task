@@ -1,44 +1,49 @@
-import React,{useEffect} from 'react';
-import PropTypes from 'prop-types';
-import SpinnerLoader from "../Spinner/Spinner";
-import TryAgain from "../TryAgain/TryAgain";
-import CONSTANTS from '../../constants';
+import React, { useEffect } from "react"
+import PropTypes from "prop-types"
+import SpinnerLoader from "../Spinner/Spinner"
+import TryAgain from "../TryAgain/TryAgain"
+import CONSTANTS from "../../constants"
 
-const ModeratorOfferContainer = props => {
-  const{loadMore, isFetching, error}=props;
+const ModeratorOfferContainer = (props) => {
+  const { loadMore, isFetching, error } = props
 
-  useEffect(()=>{
-    window.addEventListener('scroll', scrollHandler);
+  useEffect(() => {
+    window.addEventListener("scroll", scrollHandler)
     return () => {
-      window.removeEventListener('scroll', scrollHandler);
+      window.removeEventListener("scroll", scrollHandler)
     }
   })
 
   const scrollHandler = () => {
-    if (window.innerHeight + window.pageYOffset >= document.body.offsetHeight - CONSTANTS.SCROLL_DELTA) {
+    if (
+      window.innerHeight + window.pageYOffset >=
+      document.body.offsetHeight - CONSTANTS.SCROLL_DELTA
+    ) {
       if (!isFetching) {
-        fetchAgain();
+        fetchAgain()
       }
     }
-  };
-
-  const fetchAgain = () => {
-    loadMore(props.children.length);
   }
 
-  if (error) return <TryAgain getData={fetchAgain}/>
+  const fetchAgain = () => {
+    loadMore(props.children.length)
+  }
 
-  return <>
-    {props.children}
-    {isFetching && <SpinnerLoader/>}
-    <TryAgain getData={fetchAgain} text={'Load Offers'}/>
-  </>
-};
+  if (error) return <TryAgain getData={fetchAgain} />
+
+  return (
+    <>
+      {props.children}
+      {isFetching && <SpinnerLoader />}
+      <TryAgain getData={fetchAgain} text="Load Offers" />
+    </>
+  )
+}
 
 ModeratorOfferContainer.propTypes = {
-  loadMore:PropTypes.func.isRequired,
-  isFetching:PropTypes.bool.isRequired,
+  loadMore: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
   error: PropTypes.object,
-};
+}
 
-export default ModeratorOfferContainer;
+export default ModeratorOfferContainer

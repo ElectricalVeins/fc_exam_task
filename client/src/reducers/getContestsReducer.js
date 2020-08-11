@@ -1,74 +1,73 @@
-import ACTION from '../actions/actionTypes';
-import CONSTANTS from '../constants';
+import ACTION from "../actions/actionTypes"
+import CONSTANTS from "../constants"
 
 const initialState = {
-    isFetching: true,
-    error: null,
-    contests: [],
-    customerFilter: CONSTANTS.CONTEST_STATUS_ACTIVE,
-    creatorFilter: {
-        types: CONSTANTS.CONTEST_TYPES,
-        contestId: '',
-        industry: '',
-        awardSort: 'asc',
-        ownEntries: false,
-        status: 'active',
-    },
-    haveMore: true
-};
-
-export default function (state = initialState, action) {
-    switch (action.type) {
-        case ACTION.GET_CONTESTS_ACTION_REQUEST: {
-            return {
-                ...state,
-                isFetching: true,
-                error: null,
-            }
-        }
-        case ACTION.GET_CONTESTS_ACTION_SUCCESS: {
-            return {
-                ...state,
-                isFetching: false,
-                error: null,
-                contests: [...state.contests, ...action.data.contests],
-                haveMore: action.data.haveMore
-            }
-        }
-        case ACTION.GET_CONTESTS_ACTION_ERROR: {
-            return {
-                ...state,
-                isFetching: false,
-                error: action.error,
-                contests: []
-            }
-        }
-        case ACTION.CLEAR_CONTESTS_LIST: {
-            return {
-                ...state,
-                error: null,
-                contests: []
-            }
-        }
-        case ACTION.SET_NEW_CUSTOMER_FILTER: {
-            return {
-                ...initialState,
-                isFetching: false,
-                customerFilter: action.filter
-            }
-        }
-        case ACTION.SET_NEW_CREATOR_FILTER: {
-            const {creatorFilter}=state;
-            const {filter}=action;
-
-            return {
-                ...initialState,
-                isFetching: false,
-                creatorFilter: {...creatorFilter,...filter}
-            }
-        }
-        default:
-            return state;
-    }
+  isFetching: true,
+  error: null,
+  contests: [],
+  customerFilter: CONSTANTS.CONTEST_STATUS_ACTIVE,
+  creatorFilter: {
+    types: CONSTANTS.CONTEST_TYPES,
+    contestId: "",
+    industry: "",
+    awardSort: "asc",
+    ownEntries: false,
+    status: "active",
+  },
+  haveMore: true,
 }
 
+export default function (state = initialState, action) {
+  switch (action.type) {
+    case ACTION.GET_CONTESTS_ACTION_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+        error: null,
+      }
+    }
+    case ACTION.GET_CONTESTS_ACTION_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        error: null,
+        contests: [...state.contests, ...action.data.contests],
+        haveMore: action.data.haveMore,
+      }
+    }
+    case ACTION.GET_CONTESTS_ACTION_ERROR: {
+      return {
+        ...state,
+        isFetching: false,
+        error: action.error,
+        contests: [],
+      }
+    }
+    case ACTION.CLEAR_CONTESTS_LIST: {
+      return {
+        ...state,
+        error: null,
+        contests: [],
+      }
+    }
+    case ACTION.SET_NEW_CUSTOMER_FILTER: {
+      return {
+        ...initialState,
+        isFetching: false,
+        customerFilter: action.filter,
+      }
+    }
+    case ACTION.SET_NEW_CREATOR_FILTER: {
+      const { creatorFilter } = state
+      const { filter } = action
+
+      return {
+        ...initialState,
+        isFetching: false,
+        creatorFilter: { ...creatorFilter, ...filter },
+      }
+    }
+    default:
+      return state
+  }
+}

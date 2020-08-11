@@ -1,36 +1,36 @@
-import {combineReducers} from 'redux';
-import {reducer as formReducer} from 'redux-form';
-import authReducer from './authReducer';
-import getUserReducer from './userReducer';
-import dataForContestReducer from './dataForContestReducer';
-import payReducer from './payReducer';
-import getContestsReducer from './getContestsReducer';
-import storeContestReducer from './storeContestReducer';
-import bundleReducer from './bundleReducer';
-import getContestByIdReducer from './getContestByIdReducer';
-import updateContestReducer from './updateContestReducer';
-import chatReducer from './chatReducer';
-import userProfileReducer from './userProfileReducer';
-import passwordRecoverReducer from "./passwordRecoverReducer";
-import offerReducer from "./offerReducer";
-import timerReducer from './timerReducer';
+import { combineReducers } from "redux"
+import { reducer as formReducer } from "redux-form"
+import authReducer from "./authReducer"
+import getUserReducer from "./userReducer"
+import dataForContestReducer from "./dataForContestReducer"
+import payReducer from "./payReducer"
+import getContestsReducer from "./getContestsReducer"
+import storeContestReducer from "./storeContestReducer"
+import bundleReducer from "./bundleReducer"
+import getContestByIdReducer from "./getContestByIdReducer"
+import updateContestReducer from "./updateContestReducer"
+import chatReducer from "./chatReducer"
+import userProfileReducer from "./userProfileReducer"
+import passwordRecoverReducer from "./passwordRecoverReducer"
+import offerReducer from "./offerReducer"
+import timerReducer from "./timerReducer"
 
-const appReducer=combineReducers({
-   form: formReducer,
-   userStore: getUserReducer,
-   auth: authReducer,
-   passwordRecover: passwordRecoverReducer,
-   dataForContest: dataForContestReducer,
-   payment: payReducer,
-   contestByIdStore: getContestByIdReducer,
-   contestsList: getContestsReducer,
-   contestStore: storeContestReducer,
-   bundleStore: bundleReducer,
-   updateContestStore: updateContestReducer,
-   chatStore: chatReducer,
-   userProfile: userProfileReducer,
-   offerStore: offerReducer,
-   timerStore: timerReducer,
-});
+const appReducer = combineReducers({
+  form: formReducer,
+  userStore: getUserReducer,
+  auth: authReducer,
+  passwordRecover: passwordRecoverReducer,
+  dataForContest: dataForContestReducer,
+  payment: payReducer,
+  contestByIdStore: getContestByIdReducer,
+  contestsList: getContestsReducer,
+  contestStore: storeContestReducer,
+  bundleStore: bundleReducer,
+  updateContestStore: updateContestReducer,
+  chatStore: chatReducer,
+  userProfile: userProfileReducer,
+  offerStore: offerReducer,
+  timerStore: timerReducer,
+})
 
-export default appReducer;
+export default appReducer

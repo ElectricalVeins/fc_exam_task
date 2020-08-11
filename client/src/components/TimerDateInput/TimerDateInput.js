@@ -1,10 +1,17 @@
-import React from 'react';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
+import React from "react"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
-const TimerDateInput = props => {
-  const { input, placeholder, label, classes, meta: { touched, error }, ...rest } = props;
-  console.log(props);
+const TimerDateInput = (props) => {
+  const {
+    input,
+    placeholder,
+    label,
+    classes,
+    meta: { touched, error },
+    ...rest
+  } = props
+  console.log(props)
   return (
     <div className={classes.container}>
       <span className={classes.dateLabel}>{label}</span>
@@ -17,24 +24,23 @@ const TimerDateInput = props => {
         showMonthDropdown
         showYearDropdown
         showTimeSelect
-
         timeFormat="HH:mm"
         timeIntervals={5}
         timeCaption="time"
         dateFormat="MMMM d, yyyy h:mm aa"
-
         minDate={new Date()}
         popperModifiers={{
           preventOverflow: {
             enabled: true,
             escapeWithReference: false,
-            boundariesElement: "viewport"
-          }
+            boundariesElement: "viewport",
+          },
         }}
-        {...rest} />
+        {...rest}
+      />
       {error && touched && <span className={classes.warning}>{error}</span>}
     </div>
   )
 }
 
-export default TimerDateInput;
+export default TimerDateInput

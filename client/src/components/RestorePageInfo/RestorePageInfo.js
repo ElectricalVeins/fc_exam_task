@@ -1,29 +1,27 @@
-import React, { useEffect } from 'react';
-import styles from "../../pages/RestorePassword/RestorePassword.module.sass";
-import SpinnerLoader from "../Spinner/Spinner";
-import { toast } from 'react-toastify';
+import React, { useEffect } from "react"
+import { toast } from "react-toastify"
+import styles from "../../pages/RestorePassword/RestorePassword.module.sass"
+import SpinnerLoader from "../Spinner/Spinner"
 
-const RestorePageInfo = props => {
-  const { history, token, updatePassword, isFetching, error, data } = props;
+const RestorePageInfo = (props) => {
+  const { history, token, updatePassword, isFetching, error, data } = props
 
-  useEffect( () => {
-    if( !isFetching && !error && !data ) {
-      updatePassword( { token } );
+  useEffect(() => {
+    if (!isFetching && !error && !data) {
+      updatePassword({ token })
     }
-    if( data ) {
-      toast(data);
-      setTimeout( () => history.replace( '/login' ), 3000 );
+    if (data) {
+      toast(data)
+      setTimeout(() => history.replace("/login"), 3000)
     }
-  }, [ data ] );
+  }, [data])
 
-  return <div className={styles.passwordSuccessChange}>
-    {
-      isFetching && <SpinnerLoader color={'white'}/>
-    }
-    {
-      data && <span>Your password will be reset. Wait until redirect.</span>
-    }
-  </div>
+  return (
+    <div className={styles.passwordSuccessChange}>
+      {isFetching && <SpinnerLoader color="white" />}
+      {data && <span>Your password will be reset. Wait until redirect.</span>}
+    </div>
+  )
 }
 
-export default RestorePageInfo;
+export default RestorePageInfo

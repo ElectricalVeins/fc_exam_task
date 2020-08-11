@@ -1,43 +1,51 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-import styles from './TimerForm.module.scss';
-import FormInput from '../FormInput/FormInput';
-import customValidator from '../../validators/validator';
-import Schems from '../../validators/validationSchems';
-import * as actionCreator from '../../actions/actionCreator';
-import TimerDateInput from '../TimerDateInput/TimerDateInput';
+import React from "react"
+import { connect } from "react-redux"
+import { Field, reduxForm } from "redux-form"
+import styles from "./TimerForm.module.scss"
+import FormInput from "../FormInput/FormInput"
+import customValidator from "../../validators/validator"
+import Schems from "../../validators/validationSchems"
+import * as actionCreator from "../../actions/actionCreator"
+import TimerDateInput from "../TimerDateInput/TimerDateInput"
 
-const TimerForm = props => {
-  const { initialValues, handleSubmit, submitting, reset, createTimer, deleteTimer, updateTimer } = props;
+const TimerForm = (props) => {
+  const {
+    initialValues,
+    handleSubmit,
+    submitting,
+    reset,
+    createTimer,
+    deleteTimer,
+    updateTimer,
+  } = props
 
   const submit = (values) => {
     if (initialValues) {
-      const { name, finalDate, warnDate } = values;
+      const { name, finalDate, warnDate } = values
       const newTimer = {
         id: initialValues.id,
         name,
         finalDate,
         warnDate,
-      };
-      updateTimer(newTimer);
+      }
+      updateTimer(newTimer)
     } else {
-      createTimer(values);
-      reset();
+      createTimer(values)
+      reset()
     }
-  };
+  }
 
   const deleteHandler = () => {
     if (initialValues) {
-      const { name, finalDate, warnDate, id } = initialValues;
-      deleteTimer({ name, finalDate, warnDate, id });
+      const { name, finalDate, warnDate, id } = initialValues
+      deleteTimer({ name, finalDate, warnDate, id })
     }
-    reset();
-  };
+    reset()
+  }
 
   return (
     <form onSubmit={handleSubmit(submit)}>
-      <i class="fas fa-times" onClick={deleteHandler} />
+      <i className="fas fa-times" onClick={deleteHandler} />
 
       <Field
         name="name"
@@ -47,13 +55,14 @@ const TimerForm = props => {
           input: styles.inputClass,
           warning: styles.errorTip,
           notValid: styles.invalidClass,
-          valid: styles.validClass
+          valid: styles.validClass,
         }}
-        type='text'
-        label='Enter a Timer name' />
+        type="text"
+        label="Enter a Timer name"
+      />
 
       <Field
-        name='warnDate'
+        name="warnDate"
         component={TimerDateInput}
         classes={{
           container: styles.defaultClass,
@@ -63,11 +72,12 @@ const TimerForm = props => {
           valid: styles.validClass,
           label: styles.dateLabel,
         }}
-        label='select a warning date'
-        placeholder='Warning date' />
+        label="select a warning date"
+        placeholder="Warning date"
+      />
 
       <Field
-        name='finalDate'
+        name="finalDate"
         component={TimerDateInput}
         classes={{
           container: styles.defaultClass,
@@ -77,26 +87,33 @@ const TimerForm = props => {
           valid: styles.validClass,
           label: styles.dateLabel,
         }}
-        label='select a final date'
-        placeholder='Final date' />
-      <button type="submit" disabled={submitting}>Submit</button>
+        label="select a final date"
+        placeholder="Final date"
+      />
+      <button type="submit" disabled={submitting}>
+        Submit
+      </button>
     </form>
   )
-};
+}
 
 const mapStateToProps = (state) => ({
-  initialValues: state.timerStore.currentTimer
-});
-
+  initialValues: state.timerStore.currentTimer,
+})
 
 const mapDispatchToProps = (dispatch) => ({
-  createTimer: data => dispatch(actionCreator.createCreateTimerAction(data)),
-  deleteTimer: data => dispatch(actionCreator.createDeleteTimerAction(data)),
-  updateTimer: data => dispatch(actionCreator.createUpdateTimerAction(data)),
-});
+  createTimer: (data) => dispatch(actionCreator.createCreateTimerAction(data)),
+  deleteTimer: (data) => dispatch(actionCreator.createDeleteTimerAction(data)),
+  updateTimer: (data) => dispatch(actionCreator.createUpdateTimerAction(data)),
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-  form: 'timer',
-  enableReinitialize: true,
-  validate: customValidator(Schems.TimerForm)
-})(TimerForm));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  reduxForm({
+    form: "timer",
+    enableReinitialize: true,
+    validate: customValidator(Schems.TimerForm),
+  })(TimerForm)
+)
