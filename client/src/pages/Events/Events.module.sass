@@ -59,6 +59,7 @@ $accent-color: #455a89
   align-items: center
 
   form
+    position: relative
     box-sizing: border-box
     flex-wrap: wrap
     box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1)
@@ -69,6 +70,19 @@ $accent-color: #455a89
       padding: 0
       padding-bottom: 15px
       width: 100%
+
+    i
+      cursor: pointer
+      font-size: 32px
+      position: absolute
+      transform: translate(50%,-50%)
+      right: 0px
+      top: 0px
+      @media screen and ( max-width: 576px )
+        transform: unset
+        position: relative
+        margin-right: 10px
+        align-self: flex-end
 
     label
       margin-top: 12px
@@ -87,7 +101,6 @@ $accent-color: #455a89
     & > button
       font-size: 16px
       border-radius: 5px
-      margin-top: 10px
       align-self: center
       color: white
       cursor: pointer

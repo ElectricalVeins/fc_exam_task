@@ -11,37 +11,14 @@ import CONSTANTS from '../../constants';
 import ACTION from '../../actions/actionTypes';
 
 const Events = props => {
-  const { currentTimer, formMode, timers, createTimer, getTimers, updateTimer, deleteTimer, closeEditor } = props;
+  const { timers, getTimers, updateTimer, deleteTimer, closeEditor } = props;
 
   useEffect(() => {
     getTimers();
     return () => {
-      //cleanup
+      props.clearTimers();
     };
   }, []);
-
-
-  const handleSubmit = (newEvent) => {
-    if (newEvent.update) {
-      const { name, finalDate, warnDate } = newEvent;
-      const newTimer = {
-        ...currentTimer,
-        name,
-        finalDate,
-        warnDate,
-      };
-      updateTimer(newTimer);
-    } else {
-      createTimer(newEvent);
-    }
-  };
-
-  const renderForm = () => {
-    return (<>
-      {formMode === CONSTANTS.CREATE_TIMER_MODE && <TimerForm submitHandler={handleSubmit} initialValues={{}} />}
-      {formMode === CONSTANTS.UPDATE_TIMER_MODE && <TimerForm submitHandler={handleSubmit} initialValues={currentTimer} />}
-    </>)
-  };
 
   return (
     <>
@@ -63,7 +40,10 @@ const Events = props => {
                 create
                 </span>
             } a new Timer before the specific event?</h1>
-          {renderForm()}
+          <div className={styles.formWrapper}>
+
+            <TimerForm />
+          </div>
         </div>
       </div>
       <Footer />
@@ -80,7 +60,8 @@ const mapDispatchToProps = dispatch => ({
   createTimer: data => dispatch(actionCreator.createCreateTimerAction(data)),
   deleteTimer: data => dispatch(actionCreator.createDeleteTimerAction(data)),
   updateTimer: data => dispatch(actionCreator.createUpdateTimerAction(data)),
-  closeEditor: () => dispatch({ type: ACTION.OPEN_CREATE_TIMER_FORM })
+  closeEditor: () => dispatch({ type: ACTION.OPEN_CREATE_TIMER_FORM }),
+  clearTimers: () => dispatch({ type: ACTION.CLEAR_TIMER_STORE })
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Events);
