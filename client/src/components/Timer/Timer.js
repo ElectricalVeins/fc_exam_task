@@ -48,12 +48,7 @@ const Timer = props => {
     </>)
   }
 
-  const deleteHandler = () => {
-    props.deleteTimer({ name, finalDate, warnDate, id });
-  };
-
   const openEditorHandler = () => {
-    closeEditor();
     openEditor({ id, name, finalDate, createdAt, warnDate });
   };
 
