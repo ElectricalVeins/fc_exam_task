@@ -3,23 +3,23 @@ label,
 select,
 button,
 textarea {
-  margin: 0;
-  border: 0;
-  padding: 0;
-  display: inline-block;
-  vertical-align: middle;
-  white-space: normal;
-  background: none;
-  line-height: 1;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: normal;
+    background: none;
+    line-height: 1;
 
-  /* Browsers have different default form fonts */
-  font-size: 13px;
-  font-family: Roboto;
+    /* Browsers have different default form fonts */
+    font-size: 13px;
+    font-family: Roboto;
 }
 
 /* Remove the stupid outer glow in Webkit */
 input:focus {
-  outline: 0;
+    outline: 0;
 }
 
 /* Box Sizing Reset
@@ -28,71 +28,70 @@ input:focus {
 /* All of our custom controls should be what we expect them to be */
 input,
 textarea {
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
 }
 
 /* These elements are usually rendered a certain way by the browser */
 button,
-input[type=reset],
-input[type=button],
-input[type=submit],
-input[type=checkbox],
-input[type=radio],
+input[type="reset"],
+input[type="button"],
+input[type="submit"],
+input[type="checkbox"],
+input[type="radio"],
 select {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 /* Text Inputs
 -----------------------------------------------*/
 
-input[type=date],
-input[type=datetime],
-input[type=datetime-local],
-input[type=email],
-input[type=month],
-input[type=number],
-input[type=password],
-input[type=range],
-input[type=search],
-input[type=tel],
-input[type=text],
-input[type=time],
-input[type=url],
-input[type=week] {
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="range"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"] {
 }
 
 /* Button Controls
 -----------------------------------------------*/
 
-input[type=checkbox],
-input[type=radio] {
-  width: 13px;
-  height: 13px;
+input[type="checkbox"],
+input[type="radio"] {
+    width: 13px;
+    height: 13px;
 }
 
 /* File Uploads
 -----------------------------------------------*/
 
-input[type=file] {
-
+input[type="file"] {
 }
 
 /* Search Input
 -----------------------------------------------*/
 
 /* Make webkit render the search input like a normal text field */
-input[type=search] {
-  -webkit-appearance: textfield;
-  -webkit-box-sizing: content-box;
+input[type="search"] {
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: content-box;
 }
 
 /* Turn off the recent search for webkit. It adds about 15px padding on the left */
 ::-webkit-search-decoration {
-  display: none;
+    display: none;
 }
 
 /* Buttons
@@ -102,66 +101,78 @@ button,
 input[type="reset"],
 input[type="button"],
 input[type="submit"] {
-  /* Fix IE7 display bug */
-  overflow: visible;
-  width: auto;
+    /* Fix IE7 display bug */
+    overflow: visible;
+    width: auto;
+    margin: 0;
 }
 
 /* IE8 and FF freak out if this rule is within another selector */
 ::-webkit-file-upload-button {
-  padding: 0;
-  border: 0;
-  background: none;
+    padding: 0;
+    border: 0;
+    background: none;
 }
 
 /* Textarea
 -----------------------------------------------*/
 
 textarea {
-  /* Move the label to the top */
-  vertical-align: top;
+    /* Move the label to the top */
+    vertical-align: top;
 
-  /* Turn off scroll bars in IE unless needed */
-  overflow: auto;
+    /* Turn off scroll bars in IE unless needed */
+    overflow: auto;
 }
 
 /* Selects
 -----------------------------------------------*/
 
 select {
-
 }
 
 select[multiple] {
-  /* Move the label to the top */
-  vertical-align: top;
+    /* Move the label to the top */
+    vertical-align: top;
 }
 
 //END OF RESET
 
-@import './src/pages/Events/Events.module';
+@import "./src/pages/Events/Events.module";
 
 .errorTip {
-  position: absolute;
-  z-index: 10;
-  background-color: #FFDCE0;
-  border: 1px solid #cea0a5;
-  color: #86181d;
-  box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1);
-  padding: 10px 20px;
-  top: calc(100% + 2px);
+    position: absolute;
+    z-index: 10;
+    background-color: #ffdce0;
+    border: 1px solid #cea0a5;
+    color: #86181d;
+    box-shadow: 0 5px 10px 3px rgba(0, 0, 0, 0.1);
+    padding: 10px 20px;
+    top: 75%;
+    left: 5%;
 }
 
 .validClass {
-  border: 1px solid green;
+    border: 1px solid green !important;
 }
 
 .invalidClass {
-  border: 1px solid red;
+    border: 1px solid red !important;
+}
+
+.inputClass {
+    flex-grow: 1;
+    border: 1px solid $accent-color;
 }
 
 .defaultClass {
-  box-sizing: border-box;
-  //border: 1px solid $accent-color;
-  padding: 20px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    box-sizing: border-box;
+    margin: 10px;
+}
+
+.dateLabel {
+    width: 200px;
 }

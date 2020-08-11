@@ -1,156 +1,102 @@
 import React from 'react';
-import moment from 'moment';
-import PropTypes from 'prop-types';
-import { Formik, Form, Field } from 'formik';
-import * as yup from 'yup';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
-import classNames from 'classnames';
-import FormikInput from "../FormikInput/FormikInput";
+import { connect } from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
 import styles from './TimerForm.module.scss';
-
-const nameSchema = yup.string()
-  .min(4, 'Minimum 4 symbols required')
-  .max(16, 'Maximum 16 symbols allowed')
-  .required('This area is required');
-const dateSchema = yup.date('Please Enter a proper Date')
-  .min(new Date())
-  .required('This area is required');
+import FormInput from '../FormInput/FormInput';
+import customValidator from '../../validators/validator';
+import Schems from '../../validators/validationSchems';
+import * as actionCreator from '../../actions/actionCreator';
+import TimerDateInput from '../TimerDateInput/TimerDateInput';
 
 const TimerForm = props => {
-  const { submitHandler, initialValues: { name, finalDate, warnDate } } = props;
+  const { initialValues, handleSubmit, submitting, reset, createTimer, deleteTimer, updateTimer } = props;
 
-  const handleSubmit = (event, { resetForm }) => {
-    if (props.initialValues) {
-      submitHandler({ ...event, update: true });
+  const submit = (values) => {
+    if (initialValues) {
+      const { name, finalDate, warnDate } = values;
+      const newTimer = {
+        id: initialValues.id,
+        name,
+        finalDate,
+        warnDate,
+      };
+      updateTimer(newTimer);
     } else {
-      submitHandler(event);
-      resetForm();
+      createTimer(values);
+      reset();
     }
   };
 
-  const nameValidate = async (value) => {
-    try {
-      await nameSchema.validate(value);
-    } catch (e) {
-      return e.message;
+  const deleteHandler = () => {
+    if (initialValues) {
+      const { name, finalDate, warnDate, id } = initialValues;
+      deleteTimer({ name, finalDate, warnDate, id });
     }
-  };
-
-  const dateValidate = async (value) => {
-    try {
-      await dateSchema.validate(value);
-    } catch (e) {
-      return e.message;
-    }
-  };
-
-  const validateForm = async ({ finalDate, warnDate }) => {
-    const errors = {};
-    if (moment(warnDate).isAfter(finalDate)) {
-      errors.warnDate = 'Warning time must be before selected date';
-    }
-    return errors;
+    reset();
   };
 
   return (
-    <Formik validate={validateForm}
-      initialValues={{
-        name: name || '',
-        finalDate: finalDate || new Date(),
-        warnDate: warnDate || new Date(),
-      }}
-      onSubmit={handleSubmit}>
-      {
-        props => (<Form>
-          <Field validate={nameValidate} name="name">
-            {
-              fieldProps => {
-                const { field, form, meta, ...rest } = fieldProps;
+    <form onSubmit={handleSubmit(submit)}>
+      <i class="fas fa-times" onClick={deleteHandler} />
 
-                const inputClassNames = classNames(styles.defaultClass, {
-                  [styles.invalidClass]: meta.touched && meta.error,
-                  [styles.validClass]: meta.touched && !meta.error,
-                });
-                return (
-                  <FormikInput {...fieldProps}>
-                    <span>Enter A Timer Name</span>
-                    <input className={inputClassNames} {...field} {...rest}
-                      placeholder='Enter a Timer name' />
-                  </FormikInput>
-                )
-              }
-            }
-          </Field>
+      <Field
+        name="name"
+        component={FormInput}
+        classes={{
+          container: styles.defaultClass,
+          input: styles.inputClass,
+          warning: styles.errorTip,
+          notValid: styles.invalidClass,
+          valid: styles.validClass
+        }}
+        type='text'
+        label='Enter a Timer name' />
 
-          <Field name="finalDate" validate={dateValidate}>
-            {
-              fieldProps => {
-                const { field: { value, name }, form, meta, ...rest } = fieldProps
-                return (
-                  <FormikInput {...fieldProps}>
-                    <span>Select the date</span>
-                    <DatePicker selected={(value && new Date(value)) || null}
-                      onChange={value => form.setFieldValue(name, value)}
-                      placeholderText="Click to select a date"
-                      isClearable
-                      showMonthDropdown
-                      showYearDropdown
-                      showTimeInput
-                      minDate={new Date()}
-                      popperModifiers={{
-                        preventOverflow: {
-                          enabled: true,
-                          escapeWithReference: false,
-                          boundariesElement: "viewport"
-                        }
-                      }}
-                      {...rest} />
-                  </FormikInput>
-                )
-              }
-            }
-          </Field>
+      <Field
+        name='warnDate'
+        component={TimerDateInput}
+        classes={{
+          container: styles.defaultClass,
+          input: styles.inputClass,
+          warning: styles.errorTip,
+          notValid: styles.invalidClass,
+          valid: styles.validClass,
+          label: styles.dateLabel,
+        }}
+        label='select a warning date'
+        placeholder='Warning date' />
 
-          <Field name="warnDate" validate={dateValidate}>
-            {
-              fieldProps => {
-                const { field: { value, name }, form, meta, ...rest } = fieldProps
-                return (
-                  <FormikInput {...fieldProps}>
-                    <span>Select The Warning Time</span>
-                    <DatePicker selected={(value && new Date(value)) || null}
-                      onChange={value => form.setFieldValue(name, value)}
-                      placeholderText="Click to select a warning date"
-                      isClearable
-                      showMonthDropdown
-                      showYearDropdown
-                      showTimeInput
-                      minDate={new Date()}
-                      popperModifiers={{
-                        preventOverflow: {
-                          enabled: true,
-                          escapeWithReference: false,
-                          boundariesElement: "viewport"
-                        }
-                      }}
-                      {...rest} />
-                  </FormikInput>
-                )
-              }
-            }
-          </Field>
-
-          <button type="submit">Submit</button>
-        </Form>)
-      }
-    </Formik>
-  );
+      <Field
+        name='finalDate'
+        component={TimerDateInput}
+        classes={{
+          container: styles.defaultClass,
+          input: styles.inputClass,
+          warning: styles.errorTip,
+          notValid: styles.invalidClass,
+          valid: styles.validClass,
+          label: styles.dateLabel,
+        }}
+        label='select a final date'
+        placeholder='Final date' />
+      <button type="submit" disabled={submitting}>Submit</button>
+    </form>
+  )
 };
 
-TimerForm.propTypes = {
-  submitHandler: PropTypes.func.isRequired,
-  initialValues: PropTypes.object.isRequired,
-};
+const mapStateToProps = (state) => ({
+  initialValues: state.timerStore.currentTimer
+});
 
-export default TimerForm;
+
+const mapDispatchToProps = (dispatch) => ({
+  createTimer: data => dispatch(actionCreator.createCreateTimerAction(data)),
+  deleteTimer: data => dispatch(actionCreator.createDeleteTimerAction(data)),
+  updateTimer: data => dispatch(actionCreator.createUpdateTimerAction(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
+  form: 'timer',
+  enableReinitialize: true,
+  validate: customValidator(Schems.TimerForm)
+})(TimerForm));
