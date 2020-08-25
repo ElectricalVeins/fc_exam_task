@@ -15,7 +15,6 @@ const Timer = (props) => {
     warnDate,
     itemClass,
     openEditor,
-    closeEditor,
   } = props
 
   const checkWarn = () => moment(warnDate).isBefore(new Date())
@@ -26,7 +25,7 @@ const Timer = (props) => {
 
   const intervalHandler = () => {
     checkProgress()
-    checkWarn() && setWarning(true) // можно вызвать toast для доп. уведомления
+    checkWarn() && setWarning(true)
   }
 
   useEffect(() => {
@@ -46,8 +45,6 @@ const Timer = (props) => {
     return result > 100 ? 100 : result
   }
 
-  const listStyles = classNames(styles.listItem, itemClass)
-
   const renderWarning = () => {
     return <>{isWarning && <span className={styles.warn} title={warnDate} />}</>
   }
@@ -55,6 +52,8 @@ const Timer = (props) => {
   const openEditorHandler = () => {
     openEditor({ id, name, finalDate, createdAt, warnDate })
   }
+
+  const listStyles = classNames(styles.listItem, itemClass)
 
   return (
     <li
@@ -68,7 +67,7 @@ const Timer = (props) => {
         <span className={styles.time}>{moment().to(finalDate, true)}</span>
       </div>
       <LinearProgress
-        value={+progress}
+        value={Number(progress)}
         variant="determinate"
         classes={{
           root: styles.progressBar,
@@ -81,8 +80,7 @@ const Timer = (props) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  openEditor: (timer) =>
-    dispatch({ type: ACTION.OPEN_EDIT_TIMER_FORM, data: timer }),
+  openEditor: (timer) => dispatch({ type: ACTION.OPEN_EDIT_TIMER_FORM, data: timer }),
   closeEditor: () => dispatch({ type: ACTION.OPEN_CREATE_TIMER_FORM }),
 })
 

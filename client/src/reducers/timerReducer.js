@@ -55,19 +55,12 @@ export default function (state = initialState, action) {
       }
     }
     case ACTION.DELETE_TIMER_SUCCESS: {
-      const newTimerArray = []
       const { timers } = state
       const { data } = action
 
-      for (const timer of timers) {
-        if (timer.id !== data.id) {
-          newTimerArray.push(timer)
-        }
-      }
-
       return {
         ...state,
-        timers: newTimerArray,
+        timers: timers.filter((timer) => timer.id !== data.id),
       }
     }
     case ACTION.DELETE_TIMER_ERROR: {
@@ -87,7 +80,6 @@ export default function (state = initialState, action) {
         }
         newTimerArray.push(timer)
       }
-
       return {
         ...state,
         timers: newTimerArray,
@@ -99,8 +91,11 @@ export default function (state = initialState, action) {
         error: action.error,
       }
     }
-    case ACTION.CLEAR_TIMER_STORE: {
-      return initialState
+    case ACTION.CLEAR_CURRENT_TIMER: {
+      return {
+        ...state,
+        currentTimer: null,
+      }
     }
     case ACTION.OPEN_EDIT_TIMER_FORM: {
       const currentTimer = { ...action.data }
@@ -116,6 +111,9 @@ export default function (state = initialState, action) {
         currentTimer: null,
         formMode: CONSTANTS.CREATE_TIMER_MODE,
       }
+    }
+    case ACTION.CLEAR_TIMER_STORE: {
+      return initialState
     }
     default:
       return state

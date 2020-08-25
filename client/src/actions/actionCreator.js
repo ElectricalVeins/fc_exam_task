@@ -493,3 +493,7 @@ export const createUpdateTimerAction = (data) => ({
   type: ACTION.UPDATE_TIMER,
   data,
 })
+
+export const clearCurrentTimer = () => ({
+  type: ACTION.CLEAR_CURRENT_TIMER,
+})

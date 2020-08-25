@@ -17,7 +17,7 @@ const TimerDateInput = (props) => {
       <span className={classes.dateLabel}>{label}</span>
       <DatePicker
         id={input.name}
-        selected={(input.value && new Date(input.value)) || null}
+        selected={(input.value && new Date(input.value)) || new Date()}
         onChange={input.onChange}
         placeholderText={placeholder}
         isClearable

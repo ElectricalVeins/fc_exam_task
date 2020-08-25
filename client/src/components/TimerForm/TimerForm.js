@@ -17,6 +17,7 @@ const TimerForm = (props) => {
     createTimer,
     deleteTimer,
     updateTimer,
+    clearCurrentTimer,
   } = props
 
   const submit = (values) => {
@@ -40,6 +41,7 @@ const TimerForm = (props) => {
       const { name, finalDate, warnDate, id } = initialValues
       deleteTimer({ name, finalDate, warnDate, id })
     }
+    clearCurrentTimer()
     reset()
   }
 
@@ -105,6 +107,7 @@ const mapDispatchToProps = (dispatch) => ({
   createTimer: (data) => dispatch(actionCreator.createCreateTimerAction(data)),
   deleteTimer: (data) => dispatch(actionCreator.createDeleteTimerAction(data)),
   updateTimer: (data) => dispatch(actionCreator.createUpdateTimerAction(data)),
+  clearCurrentTimer: () => dispatch(actionCreator.clearCurrentTimer()),
 })
 
 export default connect(

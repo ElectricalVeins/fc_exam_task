@@ -11,7 +11,7 @@ import CONSTANTS from "../../constants"
 import ACTION from "../../actions/actionTypes"
 
 const Events = (props) => {
-  const { timers, getTimers, updateTimer, deleteTimer, closeEditor } = props
+  const { timers, getTimers, closeEditor } = props
 
   useEffect(() => {
     getTimers()
@@ -31,8 +31,6 @@ const Events = (props) => {
           <p>Live Upcoming Checks</p>
           <TimerList
             events={timers}
-            deleteTimer={deleteTimer}
-            updateTimer={updateTimer}
             itemClass={styles.timerItem}
           />
         </div>
@@ -67,9 +65,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getTimers: () => dispatch(actionCreator.createGetTimersAction()),
-  createTimer: (data) => dispatch(actionCreator.createCreateTimerAction(data)),
-  deleteTimer: (data) => dispatch(actionCreator.createDeleteTimerAction(data)),
-  updateTimer: (data) => dispatch(actionCreator.createUpdateTimerAction(data)),
   closeEditor: () => dispatch({ type: ACTION.OPEN_CREATE_TIMER_FORM }),
   clearTimers: () => dispatch({ type: ACTION.CLEAR_TIMER_STORE }),
 })
