@@ -1,9 +1,10 @@
 const express = require('express');
 const tokenMiddlewares = require('../middlewares/tokenMiddlewares');
-const validators = require('../middlewares/validators');
+const {validateTimer} = require('../middlewares/validators');
 const timerController = require('../controllers/timerController');
 
 const timerRouter = express.Router();
+
 
 timerRouter.get('/getTimers',
   tokenMiddlewares.verifyToken,
@@ -12,7 +13,7 @@ timerRouter.get('/getTimers',
 
 timerRouter.post('/createTimer',
   tokenMiddlewares.verifyToken,
-  validators.validateTimer,
+  validateTimer,
   timerController.createTimer
 );
 

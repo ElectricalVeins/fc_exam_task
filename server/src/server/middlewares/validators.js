@@ -1,32 +1,11 @@
 const schems = require('../validationSchemes/schems');
 const BadRequestError = require('../errors/BadRequestError');
+const { validator } = require('../validationSchemes/validator');
 
-module.exports.validateRegistrationData = async (req, res, next) => {
-  try {
-    await schems.registrationSchem.validate(req.body);
-    next();
-  } catch (err) {
-    next(err);
-  }
-};
-
-module.exports.validateLogin = async (req, res, next) => {
-  try {
-    await schems.loginSchem.validate(req.body);
-    next();
-  } catch (err) {
-    next(err);
-  }
-};
-
-module.exports.validatePasswordRestore = async (req, res, next) => {
-  try {
-    await schems.restorePassword.validate(req.body);
-    next();
-  } catch (err) {
-    next(err);
-  }
-};
+module.exports.validateTimer = validator(schems.timer); 
+module.exports.validateRegistrationData = validator(schems.registrationSchem);
+module.exports.validateLogin = validator(schems.loginSchem);
+module.exports.validatePasswordRestore = validator(schems.restorePassword);
 
 module.exports.validateContestCreation = (req, res, next) => {
   const promiseArray = [];
@@ -45,13 +24,4 @@ module.exports.validateContestCreation = (req, res, next) => {
     .catch(err => {
       next(err);
     });
-};
-
-module.exports.validateTimer = async (req, res, next) => {
-  try {
-    await schems.timer.validate(req.body);
-    next();
-  } catch (err) {
-    next(err);
-  }
 };
