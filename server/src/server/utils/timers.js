@@ -13,6 +13,14 @@ class TimerNotificator {
     return this._timers;
   }
 
+  set timers({timer, identifier, dateDiffMs}) {
+    this.timers.set(identifier, setTimeout(() => {
+      this.sendNotification(timer.userId, timer);
+      sendTimerEmail(timer);
+      this.timers.delete(identifier);
+    }, dateDiffMs));
+  }
+
   //class internal functions
   formKey(timer) {
     return `${timer.id}_${moment(timer.createdAt).format('x')}`;
@@ -25,18 +33,13 @@ class TimerNotificator {
   appendTimerToList(timer, date) {
     const dateDiffMs = moment(date).diff(moment(new Date()));
     const identifier = this.formKey(timer);
-
-    this.timers.set(identifier, setTimeout(() => {
-      this.sendNotification(timer.userId, timer);
-      sendTimerEmail(timer);
-      this.timers.delete(identifier);
-    }, dateDiffMs));
+    this.timers = {timer, identifier, dateDiffMs};
   }
 
   removeTimerFromList(timer) {
     const timerToDelete = this.timers.get(this.formKey(timer));
     clearTimeout(timerToDelete);
-    this.timers.delete(this.formKey(timer));
+    this.timers.delete(this.formKey(timer)); //perform with get-set?
   }
 
   updateTimerToList(timer, date) {
@@ -51,7 +54,7 @@ class TimerNotificator {
         for (const timer of timers) {
           this.appendTimerToList(timer, timer.finalDate);
         }
-      }
+      }      
     } catch (err) {
       console.error(err);
     }
