@@ -11,7 +11,6 @@ const TimerDateInput = (props) => {
     meta: { touched, error },
     ...rest
   } = props
-  console.log(props)
   return (
     <div className={classes.container}>
       <span className={classes.dateLabel}>{label}</span>

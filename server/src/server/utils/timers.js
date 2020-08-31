@@ -3,6 +3,7 @@ const _ = require('lodash');
 const timerQueries = require('../controllers/queries/timerQueries');
 const controller = require('../../socketInit');
 const { nodeMailer } = require('./sendEmail');
+const { logToFile } = require('./logger/index');
 
 class TimerNotificator {
   constructor() {
@@ -13,14 +14,15 @@ class TimerNotificator {
     return this._timers;
   }
 
-  set timers({timer, identifier, dateDiffMs}) {
-    this.timers.set(identifier, setTimeout(() => {
+  set timers({ timer, id, dateDiffMs }) {
+    this.timers.set(id, setTimeout(() => {
       this.sendNotification(timer.userId, timer);
       nodeMailer.sendTimerEmail(timer);
+      this.timers.delete(id);
     }, dateDiffMs));
   }
 
-  //class internal functions
+  //class internal methods
   formKey(timer) {
     return `${timer.id}_${moment(timer.createdAt).format('x')}`;
   }
@@ -29,58 +31,58 @@ class TimerNotificator {
     controller.getNotificationController().emitTimerWarning(userId, timer);
   }
 
-  appendTimerToList(timer, date) {
+  appendTimerToMap(timer, date) {
     const dateDiffMs = moment(date).diff(moment(new Date()));
-    const identifier = this.formKey(timer);
-    this.timers = {timer, identifier, dateDiffMs};
+    const id = this.formKey(timer);
+    this.timers = { timer, id, dateDiffMs };
   }
 
-  removeTimerFromList(timer) {
+  removeTimerFromMap(timer) {
     const timerToDelete = this.timers.get(this.formKey(timer));
     clearTimeout(timerToDelete);
-    this.timers.delete(this.formKey(timer)); //perform with get-set?
+    this.timers.delete(this.formKey(timer)); 
   }
 
-  updateTimerToList(timer, date) {
-    this.removeTimerFromList(timer);
-    this.appendTimerToList(timer, date);
+  updateTimerInMap(timer, date) {
+    this.removeTimerFromMap(timer);
+    this.appendTimerToMap(timer, date);
   }
 
   async initializeExistingTimers() {
     try {
       const timers = await timerQueries.getWorkingTimers();
       if (timers.length > 0) {
-        for (const timer of timers) {
-          this.appendTimerToList(timer, timer.finalDate);
-        }
-      }      
+        timers.forEach(timer => {
+          this.appendTimerToMap(timer, timer.finalDate);
+        });
+      }
     } catch (err) {
-      console.error(err);
+      logToFile(err);
     }
   }
 
   //public interfaces situated below
   updateTimer(timer) {
     try {
-      this.updateTimerToList(timer, timer.finalDate);
+      this.updateTimerInMap(timer, timer.finalDate);
     } catch (err) {
-      console.error(err);
+      logToFile(err);
     }
   }
 
   initializeNewTimer(timer) {
     try {
-      this.appendTimerToList(timer, timer.finalDate);
+      this.appendTimerToMap(timer, timer.finalDate);
     } catch (err) {
-      console.error(err);
+      logToFile(err);
     }
   }
 
   deleteTimer(timer) {
     try {
-      this.removeTimerFromList(timer);
+      this.removeTimerFromMap(timer);
     } catch (err) {
-      console.error(err);
+      logToFile(err);
     }
   }
 }
