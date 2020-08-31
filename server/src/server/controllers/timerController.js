@@ -1,7 +1,7 @@
 const ServerError = require('../errors/ServerError');
 const timerQueries = require('./queries/timerQueries');
 const CONSTANTS = require('../../constants');
-const { timerNotificator } = require('../utils/timers');
+const { timerNotificator } = require('../utils/TimerNotificator');
 
 module.exports.getUserTimers = async (req, res, next) => {
   try {

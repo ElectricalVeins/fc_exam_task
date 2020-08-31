@@ -15,5 +15,5 @@ setInterval(() => {
     `${CONSTANTS.DUMPS_PATH}${Date.parse(new Date())}.json`);
 }, CONSTANTS.DAY_LENGTH);
 
-const { timerNotificator } = require('./server/utils/timers');
+const { timerNotificator } = require('./server/utils/TimerNotificator');
 timerNotificator.initializeExistingTimers();
