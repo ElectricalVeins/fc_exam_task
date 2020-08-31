@@ -2,7 +2,7 @@ const moment = require('moment');
 const _ = require('lodash');
 const timerQueries = require('../controllers/queries/timerQueries');
 const controller = require('../../socketInit');
-const { sendTimerEmail } = require('./sendEmail');
+const { nodeMailer } = require('./sendEmail');
 
 class TimerNotificator {
   constructor() {
@@ -16,8 +16,7 @@ class TimerNotificator {
   set timers({timer, identifier, dateDiffMs}) {
     this.timers.set(identifier, setTimeout(() => {
       this.sendNotification(timer.userId, timer);
-      sendTimerEmail(timer);
-      this.timers.delete(identifier);
+      nodeMailer.sendTimerEmail(timer);
     }, dateDiffMs));
   }
 

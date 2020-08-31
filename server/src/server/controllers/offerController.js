@@ -2,7 +2,7 @@ const db = require('../models/index');
 const offerQueries = require('./queries/offerQueries');
 const controller = require('../../socketInit');
 const CONSTANTS = require('../../constants');
-const { sendOfferModerationEmail } = require('../utils/sendEmail');
+const { nodeMailer } = require('../utils/sendEmail');
 
 module.exports.setNewOffer = async (req, res, next) => {
   try {
@@ -83,7 +83,7 @@ module.exports.offerModeration = async (req, res, next) => {
     }
 
     transaction.commit();
-    sendOfferModerationEmail(updatedOffer, userEmail);
+    nodeMailer.sendOfferModerationEmail(updatedOffer, userEmail);
     res.send(updatedOffer);
   }catch (err) {
     transaction.rollback();

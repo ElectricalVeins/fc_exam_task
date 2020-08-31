@@ -3,7 +3,7 @@ const uuid = require('uuid/v1');
 const _ = require('lodash');
 const CONSTANTS = require('../../constants');
 const db = require('../models/index');
-const { sendRestorePasswordEmail } = require('../utils/sendEmail');
+const { nodeMailer } = require('../utils/sendEmail');
 const controller = require('../../socketInit');
 const userQueries = require('./queries/userQueries');
 const ratingQueries = require('./queries/ratingQueries');
@@ -44,7 +44,7 @@ module.exports.sendRestoreEmail = async (req, res, next) => {
   try {
     const { restorePassToken } = req;
     const restoreLink = `${CONSTANTS.BASE_URL}${CONSTANTS.PASSWORD_RESTORE_ROUTE}?token=${restorePassToken}`;
-    sendRestorePasswordEmail(restoreLink, req.body.email);
+    nodeMailer.sendRestorePasswordEmail(restoreLink, req.body.email);
     res.status(202).send('Check your email!');
   } catch (err) {
     next(err);
