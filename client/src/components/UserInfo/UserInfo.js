@@ -9,16 +9,17 @@ import styles from "./UserInfo.module.sass"
 import UserProfile from "../UserProfile/UserProfile"
 
 const UserInfo = (props) => {
-  const updateUserData = (values) => {
+  const { isEdit, changeEditMode, data, updateUser } = props
+
+  const updateUserData = ({ file, firstName, lastName, displayName }) => {
     const formData = new FormData()
-    formData.append("file", values.file)
-    formData.append("firstName", values.firstName)
-    formData.append("lastName", values.lastName)
-    formData.append("displayName", values.displayName)
-    props.updateUser(formData)
+    formData.append("file", file)
+    formData.append("firstName", firstName)
+    formData.append("lastName", lastName)
+    formData.append("displayName", displayName)
+    updateUser(formData)
   }
 
-  const { isEdit, changeEditMode, data } = props
   return (
     <div className={styles.mainContainer}>
       {isEdit ? (
@@ -37,16 +38,17 @@ const UserInfo = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  const { data } = state.userStore
-  const { isEdit } = state.userProfile
+  const { 
+    userStore: { data },
+    userProfile: { isEdit } 
+  } = state
   return { data, isEdit }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updateUser: (data) => dispatch(updateUserData(data)),
-    changeEditMode: (data) => dispatch(changeEditModeOnUserProfile(data)),
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  updateUser: (data) => dispatch(updateUserData(data)),
+  changeEditMode: (data) => dispatch(changeEditModeOnUserProfile(data)),
+})
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo)

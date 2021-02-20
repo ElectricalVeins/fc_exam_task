@@ -13,19 +13,24 @@ import Footer from "../../components/Footer/Footer"
 import Header from "../../components/Header/Header"
 
 const ContestCreationPage = (props) => {
+
+  const { contestType, history, bundleStore, contestStore, saveContest } = props
+
   const submitDataContest = (values) => {
-    props.saveContest({ type: props.contestType, info: values })
-    props.history.push(
-      props.bundleStore.bundle[props.contestType] === "payment"
+    saveContest({ type: contestType, info: values })
+    history.push(
+      bundleStore.bundle[contestType] === "payment"
         ? "/payment"
-        : `${props.bundleStore.bundle[props.contestType]}Contest`
+        : `${bundleStore.bundle[contestType]}Contest`
     )
   }
 
-  !props.bundleStore.bundle && props.history.replace("/startContest")
-  const contestData = props.contestStore.contests[props.contestType]
-    ? props.contestStore.contests[props.contestType]
-    : { contestType: props.contestType }
+  !bundleStore.bundle && history.replace("/startContest")
+  
+  const contestData = contestStore.contests[contestType]
+    ? contestStore.contests[contestType]
+    : { contestType }
+    
   return (
     <div>
       <Header />

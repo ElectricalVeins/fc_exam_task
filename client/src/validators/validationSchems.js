@@ -27,6 +27,7 @@ export default {
     email: emailScheme,
     password: passwordScheme,
   }),
+
   RegistrationSchem: yup.object().shape({
     email: yup.string().email("check email").required("Email is required"),
     password: passwordScheme,
@@ -67,6 +68,7 @@ export default {
       .oneOf([true], "Must Accept Terms and Conditions")
       .required("Must Accept Terms and Conditions"),
   }),
+
   ContestSchem: yup.object().shape({
     contestType: yup
       .string()
@@ -105,9 +107,11 @@ export default {
     typeOfTagline: yup.string().max(255),
     brandStyle: yup.string().max(255),
   }),
+
   LogoOfferSchema: yup.object().shape({
     offerData: yup.mixed().required("required"),
   }),
+
   TextOfferSchema: yup.object().shape({
     offerData: yup
       .string()
@@ -119,6 +123,7 @@ export default {
       .max(255, "Offer should not exceed 255 characters")
       .required("suggestion is required"),
   }),
+
   PaymentSchema: yup.object().shape({
     number: yup
       .string()
@@ -145,6 +150,7 @@ export default {
       )
       .required("required"),
   }),
+
   CashoutSchema: yup.object().shape({
     sum: yup.number().min(5, "min sum is 5$").required("required"),
     number: yup
@@ -169,6 +175,7 @@ export default {
       )
       .required("required"),
   }),
+
   UpdateUserSchema: yup.object().shape({
     firstName: yup
       .string()
@@ -196,11 +203,13 @@ export default {
       .required("required"),
     file: yup.mixed(),
   }),
+
   PasswordRestore: yup.object().shape({
     email: emailScheme,
     password: passwordScheme,
     confirmPassword: confirmPasswordScheme,
   }),
+
   TimerForm: yup.object().shape({
     name: yup
       .string()
@@ -217,4 +226,5 @@ export default {
       .min(new Date())
       .required("This area is required"),
   }),
+  
 }

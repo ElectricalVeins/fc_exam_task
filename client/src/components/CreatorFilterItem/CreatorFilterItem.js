@@ -10,6 +10,7 @@ const CreatorFilterItem = (props) => {
     handler,
     description,
     value,
+    children,
   } = props
 
   const onChangeHandler = (event) => {
@@ -32,7 +33,7 @@ const CreatorFilterItem = (props) => {
           value={value}
           className={inputStyles}
         >
-          {props.children}
+          {children}
         </select>
       )}
     </div>

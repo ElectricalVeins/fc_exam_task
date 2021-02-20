@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import classNames from "classnames"
+import cx from "classnames"
 
 const CustomerFilterItem = (props) => {
   const {
@@ -10,16 +10,18 @@ const CustomerFilterItem = (props) => {
     classes: { activeFilter, filter },
   } = props
 
+  const classNames = cx({
+    [activeFilter]: status === customerFilter,
+    [filter]: status !== customerFilter,
+  })
+
   return (
     <div
       onClick={() => newFilter(status)}
-      className={classNames({
-        [activeFilter]: status === customerFilter,
-        [filter]: status !== customerFilter,
-      })}
-    >
-      {props.children}
-    </div>
+      className={classNames}
+      {...props}
+    />
+    
   )
 }
 

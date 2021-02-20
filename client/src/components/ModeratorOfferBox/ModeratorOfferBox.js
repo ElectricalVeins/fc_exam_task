@@ -1,12 +1,12 @@
-import React from "react"
-import classNames from "classnames"
-import { connect } from "react-redux"
-import styles from "./ModeratorOfferBox.module.sass"
-import CONSTANTS from "../../constants"
-import * as actionCreator from "../../actions/actionCreator"
-import { createSetOfferAction } from "../../actions/actionCreator"
+import React from 'react';
+import classNames from 'classnames';
+import { connect } from 'react-redux';
+import styles from './ModeratorOfferBox.module.sass';
+import CONSTANTS from '../../constants';
+import * as actionCreator from '../../actions/actionCreator';
+import { createSetOfferAction } from '../../actions/actionCreator';
 
-const ModeratorOfferBox = (props) => {
+const ModeratorOfferBox = props => {
   const {
     text,
     fileName,
@@ -14,31 +14,30 @@ const ModeratorOfferBox = (props) => {
     id: offerId,
     userId: creatorId,
     User: { displayName, email: userEmail },
-  } = props
+    setOffer,
+    changeModalView,
+  } = props;
 
-  const banHandler = () => {
-    props.setOffer({
+  const banHandler = () =>
+    setOffer({
       contestId,
       offerId,
       creatorId,
       userEmail,
       command: CONSTANTS.OFFER_COMMAND_BAN,
-    })
-  }
+    });
 
-  const approveHandler = () => {
-    props.setOffer({
+  const approveHandler = () =>
+    setOffer({
       contestId,
       offerId,
       creatorId,
       userEmail,
       command: CONSTANTS.OFFER_COMMAND_APPROVE,
-    })
-  }
+    });
 
-  const onImageHandler = () => {
-    props.changeModalView({ filePath: fileName, isShowModal: true })
-  }
+  const onImageHandler = () =>
+    changeModalView({ filePath: fileName, isShowModal: true });
 
   const renderBody = () => {
     return text ? (
@@ -49,11 +48,11 @@ const ModeratorOfferBox = (props) => {
           className={styles.logo}
           onClick={onImageHandler}
           src={`${CONSTANTS.publicURL}${fileName}`}
-          alt="logo"
+          alt='logo'
         />
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <section className={styles.moderatorOfferBox}>
@@ -84,13 +83,13 @@ const ModeratorOfferBox = (props) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-const mapDispatchToProps = (dispatch) => ({
-  setOffer: (data) => dispatch(createSetOfferAction(data)),
-  changeModalView: (data) =>
+const mapDispatchToProps = dispatch => ({
+  setOffer: data => dispatch(createSetOfferAction(data)),
+  changeModalView: data =>
     dispatch(actionCreator.createChangeModalViewAction(data)),
-})
+});
 
-export default connect(null, mapDispatchToProps)(ModeratorOfferBox)
+export default connect(null, mapDispatchToProps)(ModeratorOfferBox);

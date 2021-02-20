@@ -3,8 +3,12 @@ import { connect } from "react-redux"
 import Chat from "../Chat/Chat"
 
 const ChatContainer = (props) => {
-  const { data } = props
-  return <>{data ? <Chat /> : null}</>
+  const { data, controllers } = props
+  return <>
+    {
+      data ? <Chat controllers={controllers} /> : null
+    }
+  </>
 }
 
 const mapStateToProps = (state) => {

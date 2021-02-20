@@ -1,7 +1,5 @@
 import { put } from "redux-saga/effects"
 import ACTION from "../actions/actionTypes"
-import history from "../browserHistory"
-import CONSTANTS from "../constants"
 import * as restController from "../api/rest/restController"
 
 export function* getTimersSaga(action) {
@@ -24,7 +22,7 @@ export function* createTimerSaga(action) {
 
 export function* deleteTimerSaga(action) {
   try {
-    const { data } = yield restController.deleteTimer(action.data.id)
+    yield restController.deleteTimer(action.data.id)
     yield put({ type: ACTION.DELETE_TIMER_SUCCESS, data: action.data })
   } catch (err) {
     yield put({ type: ACTION.DELETE_TIMER_ERROR, error: err.response })

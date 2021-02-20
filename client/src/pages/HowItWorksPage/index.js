@@ -1,44 +1,38 @@
-import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import classNames from "classnames"
-import Header from "../../components/Header/Header"
-import styles from "./HowItWorksPage.module.sass"
-import Footer from "../../components/Footer/Footer"
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import styles from './HowItWorksPage.module.sass';
+import { useScroll } from '../../hooks/index';
 
-const HowItWorks = (props) => {
-  const [scrollY, setScrollY] = useState(0)
-
-  useEffect(() => {
-    window.addEventListener("scroll", setHeight)
-    return () => window.removeEventListener("scroll", setHeight)
-  }, [])
-
-  const setHeight = () => setScrollY(window.scrollY)
+const HowItWorks = props => {
+  const { scrollY } = useScroll();
 
   const renderScrollUp = () => {
     const computedStyles = classNames(styles.scrollUp, {
       [styles.visible]: scrollY > 160,
-    })
+    });
 
     return (
-      <a href="#header" className={computedStyles}>
-        <i className="fas fa-arrow-up" />
+      <a href='#header' className={computedStyles}>
+        <i className='fas fa-arrow-up' />
       </a>
-    )
-  }
+    );
+  };
 
   return (
     <>
-      <Header id="header" />
+      <Header id='header' />
       <div className={styles.wrapper}>
         <main className={styles.howSection}>
           <div className={styles.video}>
             <iframe
-              title="Wistia video player"
+              title='Wistia video player'
               allowFullScreen
-              frameBorder="0"
-              scrolling="no"
-              src="https://fast.wistia.net/embed/iframe/vfxvect60o"
+              frameBorder='0'
+              scrolling='no'
+              src='https://fast.wistia.net/embed/iframe/vfxvect60o'
             />
           </div>
           <div className={styles.main}>
@@ -107,7 +101,7 @@ const HowItWorks = (props) => {
           </li>
         </ul>
         <section className={styles.contestLinkContainer}>
-          <Link to="/startContest">Start a contest</Link>
+          <Link to='/startContest'>Start a contest</Link>
         </section>
         <section className={styles.faqContainer}>
           <div className={styles.faqTitle}>
@@ -167,8 +161,8 @@ const HowItWorks = (props) => {
               <p>
                 Yes! We believe that validating and securing your name is a
                 critical part of your branding process. Squadhelp offers domain
-                checks, <a href="#">Trademark support</a>, linguistics analysis,
-                and <a href="#">professional audience testing</a> to help you
+                checks, <a href='#'>Trademark support</a>, linguistics analysis,
+                and <a href='#'>professional audience testing</a> to help you
                 choose your name with confidence. We even have special prices
                 for Trademark filing for our customers.
               </p>
@@ -178,8 +172,8 @@ const HowItWorks = (props) => {
               <h4>I’ve never used Squadhelp before. What should I expect?</h4>
               <p>
                 Most customers tell us that Squadhelp’s process is effective,
-                easy, fast, and even fun. We constantly hear{" "}
-                <a href="#">extremely positive feedback</a> with respect to the
+                easy, fast, and even fun. We constantly hear{' '}
+                <a href='#'>extremely positive feedback</a> with respect to the
                 breadth of ideas submitted to each contest, and many customers
                 are surprised at how insightful working with dozens of creative
                 individuals from across the globe can be.
@@ -206,7 +200,7 @@ const HowItWorks = (props) => {
                 request a refund for the contest award fees (if you keep your
                 contest award as "Not Guaranteed"). We also offer complimentary
                 branding consultation to ensure you get the best outcome from
-                your contest. Read more about our <a href="#">Refund policy</a>.
+                your contest. Read more about our <a href='#'>Refund policy</a>.
               </p>
             </li>
 
@@ -220,13 +214,13 @@ const HowItWorks = (props) => {
               </p>
               <ul>
                 <li>
-                  <a href="#">Name Examples</a>
+                  <a href='#'>Name Examples</a>
                 </li>
                 <li>
-                  <a href="#">Tagline Examples</a>
+                  <a href='#'>Tagline Examples</a>
                 </li>
                 <li>
-                  <a href="#">Logo Examples</a>
+                  <a href='#'>Logo Examples</a>
                 </li>
               </ul>
             </li>
@@ -236,7 +230,7 @@ const HowItWorks = (props) => {
               <p>
                 Thousands of customers have used Squadhelp to find great Names,
                 Taglines and Logos for their businesses. Here are some of the
-                recent <a href="#">customer testimonials</a>.
+                recent <a href='#'>customer testimonials</a>.
               </p>
             </li>
 
@@ -272,7 +266,7 @@ const HowItWorks = (props) => {
                 Our naming competitions start at $199, and our logo design
                 competitions start at $299. Also, there are three additional
                 contest level that each offer more features and benefits. See
-                our <a href="#">Pricing Page</a> for details.
+                our <a href='#'>Pricing Page</a> for details.
               </p>
             </li>
 
@@ -282,8 +276,8 @@ const HowItWorks = (props) => {
                 Yes! We have many contest bundles - our most popular being our
                 Name, Tagline, and Logo bundle. Bundles allow you to purchase
                 multiple contests at one time and save as much as from $75 -
-                $400. You can learn more about our bundle options on our{" "}
-                <a href="#">Pricing Page</a>.
+                $400. You can learn more about our bundle options on our{' '}
+                <a href='#'>Pricing Page</a>.
               </p>
             </li>
 
@@ -313,19 +307,19 @@ const HowItWorks = (props) => {
       </div>
       <div className={styles.getInTouch}>
         <div className={styles.envelopeIcon}>
-          <i className="fa fa-envelope-o" aria-hidden="true" />
+          <i className='fa fa-envelope-o' aria-hidden='true' />
         </div>
         <div className={styles.touchInfo}>
           <h1>Questions?</h1>
           <p>
-            Check out our <a href="#header">FAQs</a> or send us a{" "}
-            <a href="#header">message</a>. For assistance with launching a
-            contest, you can also call us at (877) 355-3585 or schedule a{" "}
-            <a href="#header">Branding Consultation</a>
+            Check out our <a href='#header'>FAQs</a> or send us a{' '}
+            <a href='#header'>message</a>. For assistance with launching a
+            contest, you can also call us at (877) 355-3585 or schedule a{' '}
+            <a href='#header'>Branding Consultation</a>
           </p>
         </div>
         <div className={styles.touchButton}>
-          <a target="_blank" href="#header">
+          <a target='_blank' href='#header'>
             Get in Touch
           </a>
         </div>
@@ -333,7 +327,7 @@ const HowItWorks = (props) => {
       {renderScrollUp()}
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default HowItWorks
+export default HowItWorks;

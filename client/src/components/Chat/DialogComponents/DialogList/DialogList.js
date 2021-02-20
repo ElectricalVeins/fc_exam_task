@@ -99,8 +99,7 @@ const mapDispatchToProps = (dispatch) => {
     goToExpandedDialog: (data) => dispatch(goToExpandedDialog(data)),
     changeChatFavorite: (data) => dispatch(changeChatFavorite(data)),
     changeChatBlock: (data) => dispatch(changeChatBlock(data)),
-    changeShowAddChatToCatalogMenu: (data) =>
-      dispatch(changeShowAddChatToCatalogMenu(data)),
+    changeShowAddChatToCatalogMenu: (data) => dispatch(changeShowAddChatToCatalogMenu(data)),
   }
 }
 

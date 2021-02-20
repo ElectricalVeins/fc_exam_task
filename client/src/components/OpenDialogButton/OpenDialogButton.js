@@ -7,7 +7,7 @@ import {
 } from "../../actions/actionCreator"
 
 const OpenDialogButton = (props) => {
-  const { dialogsPreview, interlocutor } = props
+  const { dialogsPreview, interlocutor, createDialog, goToExpandedDialog } = props
 
   const conversationInfo = (dialogsPreview, interlocutorId) => {
     for (const dialog of dialogsPreview) {
@@ -24,9 +24,9 @@ const OpenDialogButton = (props) => {
   const goChat = () => {
     const chatId = conversationInfo(dialogsPreview, interlocutor.id)
     if (!chatId) {
-      props.createDialog({ interlocutor })
+      createDialog({ interlocutor })
     } else {
-      props.goToExpandedDialog({ interlocutor, chatId })
+      goToExpandedDialog({ interlocutor, chatId })
     }
   }
   return <i onClick={goChat} className="fas fa-comments" />

@@ -12,16 +12,18 @@ import Schems from "../../validators/validationSchems"
 let isPayForOrder
 
 const PayForm = (props) => {
+
+  const {changeFocusOnCard: changeFocus, sendRequest, handleSubmit, focusOnElement, name, number, expiry, cvc} = props
+
   const changeFocusOnCard = (name) => {
-    props.changeFocusOnCard(name)
+    changeFocus(name)
   }
 
   const pay = (values) => {
-    props.sendRequest(values)
+    sendRequest(values)
   }
 
   isPayForOrder = props.isPayForOrder
-  const { handleSubmit, focusOnElement, name, number, expiry, cvc } = props
   return (
     <div className={styles.payFormContainer}>
       <span className={styles.headerInfo}>Payment Information</span>

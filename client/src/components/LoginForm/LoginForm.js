@@ -17,8 +17,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { isFetching } = this.props.auth
-    const { handleSubmit, submitting } = this.props
+    const { handleSubmit, submitting, auth: { isFetching } } = this.props
     const inputStyles = {
       container: styles.inputContainer,
       input: styles.input,
@@ -55,10 +54,7 @@ class LoginForm extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { auth } = state
-  return { auth }
-}
+const mapStateToProps = ({ auth }) => ({ auth })
 
 const mapDispatchToProps = (dispatch) => ({
   loginRequest: (data) => dispatch(authActionLogin(data)),

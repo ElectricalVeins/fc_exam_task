@@ -44,18 +44,12 @@ class CustomerDashboard extends Component {
   }
 
   setContestList = () => {
-    const contestList = []
     const { contests } = this.props
-    for (let i = 0; i < contests.length; i++) {
-      contestList.push(
-        <ContestBox
-          data={contests[i]}
-          key={contests[i].id}
-          goToExtended={this.goToExtended}
-        />
-      )
-    }
-    return contestList
+    return contests.map((contest)=><ContestBox 
+      data={contest}
+      key={contest.id}
+      goToExtended={this.goToExtended}
+    />)
   }
 
   componentWillUnmount() {
@@ -123,9 +117,7 @@ class CustomerDashboard extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return state.contestsList
-}
+const mapStateToProps = ({contestsList}) => contestsList
 
 const mapDispatchToProps = (dispatch) => {
   return {

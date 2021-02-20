@@ -99,8 +99,8 @@ const TimerForm = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
-  initialValues: state.timerStore.currentTimer,
+const mapStateToProps = ({ timerStore }) => ({
+  initialValues: timerStore.currentTimer,
 })
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import WebSocket from "./WebSocket"
 import CONTANTS from "../../../constants"
 import {
@@ -27,7 +28,9 @@ class ChatSocket extends WebSocket {
       const { message } = data
       const { dialogsPreview } = this.getState().chatStore
       dialogsPreview.forEach((preview) => {
-        if (preview.id === data.id) preview.favoriteList = message.isCreate
+        if (preview.id === data.id) {
+          preview.favoriteList = message.isCreate
+        }
       })
 
       this.dispatch(changeBlockStatusInStore({ dialogsPreview }))
@@ -35,20 +38,19 @@ class ChatSocket extends WebSocket {
   }
 
   onNewMessage = () => {
-    this.socket.on("newMessage", (data) => {
-      const { message, preview } = data.message
+    this.socket.on("newMessage", ({ message }) => {
+      const { message: newMsg, preview } = message
       const { dialogsPreview } = this.getState().chatStore
-      let isNew = true
-      dialogsPreview.forEach((preview) => {
-        if (preview.id === message.ConversationId) {
-          preview.Messages[CONTANTS.FIRST_ITEM] = message
-          isNew = false
-        }
-      })
-      if (isNew) {
-        dialogsPreview.push(preview)
+      const newPreviews = _.clone(dialogsPreview);
+      const foundDialog = newPreviews.find((elem) => elem.id === newMsg.ConversationId)
+
+      if (foundDialog) {
+        foundDialog.Messages[CONTANTS.FIRST_ITEM] = newMsg
+      } else {
+        newPreviews.push(preview);
       }
-      this.dispatch(addMessage({ message, dialogsPreview }))
+
+      this.dispatch(addMessage({ message: newMsg, dialogsPreview: newPreviews }))
     })
   }
 

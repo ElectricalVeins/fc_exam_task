@@ -78,10 +78,7 @@ function* rootSaga() {
   yield takeLatest(ACTION.ADD_CHAT_TO_CATALOG_ASYNC, addChatToCatalog)
   yield takeLatest(ACTION.CREATE_CATALOG_REQUEST, createCatalog)
   yield takeLatest(ACTION.DELETE_CATALOG_REQUEST, deleteCatalog)
-  yield takeLatest(
-    ACTION.REMOVE_CHAT_FROM_CATALOG_REQUEST,
-    removeChatFromCatalogSaga
-  )
+  yield takeLatest(ACTION.REMOVE_CHAT_FROM_CATALOG_REQUEST, removeChatFromCatalogSaga)
   yield takeLatest(ACTION.CHANGE_CATALOG_NAME_REQUEST, changeCatalogName)
   yield takeLatest(ACTION.GET_UN_MODERATED_OFFERS, getUnModeratedOffers)
   yield takeLatest(ACTION.MODERATOR_SET_OFFER, setOffer)

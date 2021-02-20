@@ -8,8 +8,6 @@ COPY package*.json ./
 
 COPY . .
 
-
-
 EXPOSE 5000
 
 RUN npm install

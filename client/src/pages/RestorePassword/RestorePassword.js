@@ -18,6 +18,7 @@ const RestorePassword = (props) => {
     clearState,
     passwordRecover: { isFetching, error, data, formResult },
   } = props
+
   const { token } = queryString.parse(window.location.search)
 
   const clearError = () => {
@@ -53,7 +54,8 @@ const RestorePassword = (props) => {
             error={error}
             data={data}
           />
-        ) : (
+        ) : 
+        (
           <>
             <h1>Password Restore Form</h1>
             <RestorePasswordForm formResult={formResult} />

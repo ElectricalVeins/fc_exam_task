@@ -5,7 +5,6 @@ const initialState = {
   error: null,
   data: null,
   textIndex: 0,
-  // loaderStyle: null,
 }
 
 export default function (state = initialState, action) {

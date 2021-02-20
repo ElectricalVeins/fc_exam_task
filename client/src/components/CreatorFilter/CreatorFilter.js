@@ -16,13 +16,14 @@ const CreatorFilter = (props) => {
   const {
     search,
     dataForContest: { isFetching, data },
+    getDataForContest,
     creatorFilter,
     dataForContest,
     creatorFilter: { types },
   } = props
 
   useEffect(() => {
-    props.getDataForContest()
+    getDataForContest()
   }, [])
 
   useEffect(() => {
@@ -47,8 +48,10 @@ const CreatorFilter = (props) => {
 
   const parseParamsToUrl = (creatorFilter) => {
     const obj = {}
-    Object.keys(creatorFilter).forEach((el) => {
-      if (creatorFilter[el]) obj[el] = creatorFilter[el]
+    Object.entries(creatorFilter).forEach(([key,value]) => {
+      if (value) {
+        obj[key] = value
+      }
     })
     props.history.push(
       `/Dashboard?${queryString.stringify(obj, { arrayFormat: "index" })}`

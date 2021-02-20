@@ -1,5 +1,4 @@
-import React from "react"
-import ChatSocket from "./sockets/ChatSocket"
+/* import ChatSocket from 
 import NotificationSocket from "./sockets/NotificationSocket"
 
 export let controller
@@ -13,4 +12,6 @@ export const initSocket = (store) => {
   )
   chatController = new ChatSocket(store.dispatch, store.getState, "chat")
   return store
-}
+} */
+export { default as ChatSocket } from "./sockets/ChatSocket"
+export { default as NotificationSocket } from "./sockets/NotificationSocket"

@@ -15,12 +15,14 @@ const DialogBox = (props) => {
     chatMode,
     collocutors,
   } = props
+
   const {
     favoriteList: isFavorite,
     blackList: isBlocked,
     Messages: messages,
     id,
   } = chatPreview
+  console.log(collocutors)
   const interlocutor = collocutors.find(
     (interlocutor) => interlocutor.id !== userId
   )

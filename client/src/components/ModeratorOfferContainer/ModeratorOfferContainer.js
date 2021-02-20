@@ -5,7 +5,7 @@ import TryAgain from "../TryAgain/TryAgain"
 import CONSTANTS from "../../constants"
 
 const ModeratorOfferContainer = (props) => {
-  const { loadMore, isFetching, error } = props
+  const { loadMore, isFetching, error, children } = props
 
   useEffect(() => {
     window.addEventListener("scroll", scrollHandler)
@@ -17,23 +17,24 @@ const ModeratorOfferContainer = (props) => {
   const scrollHandler = () => {
     if (
       window.innerHeight + window.pageYOffset >=
-      document.body.offsetHeight - CONSTANTS.SCROLL_DELTA
+      document.body.offsetHeight - CONSTANTS.SCROLL_DELTA &&
+      !isFetching
     ) {
-      if (!isFetching) {
-        fetchAgain()
-      }
+      fetchAgain()
     }
   }
 
   const fetchAgain = () => {
-    loadMore(props.children.length)
+    loadMore(children.length)
   }
 
-  if (error) return <TryAgain getData={fetchAgain} />
+  if (error) {
+    return <TryAgain getData={fetchAgain} />
+  }
 
   return (
     <>
-      {props.children}
+      {children}
       {isFetching && <SpinnerLoader />}
       <TryAgain getData={fetchAgain} text="Load Offers" />
     </>

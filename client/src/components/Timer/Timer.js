@@ -45,13 +45,9 @@ const Timer = (props) => {
     return result > 100 ? 100 : result
   }
 
-  const renderWarning = () => {
-    return <>{isWarning && <span className={styles.warn} title={warnDate} />}</>
-  }
-
-  const openEditorHandler = () => {
-    openEditor({ id, name, finalDate, createdAt, warnDate })
-  }
+  const renderWarning = () => <>{isWarning && <span className={styles.warn} title={warnDate} />}</>
+  
+  const openEditorHandler = () => openEditor({ id, name, finalDate, createdAt, warnDate })
 
   const listStyles = classNames(styles.listItem, itemClass)
 

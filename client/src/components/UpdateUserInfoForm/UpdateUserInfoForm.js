@@ -82,22 +82,21 @@ const UpdateUserInfoForm = (props) => {
 }
 
 const mapStateToProps = (state) => {
-  const { data, error } = state.userStore
+  const { userStore: { data: { firstName, lastName, displayName } }, error } = state
   return {
     error,
     initialValues: {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      displayName: data.displayName,
+      firstName,
+      lastName,
+      displayName,
     },
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    clearUserError: () => dispatch(clearUserError()),
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  clearUserError: () => dispatch(clearUserError())
+})
+
 
 export default connect(
   mapStateToProps,

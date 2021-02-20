@@ -17,8 +17,8 @@ class CreatorDashboard extends Component {
   }
 
   getPredicateOfRequest = () => {
-    const obj = {}
     const { creatorFilter } = this.props
+    const obj = {}
     Object.keys(creatorFilter).forEach((el) => {
       if (creatorFilter[el]) {
         obj[el] = creatorFilter[el]
@@ -37,8 +37,9 @@ class CreatorDashboard extends Component {
   }
 
   setContestList = () => {
-    const contestList = []
     const { contests } = this.props
+
+    const contestList = []
     for (let i = 0; i < contests.length; i++) {
       contestList.push(
         <ContestBox

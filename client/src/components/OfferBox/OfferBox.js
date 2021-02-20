@@ -16,7 +16,7 @@ import "./confirmStyle.css"
 import OpenDialogButton from "../OpenDialogButton/OpenDialogButton"
 
 const OfferBox = (props) => {
-  const { data, role, id, contestType } = props
+  const { data, role, id, contestType, setOfferStatus, clearError, changeMark, changeShowImage, dialogsPreview, needButtons } = props
   const { avatar, firstName, lastName, email, rating } = props.data.User
 
   const resolveOffer = () => {
@@ -27,9 +27,9 @@ const OfferBox = (props) => {
         {
           label: "Yes",
           onClick: () =>
-            props.setOfferStatus(
-              props.data.User.id,
-              props.data.id,
+            setOfferStatus(
+              data.User.id,
+              data.id,
               CONSTANTS.OFFER_COMMAND_RESOLVE
             ),
         },
@@ -48,9 +48,9 @@ const OfferBox = (props) => {
         {
           label: "Yes",
           onClick: () =>
-            props.setOfferStatus(
-              props.data.User.id,
-              props.data.id,
+            setOfferStatus(
+              data.User.id,
+              data.id,
               CONSTANTS.OFFER_COMMAND_REJECT
             ),
         },
@@ -61,18 +61,18 @@ const OfferBox = (props) => {
     })
   }
 
-  const changeMark = (value) => {
-    props.clearError()
-    props.changeMark({
+  const changeMarkOnClick = (value) => {
+    clearError()
+    changeMark({
       mark: value,
-      offerId: props.data.id,
-      isFirst: !props.data.mark,
-      creatorId: props.data.User.id,
+      offerId: data.id,
+      isFirst: !data.mark,
+      creatorId: data.User.id,
     })
   }
 
   const offerStatus = () => {
-    const { status } = props.data
+    const { status } = data
     if (status === CONSTANTS.OFFER_STATUS_REJECTED) {
       return (
         <i
@@ -140,7 +140,7 @@ const OfferBox = (props) => {
           {contestType === CONSTANTS.LOGO_CONTEST ? (
             <img
               onClick={() =>
-                props.changeShowImage({
+                changeShowImage({
                   imagePath: data.fileName,
                   isShowOnFull: true,
                 })
@@ -154,7 +154,7 @@ const OfferBox = (props) => {
           )}
           {role !== CONSTANTS.CUSTOMER && (
             <div className={styles.offerStatus}>
-              Offer Status: {props.data.status}
+              Offer Status: {data.status}
             </div>
           )}
           {data.User.id !== id && (
@@ -178,19 +178,19 @@ const OfferBox = (props) => {
                   alt="star"
                 />
               }
-              onClick={changeMark}
+              onClick={changeMarkOnClick}
               placeholderRating={data.mark}
             />
           )}
         </div>
         {role !== CONSTANTS.CREATOR && (
           <OpenDialogButton
-            interlocutor={props.data.User}
-            dialogsPreview={props.dialogsPreview}
+            interlocutor={data.User}
+            dialogsPreview={dialogsPreview}
           />
         )}
       </div>
-      {props.needButtons(data.status) && (
+      {needButtons(data.status) && (
         <div className={styles.btnsContainer}>
           <div onClick={resolveOffer} className={styles.resolveBtn}>
             Resolve

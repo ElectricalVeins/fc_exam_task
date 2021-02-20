@@ -12,20 +12,21 @@ const OfferList = (props) => {
   const {
     contestByIdStore: { offers, contestData },
     userStore,
+    clearSetOfferStatusError,
+    setOfferStatusAction,
   } = props
 
   const setOfferStatus = (creatorId, offerId, command) => {
-    props.clearSetOfferStatusError()
+    clearSetOfferStatusError()
     const { id, orderId, priority } = contestData
-    const obj = {
+    setOfferStatusAction({
       command,
       offerId,
       creatorId,
       orderId,
       priority,
       contestId: id,
-    }
-    props.setOfferStatusAction(obj)
+    })
   }
 
   const needButtons = (offerStatus) => {
@@ -61,16 +62,11 @@ const OfferList = (props) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  const { contestByIdStore, userStore } = state
-  return { contestByIdStore, userStore }
-}
+const mapStateToProps = ({ contestByIdStore, userStore }) => ({ contestByIdStore, userStore })
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setOfferStatusAction: (data) => dispatch(setOfferStatus(data)),
-    clearSetOfferStatusError: () => dispatch(clearSetOfferStatusError()),
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  setOfferStatusAction: (data) => dispatch(setOfferStatus(data)),
+  clearSetOfferStatusError: () => dispatch(clearSetOfferStatusError()),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(OfferList)
