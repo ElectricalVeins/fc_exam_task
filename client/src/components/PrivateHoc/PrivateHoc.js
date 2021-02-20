@@ -4,15 +4,12 @@ import { getUserAction } from "../../actions/actionCreator"
 import Spinner from "../Spinner/Spinner"
 
 const PrivateHoc = (Component, props) => {
-  const mapStateToProps = (state) => {
-    return state.userStore
-  }
+  const mapStateToProps = (state) => state.userStore
 
-  const mapDispatchToProps = (dispatch) => {
-    return {
-      getUser: (data) => dispatch(getUserAction(data)),
-    }
-  }
+  const mapDispatchToProps = (dispatch) => ({
+    getUser: (data) => dispatch(getUserAction(data)),
+  })
+  
 
   class Hoc extends React.Component {
     componentDidMount() {

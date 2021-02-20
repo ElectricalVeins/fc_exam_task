@@ -8,6 +8,7 @@ const CustomerFilterItem = (props) => {
     status,
     customerFilter,
     classes: { activeFilter, filter },
+    ...restProps
   } = props
 
   const classNames = cx({
@@ -19,7 +20,7 @@ const CustomerFilterItem = (props) => {
     <div
       onClick={() => newFilter(status)}
       className={classNames}
-      {...props}
+      {...restProps}
     />
     
   )

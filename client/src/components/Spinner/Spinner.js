@@ -1,21 +1,21 @@
-import React from "react"
-import { ClipLoader } from "react-spinners"
-import styles from "./Spinner.module.sass"
+import React from 'react';
+import { ClipLoader } from 'react-spinners';
+import styles from './Spinner.module.sass';
 
-const SpinnerLoader = (props) => {
-  const { color } = props
+const SpinnerLoader = props => {
+  const { color } = props;
 
   return (
-    <div className={styles.loaderContainer}>
+    <div className={styles.wrapper}>
       <ClipLoader
-        sizeUnit="px"
-        css={"border-color: #46568a;"}
-        size={50}
-        color={color || "#46568a"}
+        size={80}
+        sizeUnit='px'
+        css={'border-color: #46568a;'}
+        color={color || '#46568a'}
         loading
       />
     </div>
-  )
-}
+  );
+};
 
-export default SpinnerLoader
+export default SpinnerLoader;

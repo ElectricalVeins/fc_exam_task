@@ -29,6 +29,7 @@ const carouselRenders = {
     <FeedbackSlide
       key={index}
       className={styles['feedback-cell']}
+      src={carouselConstants.feedbackSliderImages[index]}
       feedback={carouselConstants.FEEDBACK_SLIDER_TEXT[index].feedback}
       name={carouselConstants.FEEDBACK_SLIDER_TEXT[index].name}
     />
