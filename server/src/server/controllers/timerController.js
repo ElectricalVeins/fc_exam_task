@@ -1,4 +1,3 @@
-const ServerError = require('../errors/ServerError');
 const timerQueries = require('./queries/timerQueries');
 const CONSTANTS = require('../../constants');
 const { timerNotificator } = require('../utils/TimerNotificator');
@@ -9,7 +8,6 @@ module.exports.getUserTimers = async (req, res, next) => {
     const timers = await timerQueries.findAllUserTimers(userId);
     res.send(timers);
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
@@ -27,7 +25,6 @@ module.exports.createTimer = async (req, res, next) => {
     timerNotificator.initializeNewTimer(timer.dataValues);
     res.send(timer);
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
@@ -40,7 +37,6 @@ module.exports.deleteTimer = async (req, res, next) => {
     const result = await timerQueries.softDeleteTimer(id, userId);
     res.send({ result });
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
@@ -52,7 +48,6 @@ module.exports.updateTimer = async (req, res, next) => {
     timerNotificator.updateTimer(updatedTimer);
     res.send(updatedTimer);
   } catch (err) {
-    console.log(err);
     next(err);
   }
 };
