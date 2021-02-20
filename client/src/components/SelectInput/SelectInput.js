@@ -3,7 +3,7 @@ import { change } from 'redux-form';
 
 class SelectInput extends React.Component {
   getOptionsArray = () => {
-    const { optionsArray, valueArray } = this.props;
+    const { optionsArray=[], valueArray } = this.props;
 
     return optionsArray.map((optionValue, i) => {
       return valueArray ? (
